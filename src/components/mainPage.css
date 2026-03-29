@@ -181,7 +181,6 @@
         height: 100vh;
         height: 100dvh;
         max-height: 700px;
-        background-attachment: local;
     }
     .hero-main-img {
         left: 50%;
@@ -221,16 +220,16 @@
     .hero {
         height: 100vh;
         height: 100dvh;
-        max-height: 600px;
-        background-attachment: local;
+        max-height: 1000px;
     }
     .hero-main-img {
         transition: none;
         left: 15%;
+        top: 55%;
     }
     .hero-content p {
         max-width: 52%;
-        margin-top: clamp(8rem, 6vh, 10rem);
+        margin-top: clamp(14rem, 6vh, 10rem);
     }
     .hero-title {
         font-size: clamp(0.5rem, 12vw, 4rem);
