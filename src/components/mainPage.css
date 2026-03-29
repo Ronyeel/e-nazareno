@@ -46,7 +46,6 @@
     z-index: 3;
     will-change: transform, opacity;
     animation: imageRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
-    transition: top 0.3s ease, height 0.3s ease;
 }
 
 .hero-title {
@@ -180,10 +179,12 @@
 @media (max-width: 600px) {
     .hero {
         height: 100vh;
+        height: 100dvh;
         max-height: 700px;
+        background-attachment: local;
     }
     .hero-main-img {
-        left: 20%;
+        left: 50%;
         height: clamp(440vh, 280vw, 240vw);
         top: 50%;
         transition: none;
@@ -219,10 +220,13 @@
 @media (max-width: 380px) {
     .hero {
         height: 100vh;
-        max-height: 585px;
+        height: 100dvh;
+        max-height: 600px;
+        background-attachment: local;
     }
     .hero-main-img {
         transition: none;
+        left: 15%;
     }
     .hero-content p {
         max-width: 52%;
