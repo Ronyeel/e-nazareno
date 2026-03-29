@@ -1,0 +1,97 @@
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+li {
+  margin: 0;
+}
+
+li a {
+  display: block;
+  color: var(--navigation-text-color);
+  text-decoration: none;
+  padding: clamp(6px, 1vh, 10px) clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: bold;
+  white-space: nowrap;
+  transition: background-color 0.3s, color 0.3s, border-radius 0.3s;
+}
+
+li a:hover {
+  background-color: #c87f1d;
+  color: #ffffff;
+  border-radius: 15px;
+}
+
+/* ── Hamburger button (hidden on desktop) ── */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 2.2rem;
+  height: 2.2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin-left: auto;
+  z-index: 200;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 1.6rem;
+  height: 2px;
+  background-color: var(--navigation-text-color);
+  border-radius: 2px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Animate bars into X when open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  ul {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+
+    /* Collapsed by default */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    padding: 0;
+  }
+
+  ul.open {
+    max-height: 400px;
+    padding: 0.5rem 0;
+  }
+
+  li {
+    width: 100%;
+  }
+
+  li a {
+    padding: 0.75rem clamp(1rem, 5vw, 1.5rem);
+    width: 100%;
+  }
+
+  li a:hover {
+    border-radius: 0;
+  }
+}
