@@ -18,7 +18,6 @@
 
 body {
     font-family: 'Montserrat', sans-serif;
-    /* Removed min-width: 1280px — this was preventing mobile layouts */
     overflow-x: hidden;
 }
 header {
@@ -31,7 +30,8 @@ header {
 }
 
 main {
-    min-height: 100vh;
+    min-height: 100vh; /* ← was height: 100vh, which clips content */
+    padding-top: 0;
 }
 html {
     scroll-snap-type: smooth;

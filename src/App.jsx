@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/navBar';
 import HomePage from './pages/homePage';
+import Footer from './components/footer';
 // import Stories from './pages/mgaKwento';
   // import History from './pages/History';
   // import AboutUs from './pages/AboutUs';
@@ -21,7 +22,11 @@ function App() {
           <Route path="/tungkol-sa" element={<AboutUT />} /> */}
         </Routes>
       </main>
+       <footer>
+             <Footer />
+      </footer>
     </>
+    
   );
 }
 

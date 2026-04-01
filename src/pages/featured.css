@@ -5,6 +5,8 @@
     color: #000;
     overflow-x: hidden;
     box-sizing: border-box;
+    max-width: 1280px;   /* ← add this */
+    margin: 0 auto;      /* ← and this */
 }
 
 /* ── Section Titles ── */
@@ -15,8 +17,6 @@
     text-transform: uppercase;
     border-bottom: 3px solid var(--navigation-text-color);
     display: inline-block;
-    /* padding-top: clamp(1.5rem, 6vh, 5rem);
-    margin-bottom: clamp(0.75rem, 2vw, 1.25rem); */
 }
 
 /* ── Section Header ── */

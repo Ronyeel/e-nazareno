@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # TODO – Frontend Improvements
 
 ## Animation Optimization
@@ -26,3 +27,16 @@
 * [ ] Check for layout shifts during animations
 * [ ] Optimize load time (lazy load assets if needed)
 * [ ] Cross-browser testing (Chrome, Edge, Firefox)
+=======
+Header
+- Make the search bar properly function
+
+
+Homepage 
+- make the hero section more responsive to any devices
+- make the footer
+
+Mga Kuwento
+- make the initial structure
+
+>>>>>>> 51d02b6 (v2)

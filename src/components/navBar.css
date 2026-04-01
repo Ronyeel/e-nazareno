@@ -3,11 +3,10 @@
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 1280px;   /* ← add this */
+  margin: 0 auto;      /* ← and this */
   position: relative;
-  gap: 0.5rem;
-  overflow: visible;
 }
-
 /* ── Nav links (desktop: inline row) ── */
 .nav-links {
   list-style: none;
@@ -52,11 +51,12 @@
 .nav-search {
   display: flex;
   align-items: center;
+  align-self: center;
   width: 2.2rem;
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
-  z-index: 20;
+  z-index: 100;
   border: 1px solid transparent;
   border-radius: clamp(8px, 1.5vw, 15px);
   box-sizing: border-box;
