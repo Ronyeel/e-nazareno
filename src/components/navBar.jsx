@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import SearchBar from './searchBar';
 import './navBar.css';
 
 function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const location = useLocation();
+
+  const isHome = location.pathname === '/';
 
   const handleSearchToggle = () => {
     setSearchOpen(prev => !prev);
@@ -20,8 +23,8 @@ function NavBar() {
   return (
     <div className="nav-wrapper">
 
-      {/* 1. Search — leftmost */}
-      <div className={`nav-search${searchOpen ? ' expanded' : ''}`}>
+      {/* 1. Search — hidden on homepage desktop, always shown on mobile */}
+      <div className={`nav-search${searchOpen ? ' expanded' : ''}${isHome ? ' desktop-hidden' : ''}`}>
         <SearchBar
           expandable={true}
           expanded={searchOpen}
