@@ -3,9 +3,8 @@
   background:
     url('/devotees.png') no-repeat center center / cover,
     linear-gradient(180deg, #540317, #560116, #6f5f0b);
-  background-origin: border-box;
-  background-clip: border-box;
   width: 100%;
+  max-height: 100%;
   padding-top: clamp(3.5rem, 7vh, 6rem);
   display: flex;
   justify-content: center;
@@ -24,28 +23,26 @@
   display: grid;
   grid-template-rows: auto 1fr;
   padding: clamp(1rem, 3vh, 2.5rem) clamp(1.25rem, 5vw, 4rem)
-           clamp(5rem, 10vh, 7rem);   /* ← sensible bottom padding for search bar */
+           clamp(5rem, 10vh, 7rem);  
   box-sizing: border-box;
 }
 
-/* ── Hero Title ── */
 .hero-title {
   grid-row: 1;
   width: 100%;
   font-family: 'Gideon Roman', serif;
-  font-size: clamp(2rem, 7vw, 7rem);
+  font-size: clamp(3rem, 7vw, 7rem);
   font-weight: 800;
   color: var(--default-text-color);
   text-align: center;
   line-height: 1.2;
-  padding: clamp(1rem, 1.5vh, 1rem) 0;
+  padding: clamp(1rem, 1vh, 1rem) 0;
   word-break: break-word;
   z-index: 2;
   margin: 0;
   animation: titleSlam 1.0s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* ── Hero Content ── */
 .hero-content {
   grid-row: 2;
   align-self: center;
@@ -54,7 +51,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  max-width: min(26rem, 42%);
+  max-width: min(25rem, 22%);
   animation: fadeUp 0.9s ease 1.4s both;
   pointer-events: none;
 }
@@ -71,7 +68,6 @@
 
 .hero-content p strong { font-weight: 900; }
 
-/* ── Hero Button ── */
 .hero-btn {
   display: inline-block;
   margin-top: clamp(0.75rem, 2vh, 1.5rem);
@@ -96,26 +92,24 @@
 .hero-btn:hover { background: #ffffff; color: #540317; }
 .hero-btn:active { transform: scale(0.98); }
 
-/* ── Hero Image ── */
 .hero-main-img {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  height: 80%;           
-  width: auto;
+  height: 85%;           
   max-width: 100%;
   z-index: 3;
   animation: imageRise 1.8s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
 }
 
-/* ── Hero Search ── */
+
 .hero-search {
   position: absolute;
   bottom: clamp(1rem, 2.5vh, 2rem);
   left: 50%;
   transform: translateX(-50%);
-  width: min(88%, 42rem);
+  width: min(50%, 42rem);
   padding: clamp(0.4rem, 1vh, 0.8rem) clamp(0.75rem, 2vw, 1.2rem);
   background: linear-gradient(135deg, rgba(0,0,0,0.30), rgba(255,255,255,0.20));
   border: 1px solid rgba(255, 255, 255, 0.4);

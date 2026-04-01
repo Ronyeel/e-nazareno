@@ -1,4 +1,4 @@
-/* ── Shared SearchBar base styles ── */
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -9,7 +9,7 @@
   box-sizing: border-box;
 }
 
-/* Icons */
+
 .search-bar-icon,
 .search-bar-icon-btn {
   display: flex;
@@ -25,16 +25,14 @@
   padding: 0;
 }
 
-/* Responsive icon size */
 .search-bar-icon-btn .search-img,
 .search-bar-icon .search-img {
   width: clamp(0.9rem, 1.2vw, 1.3rem);
   height: clamp(0.9rem, 1.2vw, 1.3rem);
 }
 
-/* Input */
 .search-bar-input {
-  flex: 1; /* 🔥 IMPORTANT: lets input grow */
+  flex: 1; 
   background: transparent;
   border: none;
   outline: none;
@@ -43,11 +41,10 @@
   caret-color: #ffffff;
   min-width: 0;
 
-  /* Responsive text */
   font-size: clamp(0.8rem, 1vw, 1rem);
 }
 
-/* Placeholder */
+
 .search-bar-input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
