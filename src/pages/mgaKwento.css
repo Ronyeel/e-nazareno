@@ -1,0 +1,249 @@
+
+/* ── Hero ── */
+.kwento-hero {
+  position: relative;
+  min-height: 100svh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.kwento-card {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  max-width: min(900px, 90vw);
+  width: 100%;
+  background: #f7eedf;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(4,15,10,4);
+  overflow: visible;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Left Text Panel ── */
+.kwento-card-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vh, 1.25rem);
+  padding: clamp(1.5rem, 4vw, 3rem);
+  min-width: 0;
+  color: #1a1a1a;
+}
+
+.kwento-card-title {
+  font-family: 'Gideon Roman', serif;
+  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  line-height: 1.1;
+  margin: 0;
+  color: #1a1a1a;
+}
+
+.kwento-card-excerpt {
+  font-family: 'Inknut Antiqua', serif;
+  font-size: clamp(0.72rem, 1.2vw, 0.92rem);
+  line-height: 1.7;
+  opacity: 0.85;
+  margin: 0;
+  max-width: 32ch;
+  color: #333;
+}
+
+.kwento-read-btn {
+  display: inline-block;
+  align-self: flex-start;
+  padding: clamp(0.5rem, 1.5vh, 0.85rem) clamp(1rem, 3vw, 2rem);
+  font-family: 'Inknut Antiqua', serif;
+  font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+  font-weight: 700;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background: var(--primary-color);
+  color: #fff;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.kwento-read-btn:hover { opacity: 0.85; }
+.kwento-read-btn:active { transform: scale(0.97); }
+
+/* ── Right Cover Panel ── */
+.kwento-card-cover {
+  flex-shrink: 0;
+  width: clamp(180px, 32vw, 300px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 1.5vh, 1rem);
+  padding: clamp(1rem, 3vw, 2rem);
+  background: #f0e8d8;
+  border-left: 2px solid #c8a96e;
+  border-radius: 0 14px 14px 0;
+}
+
+.kwento-card-cover img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #c8a96e;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.kwento-cover-placeholder {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  border: 2px solid #c8a96e;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2rem, 6vw, 4rem);
+  font-weight: 700;
+  color: #555;
+}
+
+.kwento-card-meta {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  color: #1a1a1a;
+}
+
+.kwento-meta-title {
+  font-weight: 700;
+  font-size: clamp(0.72rem, 1.1vw, 0.9rem);
+  margin: 0;
+}
+
+.kwento-meta-author {
+  font-size: clamp(0.62rem, 0.9vw, 0.78rem);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.kwento-meta-excerpt {
+  font-size: clamp(0.58rem, 0.85vw, 0.72rem);
+  opacity: 0.65;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Nav Buttons ── */
+.kwento-btn {
+  position: absolute;
+  top: 50%;
+  border: none;
+  transform: translateY(-50%);
+  width: clamp(1rem, 3vw, 1.75rem);
+  height: clamp(2rem, 4vw, 2.75rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(4rem, 2.5vw, 1.6rem);
+  cursor: pointer;
+  z-index: 10;
+  padding: 0;
+  color: var(--navigation-text-color);
+  line-height: 1;
+  background: transparent;
+}
+
+.kwento-btn:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.kwento-btn.left  { left: clamp(1rem, 1vw, 1rem); }
+.kwento-btn.right { right: clamp(1rem, 1vw, 1rem); }
+
+/* ── Dots ── */
+.kwento-dots {
+  position: absolute;
+  bottom: clamp(2rem, 4vh, 3.5rem);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+  background-color: #821411;
+  border-radius: 24px;
+}
+
+.kwento-dot {
+  width: clamp(8px, 1.5vw, 11px);
+  height: clamp(8px, 1.5vw, 11px);
+  border-radius: 50%;
+  border: var(--navigation-text-color);
+  background: rgba(255,255,255,0.4);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  padding: 0;
+}
+
+.kwento-dot.active {
+  background: var(--navigation-text-color);
+  transform: scale(1.25);
+}
+
+/* ── Counter ── */
+.kwento-counter {
+  position: absolute;
+  bottom: clamp(2rem, 4vh, 3.5rem);
+  right: clamp(1.5rem, 5vw, 4rem);
+  font-size: clamp(0.75rem, 1.2vw, 1rem);
+  font-weight: 700;
+  color: var(--navigation-text-color);
+  letter-spacing: 0.05em;
+}
+
+/* ── Mobile ── */
+@media (max-width: 640px) {
+  .kwento-card {
+    flex-direction: column;
+    max-width: 92vw;
+  }
+
+  .kwento-card-cover {
+    width: 100%;
+    border-left: none;
+    border-top: 2px solid #c8a96e;
+    border-radius: 0 0 14px 14px;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+  }
+
+  .kwento-card-cover img,
+  .kwento-cover-placeholder {
+    width: clamp(80px, 25vw, 120px);
+    aspect-ratio: 3 / 4;
+    flex-shrink: 0;
+  }
+
+  .kwento-card-meta {
+    text-align: left;
+  }
+
+  .kwento-card-text {
+    align-items: flex-start;
+    /* leave room for the buttons on each side */
+    padding-left: clamp(2.5rem, 8vw, 3.5rem);
+    padding-right: clamp(2.5rem, 8vw, 3.5rem);
+  }
+
+  .kwento-read-btn {
+    align-self: flex-start;
+  }
+
+  .kwento-btn.left  { left: 0.35rem; }
+  .kwento-btn.right { right: 0.35rem; }
+}

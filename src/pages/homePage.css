@@ -31,16 +31,16 @@
   grid-row: 1;
   width: 100%;
   font-family: 'Gideon Roman', serif;
-  font-size: clamp(3rem, 7vw, 7rem);
+  font-size: clamp(2rem, 6vw + 1rem, 8rem); /* more responsive clamp */
   font-weight: 800;
   color: var(--default-text-color);
   text-align: center;
   line-height: 1.2;
-  padding: clamp(1rem, 1vh, 1rem) 0;
+  padding: clamp(0.75rem, 2vh, 2rem) 0; /* slightly more flexible padding */
   word-break: break-word;
   z-index: 2;
-  margin: 0;
-  animation: titleSlam 1.0s cubic-bezier(0.16, 1, 0.3, 1) both;
+  margin: 0 auto; /* center if max-width is applied */
+  animation: titleSlam 1s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-content {

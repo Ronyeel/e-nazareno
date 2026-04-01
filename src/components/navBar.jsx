@@ -35,7 +35,7 @@ function NavBar() {
       {/* 2. Nav links — center */}
       <ul className={`nav-links${isOpen ? ' open' : ''}${searchOpen ? ' hidden' : ''}`}>
         <li><NavLink to="/" end>Home</NavLink></li>
-        <li><NavLink to="/mga-kwento">Mga Kwento</NavLink></li>
+        <li><NavLink to="/mga-kwento">Mga Kwento</NavLink></li>  {/* ← just a NavLink */}
         <li><NavLink to="/kasaysayan">Kasaysayan</NavLink></li>
         <li><NavLink to="/tungkol-sa">Tungkol Sa</NavLink></li>
       </ul>
