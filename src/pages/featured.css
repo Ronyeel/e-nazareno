@@ -1,12 +1,11 @@
-
 .stories-page {
     background-color: #fff;
     padding: clamp(1rem, 5vw, 5rem) clamp(1rem, 4vw, 2.5rem);
     color: #000;
     overflow-x: hidden;
     box-sizing: border-box;
-    max-width: 1280px;  
-    margin: 0 auto;      
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .section-title {
@@ -43,21 +42,28 @@
     -webkit-overflow-scrolling: touch;
 }
 
+/* FIX: Changed minmax min from clamp(150px, 80vw, 240px) to a fixed 200px.
+   80vw on mobile = nearly full screen width, forcing a single column and
+   making the grid useless. 200px gives a sensible responsive grid. */
 .featured-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 80vw, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: clamp(0.75rem, 2vw, 1.5rem);
     min-width: 0;
 }
 
 .featured-card {
-    display:flex;
+    display: flex;
     align-items: center;
     gap: clamp(0.5rem, 1.5vw, 0.875rem);
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: clamp(0.5rem, 1.5vw, 1rem);
+    /* FIX: Added extra bottom padding so the absolutely-positioned
+       .book-arrow (bottom: 0.5rem, ~34px tall) doesn't overlap the
+       book text. Without this, the arrow sits on top of .book-chapter
+       on any card taller than its minimum. */
+    padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.5rem, 1.5vw, 1rem) clamp(2.5rem, 5vw, 3rem);
     cursor: pointer;
     position: relative;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -78,7 +84,6 @@
     flex-shrink: 0;
     overflow: hidden;
 }
-
 
 .book-info {
     display: flex;
@@ -113,7 +118,6 @@
     text-overflow: ellipsis;
 }
 
-
 .book-arrow {
     position: absolute;
     bottom: 0.5rem;
@@ -137,6 +141,9 @@
     transform: scale(0.95);
 }
 
+/* FIX: Changed overflow: hidden to overflow: visible so the active card's
+   box-shadow and the translateY transform on .carousel-card are not clipped
+   by the wrapper boundary. The shadow was being invisibly cut off before. */
 .carousel-wrapper {
     position: relative;
     display: flex;
@@ -145,18 +152,21 @@
     width: 100%;
     padding: clamp(1rem, 5vw, 4rem) clamp(1rem, 5vw, 3rem);
     --card-offset: clamp(100px, 18vw, 220px);
-    overflow: hidden;
+    overflow: visible;
 }
 
+/* FIX: Changed min-height to a fixed height so absolutely-positioned
+   .carousel-card children have a real containing block to anchor to.
+   With only min-height, the track collapses to 0 until cards are
+   painted, causing layout shifts and broken absolute positioning. */
 .carousel-track {
     position: relative;
     width: 100%;
-    min-height: clamp(200px, 35vw, 340px);
+    height: clamp(200px, 35vw, 340px);
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 .carousel-card {
     position: absolute;
@@ -203,8 +213,14 @@
     margin: 0 auto;
 }
 
+/* FIX: Added top: 50% + transform to vertically center the buttons
+   relative to .carousel-wrapper regardless of .carousel-track's height.
+   Previously the buttons relied purely on the flex parent to center
+   them, which broke when the track grew taller than the button height. */
 .carousel-btn {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     font-size: clamp(1.2rem, 4vw, 2.5rem);
@@ -212,7 +228,6 @@
     cursor: pointer;
     z-index: 10;
     padding: 0.25rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
