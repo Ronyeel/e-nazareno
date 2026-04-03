@@ -1,9 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import NavBar from './components/navBar';
 import HomePage from './pages/homePage';
-import MgaKwento from './pages/mgaKwento';   // ← uncommented & renamed
+import MgaKuwento from './pages/mgaKuwento';
 import Footer from './components/footer';
+import BookModal from './components/book-modal'; // ← add this
 import './App.css';
+import TungkolSa from './pages/tungkolSa';
 
 function App() {
   return (
@@ -14,16 +16,17 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/mga-kwento" element={<MgaKwento />} />  {/* ← uncommented */}
-          {/* <Route path="/kasaysayan" element={<History />} /> */}
-          {/* <Route path="/tungkol-sa" element={<AboutUs />} /> */}
+          <Route path="/"            element={<HomePage />} />
+          <Route path="/mga-kuwento" element={<MgaKuwento />} />
+          <Route path="/tungkol-sa" element={<TungkolSa />} />
         </Routes>
       </main>
 
       <footer>
         <Footer />
       </footer>
+
+      <BookModal />
     </>
   );
 }

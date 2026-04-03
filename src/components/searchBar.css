@@ -1,14 +1,14 @@
-
 .search-bar {
   display: flex;
   align-items: center;
   align-self: center;
   gap: clamp(0.3rem, 0.8vw, 0.6rem);
-  padding: clamp(0.3rem, 0.2v);
+  padding: clamp(0.3rem, 0.5vw, 0.6rem);
   max-width: 100%;
   box-sizing: border-box;
+  position: relative;
+  z-index: 2;
 }
-
 
 .search-bar-icon,
 .search-bar-icon-btn {
@@ -32,7 +32,7 @@
 }
 
 .search-bar-input {
-  flex: 1; 
+  flex: 1;
   background: transparent;
   border: none;
   outline: none;
@@ -40,14 +40,207 @@
   font-family: 'Inknut Antiqua', serif;
   caret-color: #ffffff;
   min-width: 0;
-
   font-size: clamp(0.8rem, 1vw, 1rem);
 }
-
 
 .search-bar-input::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
+
+/* ── Wrapper ── */
+.wrapper {
+  position: relative;
+  width: 100%;
+  z-index: 100;
+}
+
+/* ── Dropdown ── */
+.srch-container-ls {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+
+  /* Glass + deep crimson tint matching the nav */
+  background: linear-gradient(
+    160deg,
+    rgba(255, 255, 255, 0.97) 0%,
+    rgba(245, 245, 245, 0.99) 100%
+  );
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+
+  /* Gold top border — the signature detail */
+  border-top: 1px solid rgba(200, 127, 29, 0.7);
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0 0 clamp(8px, 1.2vw, 14px) clamp(8px, 1.2vw, 14px);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 2px 8px rgba(200, 127, 29, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  padding: clamp(0.5rem, 1.5vw, 0.9rem) clamp(0.6rem, 2vw, 1.1rem);
+  gap: 0;
+
+  max-height: 60vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 127, 29, 0.4) transparent;
+
+  /* Slide-down entrance */
+  animation: dropdownReveal 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform-origin: top center;
+}
+
+.srch-container-ls::-webkit-scrollbar {
+  width: 3px;
+}
+.srch-container-ls::-webkit-scrollbar-thumb {
+  background: rgba(200, 127, 29, 0.45);
+  border-radius: 99px;
+}
+
+@keyframes dropdownReveal {
+  from {
+    opacity: 0;
+    transform: scaleY(0.92) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+/* ── Sort Row ── */
+.sort-setting {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: clamp(0.35rem, 0.8vw, 0.5rem);
+  margin-bottom: clamp(0.25rem, 0.6vw, 0.4rem);
+  border-bottom: 1px solid rgba(200, 127, 29, 0.25);
+}
+
+.sort-setting button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.sort-setting button:hover {
+  background: rgba(200, 127, 29, 0.15);
+}
+
+.sort-setting button svg {
+  fill: rgba(200, 127, 29, 0.85);
+  width: clamp(1rem, 2vw, 1.4rem);
+  height: clamp(1rem, 2vw, 1.4rem);
+  transition: fill 0.2s ease;
+}
+
+.sort-setting button:hover svg {
+  fill: #c87f1d;
+}
+
+#sort-text {
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+  color: rgba(200, 127, 29, 0.75);
+  font-family: 'Inknut Antiqua', serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── List Items ── */
+.list-item {
+  position: relative;
+  padding: clamp(0.45rem, 1vw, 0.65rem) clamp(0.5rem, 1.5vw, 0.8rem);
+  border-radius: clamp(4px, 0.5vw, 7px);
+  font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+  font-family: 'Inknut Antiqua', serif;
+  color: rgba(30, 20, 10, 0.88);
+  cursor: pointer;
+  overflow: hidden;
+  transition: color 0.2s ease;
+
+  /* Staggered fade-in for each item */
+  opacity: 0;
+  animation: itemFadeIn 0.3s ease forwards;
+}
+
+.list-item:nth-child(1)  { animation-delay: 0.04s; }
+.list-item:nth-child(2)  { animation-delay: 0.08s; }
+.list-item:nth-child(3)  { animation-delay: 0.12s; }
+.list-item:nth-child(4)  { animation-delay: 0.16s; }
+.list-item:nth-child(5)  { animation-delay: 0.20s; }
+.list-item:nth-child(6)  { animation-delay: 0.24s; }
+.list-item:nth-child(7)  { animation-delay: 0.28s; }
+.list-item:nth-child(8)  { animation-delay: 0.30s; }
+.list-item:nth-child(n+9) { animation-delay: 0.32s; }
+
+@keyframes itemFadeIn {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* Shimmer sweep on hover */
+.list-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(200, 127, 29, 0.08) 50%,
+    transparent 80%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.4s ease;
+  border-radius: inherit;
+}
+
+.list-item:hover::before {
+  transform: translateX(100%);
+}
+
+.list-item:hover {
+  color: #1a1008;
+  background: rgba(200, 127, 29, 0.1);
+}
+
+/* Left gold tick on hover */
+.list-item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 2px;
+  background: #c87f1d;
+  border-radius: 99px;
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.list-item:hover::after {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* ── Mobile ── */
 @media (max-width: 640px) {
   .hero-search {
     display: none;

@@ -2,16 +2,17 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import SearchBar from '../components/searchBar';
 import books from '../data/books.json';
+import { useBookModal } from '../components/book-modal-context'; // adjust path as needed
 import './homePage.css';
 import './featured.css';
 
 function BookCard({ book, featured }) {
-  const navigate = useNavigate();
+  const { openModal } = useBookModal();
 
   return (
     <div
       className={`book-card ${featured ? 'featured-card' : ''}`}
-      onClick={() => navigate(`/book/${book.id}`)}
+      onClick={() => openModal(book)}           // ← was navigate
     >
       <div className="book-cover">
         {book.cover ? (
@@ -22,9 +23,7 @@ function BookCard({ book, featured }) {
           />
         ) : (
           <div className="book-cover-placeholder">
-            <span className="book-cover-initials">
-              {book.title.charAt(0)}
-            </span>
+            <span className="book-cover-initials">{book.title.charAt(0)}</span>
           </div>
         )}
       </div>
@@ -39,7 +38,7 @@ function BookCard({ book, featured }) {
 }
 
 function Carousel() {
-  const navigate = useNavigate();
+  const { openModal } = useBookModal();
   const [active, setActive] = useState(0);
   const autoPlayRef = useRef(null);
   const resumeTimerRef = useRef(null);
@@ -54,9 +53,7 @@ function Carousel() {
   const pauseAndResume = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(() => {
-      startAutoPlay();
-    }, 10000);
+    resumeTimerRef.current = setTimeout(() => startAutoPlay(), 10000);
   }, [startAutoPlay]);
 
   useEffect(() => {
@@ -67,19 +64,12 @@ function Carousel() {
     };
   }, [startAutoPlay]);
 
-  const prev = () => {
-    pauseAndResume();
-    setActive(i => (i - 1 + books.length) % books.length);
-  };
-
-  const next = () => {
-    pauseAndResume();
-    setActive(i => (i + 1) % books.length);
-  };
+  const prev = () => { pauseAndResume(); setActive(i => (i - 1 + books.length) % books.length); };
+  const next = () => { pauseAndResume(); setActive(i => (i + 1) % books.length); };
 
   const handleCardClick = (index, isActive) => {
     if (isActive) {
-      navigate(`/book/${books[index].id}`);
+      openModal(books[index]);               // ← was navigate
     } else {
       pauseAndResume();
       setActive(index);
@@ -88,7 +78,7 @@ function Carousel() {
 
   const getPos = (index) => {
     let diff = index - active;
-    if (diff > books.length / 2) diff -= books.length;
+    if (diff >  books.length / 2) diff -= books.length;
     if (diff < -books.length / 2) diff += books.length;
     return diff;
   };
@@ -125,9 +115,7 @@ function Carousel() {
                   />
                 ) : (
                   <div className="carousel-cover-placeholder">
-                    <span className="carousel-cover-initials">
-                      {book.title.charAt(0)}
-                    </span>
+                    <span className="carousel-cover-initials">{book.title.charAt(0)}</span>
                   </div>
                 )}
               </div>
@@ -153,22 +141,17 @@ function HomePage() {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero-inner">
-
           <h1 className="hero-title">E-NAZARENO</h1>
-
           <img src="/hero-banner.png" alt="Main focus" className="hero-main-img" />
-
           <div className="hero-content">
             <p>
               Kalipunan ng mga <strong>KUWENTO</strong> sa likod ng <strong>DEBOSYON</strong>
             </p>
             <button className="hero-btn">Simulan ang Pagbabasa</button>
           </div>
-
           <div className="hero-search">
             <SearchBar />
           </div>
-
         </div>
       </section>
 

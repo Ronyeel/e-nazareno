@@ -1,12 +1,11 @@
-
 .stories-page {
     background-color: #fff;
     padding: clamp(1rem, 5vw, 5rem) clamp(1rem, 4vw, 2.5rem);
     color: #000;
     overflow-x: hidden;
     box-sizing: border-box;
-    max-width: 1280px;  
-    margin: 0 auto;      
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .section-title {
@@ -45,19 +44,19 @@
 
 .featured-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(clamp(150px, 80vw, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: clamp(0.75rem, 2vw, 1.5rem);
     min-width: 0;
 }
 
 .featured-card {
-    display:flex;
+    display: flex;
     align-items: center;
     gap: clamp(0.5rem, 1.5vw, 0.875rem);
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: clamp(0.5rem, 1.5vw, 1rem);
+    padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.5rem, 1.5vw, 1rem) clamp(2.5rem, 5vw, 3rem);
     cursor: pointer;
     position: relative;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
@@ -78,7 +77,6 @@
     flex-shrink: 0;
     overflow: hidden;
 }
-
 
 .book-info {
     display: flex;
@@ -113,7 +111,6 @@
     text-overflow: ellipsis;
 }
 
-
 .book-arrow {
     position: absolute;
     bottom: 0.5rem;
@@ -145,18 +142,17 @@
     width: 100%;
     padding: clamp(1rem, 5vw, 4rem) clamp(1rem, 5vw, 3rem);
     --card-offset: clamp(100px, 18vw, 220px);
-    overflow: hidden;
+    overflow: visible;
 }
 
 .carousel-track {
     position: relative;
     width: 100%;
-    min-height: clamp(200px, 35vw, 340px);
+    height: clamp(200px, 35vw, 340px);
     display: flex;
     align-items: center;
     justify-content: center;
 }
-
 
 .carousel-card {
     position: absolute;
@@ -205,6 +201,8 @@
 
 .carousel-btn {
     position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     background: none;
     border: none;
     font-size: clamp(1.2rem, 4vw, 2.5rem);
@@ -212,7 +210,6 @@
     cursor: pointer;
     z-index: 10;
     padding: 0.25rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -221,3 +218,33 @@
 
 .carousel-btn.left  { left: 0; }
 .carousel-btn.right { right: 0; }
+
+/* ── Scroll animations ── */
+
+/* base hidden state — applied via JS */
+.scroll-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.scroll-hidden.scroll-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* stagger delay for grid cards */
+.scroll-hidden:nth-child(2) { transition-delay: 0.08s; }
+.scroll-hidden:nth-child(3) { transition-delay: 0.16s; }
+.scroll-hidden:nth-child(4) { transition-delay: 0.24s; }
+.scroll-hidden:nth-child(5) { transition-delay: 0.32s; }
+.scroll-hidden:nth-child(6) { transition-delay: 0.40s; }
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-hidden {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}

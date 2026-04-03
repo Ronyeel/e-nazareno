@@ -20,11 +20,25 @@ function NavBar() {
     if (searchOpen) setSearchOpen(false);
   };
 
+  const handleNavLinkClick = () => {
+    setIsOpen(false);
+  };
+
   return (
     <div className="nav-wrapper">
 
-      {/* 1. Search — hidden on homepage desktop, always shown on mobile */}
-      <div className={`nav-search${searchOpen ? ' expanded' : ''}${isHome ? ' desktop-hidden' : ''}`}>
+      <NavLink to="/" className="nav-logo" aria-label="Home">
+        <img src="/logo-final.png" alt="Logo" className="nav-logo-img" />
+        <h1>E-Nazareno</h1>
+      </NavLink>
+
+      <div
+        className={[
+          'nav-search',
+          searchOpen ? 'expanded' : '',
+          isHome ? 'desktop-hidden' : '',
+        ].filter(Boolean).join(' ')}
+      >
         <SearchBar
           expandable={true}
           expanded={searchOpen}
@@ -32,15 +46,17 @@ function NavBar() {
         />
       </div>
 
-      {/* 2. Nav links — center */}
-      <ul className={`nav-links${isOpen ? ' open' : ''}${searchOpen ? ' hidden' : ''}`}>
-        <li><NavLink to="/" end>Home</NavLink></li>
-        <li><NavLink to="/mga-kwento">Mga Kwento</NavLink></li>  {/* ← just a NavLink */}
-        <li><NavLink to="/kasaysayan">Kasaysayan</NavLink></li>
-        <li><NavLink to="/tungkol-sa">Tungkol Sa</NavLink></li>
+      <ul className={[
+        'nav-links',
+        isOpen    ? 'open'   : '',
+        searchOpen ? 'hidden' : '',
+      ].filter(Boolean).join(' ')}>
+        <li><NavLink to="/" onClick={handleNavLinkClick}>Home</NavLink></li>
+        <li><NavLink to="/mga-kuwento" onClick={handleNavLinkClick}>Mga Kuwento</NavLink></li>
+        <li><NavLink to="/kasaysayan" onClick={handleNavLinkClick}>Kasaysayan</NavLink></li>
+        <li><NavLink to="/tungkol-sa" onClick={handleNavLinkClick}>Tungkol Sa</NavLink></li>
       </ul>
 
-      {/* 3. Hamburger — rightmost */}
       <button
         className={`nav-toggle${isOpen ? ' open' : ''}`}
         aria-label="Toggle navigation"

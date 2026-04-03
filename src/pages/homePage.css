@@ -1,5 +1,6 @@
 .hero {
   position: relative;
+  z-index: 1;
   background:
     url('/devotees.png') no-repeat center center / cover,
     linear-gradient(180deg, #540317, #560116, #6f5f0b);
@@ -10,7 +11,7 @@
   justify-content: center;
   align-items: center;
   color: var(--default-text-color);
-  overflow: hidden;
+ /* overflow: hidden;*/
   box-sizing: border-box;
   isolation: isolate;
 }
@@ -137,4 +138,47 @@
 
 .hero-search .search-bar-input::placeholder {
   color: rgba(255, 255, 255, 0.7);
+}
+@keyframes titleSlam {
+  from {
+    opacity: 0;
+    transform: translateY(-30px) scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes imageRise {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes fadeUpCentered {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
