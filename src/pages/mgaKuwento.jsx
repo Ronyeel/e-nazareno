@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom'; // ← add this
+import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef, useCallback } from 'react';
 import books from '../data/books.json';
 import { useBookModal } from '../components/book-modal-context';
@@ -6,17 +6,31 @@ import './mgaKuwento.css';
 
 function MgaKuwento() {
   const { openModal } = useBookModal();
-  const navigate = useNavigate(); // ← add this
+  const navigate = useNavigate();
   const [active, setActive] = useState(0);
+  const [transitioning, setTransitioning] = useState(false); // ✅ fade state
   const autoPlayRef = useRef(null);
   const resumeTimerRef = useRef(null);
+
+  // ✅ smooth transition wrapper — fades out, swaps, fades in
+  const goTo = useCallback((nextIndex) => {
+    setTransitioning(true);
+    setTimeout(() => {
+      setActive(nextIndex);
+      setTransitioning(false);
+    }, 350); // matches CSS transition duration
+  }, []);
 
   const startAutoPlay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
     autoPlayRef.current = setInterval(() => {
-      setActive(i => (i + 1) % books.length);
+      setActive(i => {
+        const next = (i + 1) % books.length;
+        goTo(next);
+        return i; // actual update happens inside goTo
+      });
     }, 3000);
-  }, []);
+  }, [goTo]);
 
   const pauseAndResume = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -32,11 +46,23 @@ function MgaKuwento() {
     };
   }, [startAutoPlay]);
 
-  const prev = () => { pauseAndResume(); setActive(i => (i - 1 + books.length) % books.length); };
-  const next = () => { pauseAndResume(); setActive(i => (i + 1) % books.length); };
-  const goTo = (i) => { pauseAndResume(); setActive(i); };
+  const prev = () => {
+    pauseAndResume();
+    goTo((active - 1 + books.length) % books.length);
+  };
+
+  const next = () => {
+    pauseAndResume();
+    goTo((active + 1) % books.length);
+  };
+
+  const handleDot = (i) => {
+    pauseAndResume();
+    goTo(i);
+  };
 
   const book = books[active];
+  const tc = transitioning ? 'is-transitioning' : '';
 
   return (
     <div className="kuwento-page">
@@ -47,12 +73,12 @@ function MgaKuwento() {
           <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
-          <div className="kuwento-card-text">
+          {/* ✅ transitioning class triggers CSS fade */}
+          <div className={`kuwento-card-text ${tc}`}>
             <h1 className="kuwento-card-title">{book.title}</h1>
             <p className="kuwento-card-excerpt">
               "{book.title} — isang kwento ng pananampalataya ni {book.author}."
             </p>
-            {/* ← navigates directly, skips modal */}
             <button
               className="kuwento-read-btn"
               onClick={() => navigate(`/book/${book.id}`)}
@@ -66,13 +92,14 @@ function MgaKuwento() {
               <button
                 key={i}
                 className={`kuwento-dot ${i === active ? 'active' : ''}`}
-                onClick={() => goTo(i)}
+                onClick={() => handleDot(i)}
                 aria-label={`Go to slide ${i + 1}`}
               />
             ))}
           </div>
 
-          <div className="kuwento-card-cover">
+          {/* ✅ cover fades too */}
+          <div className={`kuwento-card-cover ${tc}`}>
             {book.cover ? (
               <img src={book.cover} alt={book.title} />
             ) : (
@@ -92,7 +119,6 @@ function MgaKuwento() {
         </div>
       </section>
 
-      {/* grid still opens modal for preview before committing to read */}
       <section className="kuwento-grid-section">
         <div className="kuwento-grid-inner">
           <h2 className="kuwento-grid-heading">Lahat ng Kuwento</h2>

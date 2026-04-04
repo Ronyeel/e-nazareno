@@ -14,9 +14,20 @@ export default function BookModal() {
     return () => window.removeEventListener('keydown', onKey);
   }, [book, closeModal]);
 
+  // ✅ Scrollbar-shift fix
   useEffect(() => {
-    document.body.style.overflow = book ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
+    if (book) {
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.documentElement.style.setProperty('--scrollbar-width', `${scrollbarWidth}px`);
+      document.body.classList.add('bm-open');
+    } else {
+      document.body.classList.remove('bm-open');
+      document.documentElement.style.removeProperty('--scrollbar-width');
+    }
+    return () => {
+      document.body.classList.remove('bm-open');
+      document.documentElement.style.removeProperty('--scrollbar-width');
+    };
   }, [book]);
 
   if (!book) return null;

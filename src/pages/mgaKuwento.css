@@ -37,6 +37,7 @@
   padding: clamp(0.75rem, 3vw, 3rem);
   padding-bottom: clamp(3rem, 6vh, 4rem);
   color: #1a1a1a;
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
 .kuwento-card-title {
@@ -87,6 +88,21 @@
   background: #f0e8d8;
   border-left: 2px solid #c8a96e;
   border-radius: 0 14px 14px 0;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* ── Fade transition state ── */
+.kuwento-card-text.is-transitioning,
+.kuwento-card-cover.is-transitioning {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* ── Floating animation keyframes ── */
+@keyframes kuwento-float {
+  0%   { transform: perspective(700px) rotateY(18deg) translateY(0px); }
+  50%  { transform: perspective(700px) rotateY(18deg) translateY(-8px); }
+  100% { transform: perspective(700px) rotateY(18deg) translateY(0px); }
 }
 
 /* ── Hero Cover 3D Book Effect ── */
@@ -98,17 +114,25 @@
   border: none;
   object-fit: cover;
   display: block;
-  transform: perspective(700px) rotateY(18deg);
   transform-style: preserve-3d;
-  transition: transform 0.35s ease;
+
+  /* Floating animation (default idle state) */
+  animation: kuwento-float 4s ease-in-out infinite;
+
+  /* Richer drop shadow: spine layers + deep cast shadow */
   box-shadow:
     -6px 6px 0px #b89050,
     -9px 9px 0px #a07840,
-    -12px 14px 18px rgba(0, 0, 0, 0.45);
+    -12px 14px 0px #8a622e,
+    -14px 18px 28px rgba(0, 0, 0, 0.55),
+    0 24px 40px rgba(0, 0, 0, 0.30),
+    0 6px 12px rgba(0, 0, 0, 0.20);
 }
 
+/* Pause float + flatten on hover */
 .kuwento-card-cover:hover img,
 .kuwento-card-cover:hover .kuwento-cover-placeholder {
+  animation-play-state: paused;
   transform: perspective(700px) rotateY(6deg) translateY(-4px);
 }
 
@@ -232,7 +256,14 @@
   min-width: 0;
 }
 
-/* ── Grid Item — 3D tilt only on the cover, text stays flat ── */
+/* ── Floating animation for grid books ── */
+@keyframes kuwento-float-grid {
+  0%   { transform: perspective(600px) rotateY(15deg) translateY(0px); }
+  50%  { transform: perspective(600px) rotateY(15deg) translateY(-6px); }
+  100% { transform: perspective(600px) rotateY(15deg) translateY(0px); }
+}
+
+/* ── Grid Item ── */
 .kuwento-grid-item {
   position: relative;
   display: flex;
@@ -249,24 +280,39 @@
   transform: none;
 }
 
-/* 3D tilt lives on the cover only */
 .kuwento-grid-cover {
   width: 100%;
   aspect-ratio: 3 / 4;
   border-radius: 6px 2px 2px 6px;
   overflow: hidden;
   border: none;
-  transform: perspective(600px) rotateY(15deg);
   transform-style: preserve-3d;
-  transition: transform 0.3s ease;
+
+  /* Floating animation — each item staggers via nth-child */
+  animation: kuwento-float-grid 4s ease-in-out infinite;
+
+  /* Richer drop shadow */
   box-shadow:
     -5px 5px 0px #4e4e4d,
     -8px 8px 0px #51504e,
-    -10px 12px 14px rgba(0, 0, 0, 0.38);
+    -10px 12px 0px #3a3938,
+    -12px 16px 20px rgba(0, 0, 0, 0.50),
+    0 16px 28px rgba(0, 0, 0, 0.25),
+    0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+/* Stagger the float so grid books don't all move in sync */
+.kuwento-grid-item:nth-child(1) .kuwento-grid-cover { animation-delay: 0s; }
+.kuwento-grid-item:nth-child(2) .kuwento-grid-cover { animation-delay: 0.4s; }
+.kuwento-grid-item:nth-child(3) .kuwento-grid-cover { animation-delay: 0.8s; }
+.kuwento-grid-item:nth-child(4) .kuwento-grid-cover { animation-delay: 1.2s; }
+.kuwento-grid-item:nth-child(5) .kuwento-grid-cover { animation-delay: 1.6s; }
+.kuwento-grid-item:nth-child(6) .kuwento-grid-cover { animation-delay: 2.0s; }
+.kuwento-grid-item:nth-child(7) .kuwento-grid-cover { animation-delay: 2.4s; }
+.kuwento-grid-item:nth-child(8) .kuwento-grid-cover { animation-delay: 2.8s; }
+
 .kuwento-grid-item:hover .kuwento-grid-cover {
-  transform: perspective(600px) rotateY(5deg) translateY(-6px);
+  transform: perspective(600px) rotateY(5deg);
 }
 
 .kuwento-grid-cover img {
@@ -288,7 +334,6 @@
   color: #555;
 }
 
-/* Title and author sit flat, centered, normal weight */
 .kuwento-grid-title {
   font-family: 'Montserrat', serif;
   font-size: clamp(0.6rem, 1.2vw, 0.85rem);
@@ -311,4 +356,31 @@
   opacity: 0.75;
   text-align: center;
   transform: none;
+}
+
+/* ── Scroll animations ── */
+.scroll-hidden {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.scroll-hidden.scroll-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hidden {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* Respect user's motion preference — kill the float */
+  .kuwento-card-cover img,
+  .kuwento-cover-placeholder,
+  .kuwento-grid-cover {
+    animation: none;
+  }
 }

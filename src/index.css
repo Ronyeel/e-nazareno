@@ -35,4 +35,5 @@ main {
 }
 html {
     scroll-snap-type: smooth;
+    scrollbar-gutter: stable;
 }

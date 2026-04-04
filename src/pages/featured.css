@@ -42,9 +42,6 @@
     -webkit-overflow-scrolling: touch;
 }
 
-/* FIX: Changed minmax min from clamp(150px, 80vw, 240px) to a fixed 200px.
-   80vw on mobile = nearly full screen width, forcing a single column and
-   making the grid useless. 200px gives a sensible responsive grid. */
 .featured-list {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -59,10 +56,6 @@
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
-    /* FIX: Added extra bottom padding so the absolutely-positioned
-       .book-arrow (bottom: 0.5rem, ~34px tall) doesn't overlap the
-       book text. Without this, the arrow sits on top of .book-chapter
-       on any card taller than its minimum. */
     padding: clamp(0.5rem, 1.5vw, 1rem) clamp(0.5rem, 1.5vw, 1rem) clamp(2.5rem, 5vw, 3rem);
     cursor: pointer;
     position: relative;
@@ -141,9 +134,6 @@
     transform: scale(0.95);
 }
 
-/* FIX: Changed overflow: hidden to overflow: visible so the active card's
-   box-shadow and the translateY transform on .carousel-card are not clipped
-   by the wrapper boundary. The shadow was being invisibly cut off before. */
 .carousel-wrapper {
     position: relative;
     display: flex;
@@ -155,10 +145,6 @@
     overflow: visible;
 }
 
-/* FIX: Changed min-height to a fixed height so absolutely-positioned
-   .carousel-card children have a real containing block to anchor to.
-   With only min-height, the track collapses to 0 until cards are
-   painted, causing layout shifts and broken absolute positioning. */
 .carousel-track {
     position: relative;
     width: 100%;
@@ -213,10 +199,6 @@
     margin: 0 auto;
 }
 
-/* FIX: Added top: 50% + transform to vertically center the buttons
-   relative to .carousel-wrapper regardless of .carousel-track's height.
-   Previously the buttons relied purely on the flex parent to center
-   them, which broke when the track grew taller than the button height. */
 .carousel-btn {
     position: absolute;
     top: 50%;
@@ -236,3 +218,33 @@
 
 .carousel-btn.left  { left: 0; }
 .carousel-btn.right { right: 0; }
+
+/* ── Scroll animations ── */
+
+/* base hidden state — applied via JS */
+.scroll-hidden {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.55s ease, transform 0.55s ease;
+}
+
+.scroll-hidden.scroll-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* stagger delay for grid cards */
+.scroll-hidden:nth-child(2) { transition-delay: 0.08s; }
+.scroll-hidden:nth-child(3) { transition-delay: 0.16s; }
+.scroll-hidden:nth-child(4) { transition-delay: 0.24s; }
+.scroll-hidden:nth-child(5) { transition-delay: 0.32s; }
+.scroll-hidden:nth-child(6) { transition-delay: 0.40s; }
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .scroll-hidden {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
