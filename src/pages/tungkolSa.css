@@ -31,6 +31,7 @@
   width: 100%;
   aspect-ratio: 10 / 2;
   overflow: hidden;
+
 }
 
 .tungkolSa-banner-img-wrap img {
@@ -40,6 +41,19 @@
   display: block;
   position: relative;
   z-index: 0;
+}
+
+/* ── Cross ── */
+.tungkolSa-cross {
+  position: absolute;
+  right: clamp(-40px, -3vw, -10px);
+  top: 57%;
+  transform: translateY(-50%);
+  height: clamp(350px, 15vw, 210px);
+  width: auto;
+  z-index: 10;
+  pointer-events: none;
+  filter: drop-shadow(-5px 4px 8px rgba(0, 0, 0, 0.4));
 }
 
 .tungkolSa-banner-overlay {
@@ -54,15 +68,15 @@
 }
 
 @keyframes fontLoop {
-  0%,   11% { font-family: 'Montserrat',          sans-serif; letter-spacing: 0.04em; }
-  12%,  23% { font-family: 'Gideon Roman',         serif;      letter-spacing: 0.08em; }
-  24%,  35% { font-family: 'Inknut Antiqua',        serif;      letter-spacing: 0.04em; }
-  36%,  47% { font-family: 'Lora',                 serif;      letter-spacing: 0.06em; }
-  48%,  59% { font-family: 'Playfair Display',      serif;      letter-spacing: 0.05em; }
-  60%,  71% { font-family: 'Cinzel',               serif;      letter-spacing: 0.10em; }
-  72%,  83% { font-family: 'IM Fell English',       serif;      letter-spacing: 0.03em; }
-  84%,  99% { font-family: 'Cormorant Garamond',    serif;      letter-spacing: 0.07em; }
-  100%      { font-family: 'Montserrat',            sans-serif; letter-spacing: 0.04em; }
+  0%,   11% { font-family: 'Montserrat',        sans-serif; letter-spacing: 0.04em; }
+  12%,  23% { font-family: 'Gideon Roman',       serif;      letter-spacing: 0.08em; }
+  24%,  35% { font-family: 'Inknut Antiqua',     serif;      letter-spacing: 0.04em; }
+  36%,  47% { font-family: 'Lora',               serif;      letter-spacing: 0.06em; }
+  48%,  59% { font-family: 'Playfair Display',   serif;      letter-spacing: 0.05em; }
+  60%,  71% { font-family: 'Cinzel',             serif;      letter-spacing: 0.10em; }
+  72%,  83% { font-family: 'IM Fell English',    serif;      letter-spacing: 0.03em; }
+  84%,  99% { font-family: 'Cormorant Garamond', serif;      letter-spacing: 0.07em; }
+  100%      { font-family: 'Montserrat',         sans-serif; letter-spacing: 0.04em; }
 }
 
 .tungkolSa-banner-overlay h1 {
@@ -111,27 +125,34 @@
   font-style: normal;
   font-weight: 600;
 }
+/* ── Body wrap — text in flow, image follows naturally ── */
+.tungkolSa-body-wrap {
+  position: relative;
+  width: 100%;
+  margin: 0 0 var(--space-md);
+  overflow: visible;
+}
 
+/* Text is back in normal flow — pushes the image down */
 .tungkolSa-intro-body {
+  position: relative;
+  z-index: 2;
   font-size: var(--text-sm);
-  color: #555;
+  color: #333;
   line-height: 1.75;
   margin: 0;
+  padding: var(--space-sm);
   text-align: justify;
   hyphens: auto;
 }
 
-/* ── Simbahan image ── */
-.tungkolSa-simbahan-wrap {
-  margin-top: var(--space-xs);
+/* Image sits below the text naturally */
+.tungkolSa-body-img {
   width: 100%;
-}
-
-.tungkolSa-simbahan-img {
-  width: 100%;
-  max-width: 680px;
   display: block;
-  border-radius: 6px;
+  margin-top: -6rem;
+  object-fit: cover;
+  object-position: center top;
 }
 
 /* ── About background with overlay text ── */
@@ -227,8 +248,7 @@
 
 .tungkolSa-intro-title,
 .tungkolSa-intro-sub,
-.tungkolSa-intro-body,
-.tungkolSa-simbahan-wrap,
+.tungkolSa-body-wrap,
 .tungkolSa-about-wrap {
   opacity: 0;
   will-change: opacity, transform;
@@ -248,25 +268,17 @@
     transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
 }
 
-.tungkolSa-intro-body {
-  transform: translateY(18px);
+.tungkolSa-body-wrap {
+  transform: scale(0.96) translateY(24px);
+  filter: blur(4px) brightness(0.85);
   transition:
-    opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.24s,
-    transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.24s;
-}
-
-.tungkolSa-simbahan-wrap {
-  transform: scale(0.88) translateY(48px);
-  filter: blur(6px) brightness(0.7);
-  transition:
-    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s,
-    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s,
-    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s;
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+    filter 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
 }
 
 .tungkolSa-about-wrap {
   transform: translateY(32px);
-  /* filter starts neutral — glow added on .is-visible */
   filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0));
   transition:
     opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
@@ -276,22 +288,99 @@
 
 /* ── Visible states ── */
 
-/* title, sub, body, simbahan — safe to blank filter */
 .tungkolSa-intro-title.is-visible,
 .tungkolSa-intro-sub.is-visible,
-.tungkolSa-intro-body.is-visible,
-.tungkolSa-simbahan-wrap.is-visible {
+.tungkolSa-body-wrap.is-visible {
   opacity: 1;
   transform: none;
   filter: none;
 }
 
-/* about-wrap — restores glow instead of blanking filter */
 .tungkolSa-about-wrap.is-visible {
   opacity: 1;
   transform: none;
   filter:
-    drop-shadow(0 0 22px rgba(255, 0, 0, 0.4))
-    drop-shadow(0 0 24px rgba(255, 0, 0, 0.2))
-    drop-shadow(0 0 48px rgba(255, 0, 0, 0.1));
+    drop-shadow(0  25px 20px rgba(255, 61, 61, 0.251))
+    drop-shadow(0  25px 14px rgba(172, 27, 27, 0.484))
+    drop-shadow(0  20px 10px rgba(255, 128, 128, 0.534));
+}
+/* ── Smallest (tiny phones) ── */
+@media (max-width: 0px) {
+  .tungkolSa-cross {
+    right: -25px;
+    top:   85%;
+    height: clamp(82px, 22vw, 120px);
+  }
+}
+@media (max-width: 320px) {
+  .tungkolSa-cross {
+    right: -2px;
+    top:   85%;
+    height: clamp(82px, 22vw, 120px);
+  }
+}
+
+/* ── Mobile small ── */
+@media (min-width: 321px) and (max-width: 350px) {
+  .tungkolSa-cross {
+    right: -25px;
+    top: 75%;
+    height: clamp(110px, 24vw, 135px);
+  }
+}
+
+/* ── Mobile ── */
+@media (min-width: 351px) and (max-width: 480px) {
+  .tungkolSa-cross {
+    right: -20px;
+    top: 72%;
+    height: clamp(155px, 26vw, 190px);
+  }
+}
+
+/* ── Tablet ── */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .tungkolSa-cross {
+    right: clamp(-20px, -2vw, -8px);
+    top: 65%;
+    height: clamp(200px, 16vw, 220px);
+  }
+}
+
+
+
+/* ── Smallest (tiny phones) ── */
+@media (max-width: 320px) {
+  .tungkolSa-about-logo {
+    height: clamp(200px, 35vw, 130px);
+    bottom: clamp(-10px, -23vw, -25px);
+    transform: translateX(-15%);
+  }
+}
+
+/* ── Mobile small ── */
+@media (min-width: 321px) and (max-width: 350px) {
+  .tungkolSa-about-logo {
+    height: clamp(200px, 38vw, 150px);
+    bottom: clamp(-20px, -4vw, -8px);
+    transform: translateX(-12%);
+  }
+}
+
+/* ── Mobile ── */
+@media (min-width: 351px) and (max-width: 480px) {
+  .tungkolSa-about-logo {
+    height: clamp(220px, 43vw, 180px);
+    bottom: clamp(-30px, -3.5vw, -10px);
+    transform: translateX(-15%);
+  }
+}
+
+/* ── Tablet ── */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .tungkolSa-about-logo {
+    height: clamp(230px, 28vw, 260px);
+    bottom: clamp(-25px, -3vw, -10px);
+    transform: translateX(clamp(-18%, -2vw, -8%));
+  }
 }

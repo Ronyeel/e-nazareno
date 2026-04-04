@@ -5,7 +5,6 @@ function TungkolSa() {
   const titleRef = useRef(null);
   const subRef   = useRef(null);
   const bodyRef  = useRef(null);
-  const simbRef  = useRef(null);
   const aboutRef = useRef(null);
 
   useEffect(() => {
@@ -13,7 +12,6 @@ function TungkolSa() {
       titleRef.current,
       subRef.current,
       bodyRef.current,
-      simbRef.current,
       aboutRef.current,
     ].filter(Boolean);
 
@@ -22,12 +20,10 @@ function TungkolSa() {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add('is-visible');
-          } else {
-            entry.target.classList.remove('is-visible');
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
     );
 
     targets.forEach((el) => observer.observe(el));
@@ -58,27 +54,30 @@ function TungkolSa() {
           "Isang Digital na <mark>Dambana</mark> ng Pananampalataya"
         </p>
 
-        <p ref={bodyRef} className="tungkolSa-intro-body">
-          Ang E-Nazareno ay isang makabagong digital na espasyo na nagsisilbing dambana
-          ng mga kuwento, kasaysayan, at buhay na pananampalataya ng mga deboto ng Poong
-          Itim na Nazareno sa Bayan ng Labo, Camarines Norte.
-        </p>
-
-        <figure ref={simbRef} className="tungkolSa-simbahan-wrap">
+        {/* ── Body — img gives height, text floats on top ── */}
+        <div ref={bodyRef} className="tungkolSa-body-wrap">
+          <p className="tungkolSa-intro-body">
+            Ang E-Nazareno ay isang makabagong digital na espasyo na nagsisilbing dambana
+            ng mga kuwento, kasaysayan, at buhay na pananampalataya ng mga deboto ng Poong
+            Itim na Nazareno sa Bayan ng Labo, Camarines Norte.
+          </p>
           <img
             src="/simbahan_front.png"
             alt="Harapan ng Simbahan ng Bayan ng Labo"
-            className="tungkolSa-simbahan-img"
+            className="tungkolSa-body-img"
           />
-        </figure>
 
-        {/* ── About — section is the position:relative anchor ── */}
+          <img
+            src="/cross.png"
+            className="tungkolSa-cross"
+          />
+        </div>
+
+        {/* ── About ── */}
         <div className="tungkolSa-about-section">
 
-          {/* Card: overflow:hidden clips bg image and text, NOT the logo */}
           <div ref={aboutRef} className="tungkolSa-about-wrap">
 
-            {/* Separate clip wrapper so only the bg image is clipped */}
             <div className="tungkolSa-about-bg-clip">
               <img
                 src="/about_background.png"
@@ -87,7 +86,6 @@ function TungkolSa() {
               />
             </div>
 
-            {/* Text stays inside the card */}
             <p className="tungkolSa-about-overlay-text">
               <span>
                 Higit sa pagiging isang arkibo, ang platapormang ito ay isang pagsisikap na
@@ -98,7 +96,6 @@ function TungkolSa() {
 
           </div>
 
-          {/* Logo is a sibling of the wrap — escapes overflow:hidden cleanly */}
           <div className="tungkolSa-about-logo">
             <img
               src="/logo-final.png"

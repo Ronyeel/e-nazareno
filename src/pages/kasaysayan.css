@@ -1,0 +1,227 @@
+/* ══════════════════════════════════════════
+   KASAYSAYAN PAGE
+   ══════════════════════════════════════════ */
+
+/* ── Page ── */
+.kasaysayan-page {
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background: #faf8f4;
+}
+
+/* ── Banner ── */
+.kasaysayan-banner {
+  padding-top: var(--header-height, 70px);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.kasaysayan-banner-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 10 / 3;
+  overflow: hidden;
+  margin: 0;
+}
+
+.kasaysayan-banner-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.kasaysayan-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.72) 0%,
+    rgba(0, 0, 0, 0.45) 55%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  display: flex;
+  align-items: center;
+  padding: 0 clamp(1.5rem, 6vw, 5rem);
+}
+
+.kasaysayan-banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.kasaysayan-banner-collection {
+  font-family: 'Lora', 'Georgia', serif;
+  font-style: italic;
+  font-size: clamp(0.75rem, 1.6vw, 1.1rem);
+  color: #e8d5a3;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.kasaysayan-banner-title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: clamp(1.6rem, 5vw, 4.2rem);
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1.05;
+  margin: 0;
+  letter-spacing: 0.01em;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
+}
+
+.kasaysayan-banner-tagline {
+  font-family: 'Lora', 'Georgia', serif;
+  font-style: italic;
+  font-size: clamp(0.7rem, 1.4vw, 1rem);
+  color: #d4b88a;
+  letter-spacing: 0.06em;
+  margin-top: 0.15rem;
+}
+
+/* ── Content wrapper ── */
+.kasaysayan-content {
+  max-width: min(900px, 92%);
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 6vw, 5rem);
+}
+
+/* ── Section heading ── */
+.kasaysayan-heading-wrap {
+  text-align: center;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.kasaysayan-heading {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.15rem, 2.8vw, 1.9rem);
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.35;
+  margin: 0 0 1rem;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kasaysayan-heading.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.kasaysayan-divider {
+  width: 0;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #8b1a1a, transparent);
+  margin: 0 auto;
+  opacity: 0;
+  transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+              opacity 0.5s ease 0.3s;
+}
+
+.kasaysayan-divider.is-visible {
+  width: clamp(80px, 20vw, 200px);
+  opacity: 1;
+}
+
+/* ── Body — alternating paragraphs ── */
+.kasaysayan-body {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+/* ── Each paragraph block ── */
+.kasaysayan-para {
+  opacity: 0;
+  will-change: opacity, transform;
+  transition:
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s);
+}
+
+.kasaysayan-para--left {
+  transform: translateX(-28px);
+  text-align: left;
+  padding-right: clamp(0px, 8vw, 80px);
+}
+
+.kasaysayan-para--right {
+  transform: translateX(28px);
+  text-align: right;
+  padding-left: clamp(0px, 8vw, 80px);
+}
+
+.kasaysayan-para.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.kasaysayan-para p {
+  font-family: 'Lora', Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.85rem, 1.8vw, 1rem);
+  color: #2e2e2e;
+  line-height: 1.85;
+  margin: 0;
+  text-align: justify;
+  hyphens: auto;
+}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════ */
+
+/* ── Tablet ── */
+@media (max-width: 768px) {
+  .kasaysayan-banner-img-wrap {
+    aspect-ratio: 10 / 4;
+  }
+
+  .kasaysayan-para--left {
+    padding-right: clamp(0px, 4vw, 30px);
+  }
+
+  .kasaysayan-para--right {
+    padding-left: clamp(0px, 4vw, 30px);
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .kasaysayan-banner-img-wrap {
+    aspect-ratio: 4 / 3;
+  }
+
+  .kasaysayan-banner-title {
+    font-size: clamp(1.4rem, 8vw, 2rem);
+  }
+
+  /* On mobile, remove the indent offset so text fills the width */
+  .kasaysayan-para--left,
+  .kasaysayan-para--right {
+    padding-left: 0;
+    padding-right: 0;
+    transform: translateY(20px);
+  }
+
+  .kasaysayan-para p {
+    font-size: clamp(0.88rem, 3.5vw, 1rem);
+  }
+}
+
+/* ── Mobile small ── */
+@media (max-width: 350px) {
+  .kasaysayan-heading {
+    font-size: clamp(1rem, 5vw, 1.2rem);
+  }
+
+  .kasaysayan-para p {
+    font-size: 0.88rem;
+    line-height: 1.75;
+  }
+}

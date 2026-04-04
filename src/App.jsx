@@ -8,6 +8,7 @@ import Footer from './components/footer';
 import BookModal from './components/book-modal';
 import './App.css';
 import TungkolSa from './pages/tungkolSa';
+import Kasaysayan from './pages/kasaysayan';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -48,6 +49,7 @@ function App() {
           <Route path="/mga-kuwento" element={<MgaKuwento />} />
           <Route path="/tungkol-sa"  element={<TungkolSa />} />
           <Route path="/book/:id"    element={<OpenBook />} />
+          <Route path="/kasaysayan"   element={<Kasaysayan/>} />
         </Routes>
       </main>
 
