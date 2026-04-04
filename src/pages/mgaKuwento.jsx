@@ -16,8 +16,6 @@ function MgaKuwento() {
   const dotsRef = useRef(null);
   const heldRef = useRef(false);
 
-  // Keep heldRef in sync with held state so pointer handlers always
-  // see the current value without needing held in their dependency arrays.
   useEffect(() => {
     heldRef.current = held;
   }, [held]);
@@ -71,9 +69,6 @@ function MgaKuwento() {
     goTo(i);
   };
 
-  // ── Hold + drag-to-navigate logic ──
-
-  // Returns the dot index whose bounding rect contains clientX, or null.
   const getDotIndexFromPoint = (clientX) => {
     if (!dotsRef.current) return null;
     const dotEls = dotsRef.current.querySelectorAll('.kuwento-dot');
@@ -85,10 +80,7 @@ function MgaKuwento() {
   };
 
   const handleDotPointerDown = (e, i) => {
-    // Capture pointer so pointermove keeps firing even as finger slides
-    // across sibling dots or outside the button's own hit area.
     e.currentTarget.setPointerCapture(e.pointerId);
-
     holdTimerRef.current = setTimeout(() => {
       heldRef.current = true;
       setHeld(true);
@@ -97,12 +89,10 @@ function MgaKuwento() {
     }, 180);
   };
 
-  // Fires while finger/mouse drags across the dot pill.
   const handleDotPointerMove = (e) => {
     if (!heldRef.current) return;
     const idx = getDotIndexFromPoint(e.clientX);
     if (idx !== null) {
-      // Instant (no fade) — scrubbing should feel like a thumb slider.
       setActive(idx);
     }
   };
@@ -110,17 +100,14 @@ function MgaKuwento() {
   const handleDotPointerUp = (e, i) => {
     clearTimeout(holdTimerRef.current);
     if (heldRef.current) {
-      // Releasing a hold — resume autoplay after a short grace period.
       heldRef.current = false;
       setHeld(false);
       resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
     } else {
-      // Quick tap — navigate with transition.
       handleDot(i);
     }
   };
 
-  // Fires when the pointer leaves the entire dots container.
   const handleDotsPointerLeave = () => {
     clearTimeout(holdTimerRef.current);
     if (heldRef.current) {
@@ -142,17 +129,22 @@ function MgaKuwento() {
           <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
-          <div className={`kuwento-card-text ${tc}`}>
-            <h1 className="kuwento-card-title">{book.title}</h1>
-            <p className="kuwento-card-excerpt">
-              "{book.title} — isang kwento ng pananampalataya ni {book.author}."
-            </p>
-            <button
-              className="kuwento-read-btn"
-              onClick={() => navigate(`/book/${book.id}`)}
-            >
-              Simulan ang pagbasa
-            </button>
+          {/* Static wrapper — title never transitions */}
+          <div className="kuwento-card-text">
+            <h1 className="kuwento-card-title">Mga Kuwento</h1>
+
+            {/* Only the dynamic content fades/slides */}
+            <div className={`kuwento-card-dynamic ${tc}`}>
+              <p className="kuwento-card-excerpt">
+                "{book.title} — isang kwento ng pananampalataya ni {book.author}."
+              </p>
+              <button
+                className="kuwento-read-btn"
+                onClick={() => navigate(`/book/${book.id}`)}
+              >
+                Simulan ang pagbasa
+              </button>
+            </div>
           </div>
 
           <div
