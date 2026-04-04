@@ -24,9 +24,6 @@
   border-radius: 16px;
   box-shadow: 0 8px 40px rgba(4, 15, 10, 0.4);
   box-sizing: border-box;
-  touch-action: pan-y; /* allow vertical scroll, intercept horizontal in JS */
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 /* ── Left Text Panel ── */
@@ -200,11 +197,12 @@
   z-index: 10;
   max-width: calc(100% - 4rem);
   transition: padding 0.25s ease, gap 0.25s ease;
-  touch-action: none;
+  touch-action: none; /* prevents scroll hijack on mobile hold */
   user-select: none;
   -webkit-user-select: none;
 }
 
+/* Expand pill on hold — like TikTok */
 .kuwento-dots.is-held {
   padding: 0.35rem 1.25rem;
   gap: 0.6rem;
@@ -228,6 +226,7 @@
   transform: scale(1.25);
 }
 
+/* Dots grow slightly on hold */
 .kuwento-dots.is-held .kuwento-dot {
   width: clamp(8px, 2vw, 14px);
   height: clamp(8px, 2vw, 14px);

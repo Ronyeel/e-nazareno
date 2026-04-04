@@ -94,7 +94,7 @@
 
 .tungkolSa-intro-sub mark {
   background: none;
-  color: #c0392b;
+  color: var(--navigation-text-color);
   font-style: normal;
   font-weight: 600;
 }
