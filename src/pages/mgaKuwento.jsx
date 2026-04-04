@@ -8,17 +8,18 @@ function MgaKuwento() {
   const { openModal } = useBookModal();
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [transitioning, setTransitioning] = useState(false); // ✅ fade state
+  const [transitioning, setTransitioning] = useState(false);
+  const [held, setHeld] = useState(false);
   const autoPlayRef = useRef(null);
   const resumeTimerRef = useRef(null);
+  const holdTimerRef = useRef(null);
 
-  // ✅ smooth transition wrapper — fades out, swaps, fades in
   const goTo = useCallback((nextIndex) => {
     setTransitioning(true);
     setTimeout(() => {
       setActive(nextIndex);
       setTransitioning(false);
-    }, 350); // matches CSS transition duration
+    }, 350);
   }, []);
 
   const startAutoPlay = useCallback(() => {
@@ -27,7 +28,7 @@ function MgaKuwento() {
       setActive(i => {
         const next = (i + 1) % books.length;
         goTo(next);
-        return i; // actual update happens inside goTo
+        return i;
       });
     }, 3000);
   }, [goTo]);
@@ -43,6 +44,7 @@ function MgaKuwento() {
     return () => {
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
     };
   }, [startAutoPlay]);
 
@@ -61,6 +63,36 @@ function MgaKuwento() {
     goTo(i);
   };
 
+  // ── Hold logic ──
+  const handleDotPointerDown = (i) => {
+    // short tap = navigate; long press = hold/pause
+    holdTimerRef.current = setTimeout(() => {
+      setHeld(true);
+      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    }, 180); // 180ms threshold — feels instant on mobile
+  };
+
+  const handleDotPointerUp = (i, wasTap) => {
+    clearTimeout(holdTimerRef.current);
+    if (held) {
+      // releasing a hold — resume autoplay after delay
+      setHeld(false);
+      resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
+    } else {
+      // it was a quick tap — navigate
+      handleDot(i);
+    }
+  };
+
+  const handleDotPointerLeave = () => {
+    clearTimeout(holdTimerRef.current);
+    if (held) {
+      setHeld(false);
+      resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
+    }
+  };
+
   const book = books[active];
   const tc = transitioning ? 'is-transitioning' : '';
 
@@ -73,7 +105,6 @@ function MgaKuwento() {
           <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
-          {/* ✅ transitioning class triggers CSS fade */}
           <div className={`kuwento-card-text ${tc}`}>
             <h1 className="kuwento-card-title">{book.title}</h1>
             <p className="kuwento-card-excerpt">
@@ -87,18 +118,19 @@ function MgaKuwento() {
             </button>
           </div>
 
-          <div className="kuwento-dots">
+          <div className={`kuwento-dots ${held ? 'is-held' : ''}`}>
             {books.map((_, i) => (
               <button
                 key={i}
                 className={`kuwento-dot ${i === active ? 'active' : ''}`}
-                onClick={() => handleDot(i)}
                 aria-label={`Go to slide ${i + 1}`}
+                onPointerDown={() => handleDotPointerDown(i)}
+                onPointerUp={() => handleDotPointerUp(i)}
+                onPointerLeave={() => handleDotPointerLeave()}
               />
             ))}
           </div>
 
-          {/* ✅ cover fades too */}
           <div className={`kuwento-card-cover ${tc}`}>
             {book.cover ? (
               <img src={book.cover} alt={book.title} />
