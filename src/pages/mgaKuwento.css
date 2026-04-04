@@ -246,7 +246,7 @@
 }
 
 .kuwento-grid-item:hover {
-  transform: translateY(-6px);
+  transform: none;
 }
 
 /* 3D tilt lives on the cover only */
@@ -266,7 +266,7 @@
 }
 
 .kuwento-grid-item:hover .kuwento-grid-cover {
-  transform: perspective(600px) rotateY(5deg);
+  transform: perspective(600px) rotateY(5deg) translateY(-6px);
 }
 
 .kuwento-grid-cover img {
@@ -290,9 +290,9 @@
 
 /* Title and author sit flat, centered, normal weight */
 .kuwento-grid-title {
-  font-family: 'Inknut Antiqua', serif;
+  font-family: 'Montserrat', serif;
   font-size: clamp(0.6rem, 1.2vw, 0.85rem);
-  font-weight: 400;
+  font-weight: 800;
   color: #1a1a1a;
   margin: 0.5rem 0 0;
   line-height: 1.3;
@@ -303,8 +303,9 @@
 }
 
 .kuwento-grid-author {
-  font-family: 'Inknut Antiqua', serif;
+  font-family: 'Montserrat', serif;
   font-size: clamp(0.55rem, 1vw, 0.75rem);
+  font-weight: 600;
   color: #555;
   margin: 0;
   opacity: 0.75;
