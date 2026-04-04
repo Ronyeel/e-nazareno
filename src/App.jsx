@@ -3,12 +3,12 @@ import { Routes, Route, useLocation } from 'react-router-dom';
 import NavBar from './components/navBar';
 import HomePage from './pages/homePage';
 import MgaKuwento from './pages/mgaKuwento';
+import OpenBook from './pages/openBook';
 import Footer from './components/footer';
 import BookModal from './components/book-modal';
 import './App.css';
 import TungkolSa from './pages/tungkolSa';
 
-// Resets scroll to top on every route change
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -47,6 +47,7 @@ function App() {
           <Route path="/"            element={<HomePage />} />
           <Route path="/mga-kuwento" element={<MgaKuwento />} />
           <Route path="/tungkol-sa"  element={<TungkolSa />} />
+          <Route path="/book/:id"    element={<OpenBook />} />
         </Routes>
       </main>
 

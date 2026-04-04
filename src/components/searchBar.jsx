@@ -18,13 +18,12 @@ function SearchBar({ className, expandable = false, expanded, onToggle }) {
     }
   });
 
-  // FIX: useEffect is now at the top level of the component,
-  // not wrapped inside a bare {} JSX block.
+
   useEffect(() => {
     function mouseClickedOutside(event) {
       if (searchClose.current && !searchClose.current.contains(event.target)) {
         setOpen(false);
-        setSearch(''); // FIX: also clear search so dropdown doesn't reappear
+        setSearch(''); 
       }
     }
     document.addEventListener('mousedown', mouseClickedOutside);
@@ -33,12 +32,10 @@ function SearchBar({ className, expandable = false, expanded, onToggle }) {
     };
   }, []);
 
-  // FIX: handleSortToggle is now at the top level of the component
   function handleSortToggle() {
     setSortAscending((prev) => !prev);
   }
 
-  // FIX: return is now at the top level of the component
   return (
     <>
       <div className="wrapper" ref={searchClose}>
