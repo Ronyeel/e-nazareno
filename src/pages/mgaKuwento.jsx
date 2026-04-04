@@ -10,9 +10,15 @@ function MgaKuwento() {
   const [active, setActive] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [held, setHeld] = useState(false);
-  const autoPlayRef = useRef(null);
+  const [swipeDx, setSwipeDx] = useState(0);       // live drag offset
+  const [isSwiping, setIsSwiping] = useState(false);
+
+  const autoPlayRef    = useRef(null);
   const resumeTimerRef = useRef(null);
-  const holdTimerRef = useRef(null);
+  const holdTimerRef   = useRef(null);
+  const swipeStartX    = useRef(null);
+  const swipeStartY    = useRef(null);
+  const swipeLocked    = useRef(null); // 'h' | 'v' | null
 
   const goTo = useCallback((nextIndex) => {
     setTransitioning(true);
@@ -48,39 +54,26 @@ function MgaKuwento() {
     };
   }, [startAutoPlay]);
 
-  const prev = () => {
-    pauseAndResume();
-    goTo((active - 1 + books.length) % books.length);
-  };
+  const prev = () => { pauseAndResume(); goTo((active - 1 + books.length) % books.length); };
+  const next = () => { pauseAndResume(); goTo((active + 1) % books.length); };
 
-  const next = () => {
-    pauseAndResume();
-    goTo((active + 1) % books.length);
-  };
+  const handleDot = (i) => { pauseAndResume(); goTo(i); };
 
-  const handleDot = (i) => {
-    pauseAndResume();
-    goTo(i);
-  };
-
-  // ── Hold logic ──
-  const handleDotPointerDown = (i) => {
-    // short tap = navigate; long press = hold/pause
+  // ── Dot hold ──
+  const handleDotPointerDown = () => {
     holdTimerRef.current = setTimeout(() => {
       setHeld(true);
       if (autoPlayRef.current) clearInterval(autoPlayRef.current);
       if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    }, 180); // 180ms threshold — feels instant on mobile
+    }, 180);
   };
 
-  const handleDotPointerUp = (i, wasTap) => {
+  const handleDotPointerUp = (i) => {
     clearTimeout(holdTimerRef.current);
     if (held) {
-      // releasing a hold — resume autoplay after delay
       setHeld(false);
       resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
     } else {
-      // it was a quick tap — navigate
       handleDot(i);
     }
   };
@@ -93,16 +86,77 @@ function MgaKuwento() {
     }
   };
 
+  // ── Card swipe ──
+  const SWIPE_THRESHOLD = 50; // px to commit
+  const DRAG_MAX = 80;        // max rubber-band drag px
+
+  const onCardPointerDown = (e) => {
+    swipeStartX.current = e.clientX;
+    swipeStartY.current = e.clientY;
+    swipeLocked.current = null;
+    setIsSwiping(true);
+    setSwipeDx(0);
+    pauseAndResume();
+  };
+
+  const onCardPointerMove = (e) => {
+    if (!isSwiping || swipeStartX.current === null) return;
+    const dx = e.clientX - swipeStartX.current;
+    const dy = e.clientY - swipeStartY.current;
+
+    // lock axis on first significant movement
+    if (swipeLocked.current === null && (Math.abs(dx) > 6 || Math.abs(dy) > 6)) {
+      swipeLocked.current = Math.abs(dx) >= Math.abs(dy) ? 'h' : 'v';
+    }
+
+    if (swipeLocked.current !== 'h') return;
+
+    e.preventDefault(); // stop scroll only when horizontal
+    // rubber-band: resist past edges
+    const clamped = Math.sign(dx) * Math.min(Math.abs(dx), DRAG_MAX);
+    setSwipeDx(clamped);
+  };
+
+  const onCardPointerUp = (e) => {
+    if (!isSwiping) return;
+    setIsSwiping(false);
+
+    if (swipeLocked.current === 'h') {
+      const dx = e.clientX - swipeStartX.current;
+      if (dx < -SWIPE_THRESHOLD) next();
+      else if (dx > SWIPE_THRESHOLD) prev();
+    }
+
+    setSwipeDx(0);
+    swipeStartX.current = null;
+    swipeLocked.current = null;
+  };
+
   const book = books[active];
-  const tc = transitioning ? 'is-transitioning' : '';
+  const tc   = transitioning ? 'is-transitioning' : '';
+
+  // card translate: live drag offset, snaps back on release
+  const cardStyle = {
+    transform: `translateX(${swipeDx}px)`,
+    transition: isSwiping && swipeLocked.current === 'h'
+      ? 'none'
+      : 'transform 0.35s ease',
+    cursor: isSwiping && swipeLocked.current === 'h' ? 'grabbing' : 'grab',
+  };
 
   return (
     <div className="kuwento-page">
-
       <section className="kuwento-hero">
-        <div className="kuwento-card">
-
-          <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
+        <div
+          className="kuwento-card"
+          style={cardStyle}
+          onPointerDown={onCardPointerDown}
+          onPointerMove={onCardPointerMove}
+          onPointerUp={onCardPointerUp}
+          onPointerLeave={onCardPointerUp}
+          onPointerCancel={onCardPointerUp}
+        >
+          <button className="kuwento-btn left"  onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
           <div className={`kuwento-card-text ${tc}`}>
@@ -147,7 +201,6 @@ function MgaKuwento() {
               </p>
             </div>
           </div>
-
         </div>
       </section>
 
@@ -179,7 +232,6 @@ function MgaKuwento() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }
