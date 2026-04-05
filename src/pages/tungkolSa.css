@@ -1,6 +1,3 @@
-/* ══════════════════════════════════════════
-   SPACING & TEXT TOKENS
-   ══════════════════════════════════════════ */
 :root {
   --space-xs:  clamp(0.75rem, 2vw,   1rem);
   --space-sm:  clamp(1rem,    3vw,   1.5rem);
@@ -14,18 +11,13 @@
   --text-hero: clamp(2rem,    5vw,   4rem);
 }
 
-/* ══════════════════════════════════════════
-   PAGE
-   ══════════════════════════════════════════ */
 .tungkolSa-page {
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
 }
 
-/* ══════════════════════════════════════════
-   BANNER
-   ══════════════════════════════════════════ */
+/* ── Banner ── */
 .tungkolSa-banner {
   padding-top: var(--header-height, 70px);
   width: 100%;
@@ -46,7 +38,6 @@
   display: block;
 }
 
-/* ── Cross ── */
 .tungkolSa-cross {
   position: absolute;
   right: clamp(-40px, -3vw, -10px);
@@ -96,9 +87,7 @@
   animation: fontLoop 5s steps(1) infinite;
 }
 
-/* ══════════════════════════════════════════
-   INTRO
-   ══════════════════════════════════════════ */
+/* ── Intro ── */
 .tungkolSa-intro {
   max-width: min(680px, 90%);
   margin: 0 auto;
@@ -131,9 +120,7 @@
   font-weight: 600;
 }
 
-/* ══════════════════════════════════════════
-   BODY WRAP
-   ══════════════════════════════════════════ */
+/* ── Body Wrap ── */
 .tungkolSa-body-wrap {
   position: relative;
   width: 100%;
@@ -145,7 +132,7 @@
   position: relative;
   z-index: 2;
   font-size: var(--text-sm);
-  color: #333;
+  color: #000000;
   line-height: 1.75;
   margin: 0;
   padding: var(--space-sm);
@@ -161,9 +148,7 @@
   object-position: center top;
 }
 
-/* ══════════════════════════════════════════
-   ABOUT SECTION
-   ══════════════════════════════════════════ */
+/* ── About ── */
 .tungkolSa-about-section {
   position: relative;
   width: 100%;
@@ -249,16 +234,64 @@
   word-break: break-word;
 }
 
-/* ══════════════════════════════════════════
-   LAYUNIN SECTION
-   ══════════════════════════════════════════ */
+/* ── Kategorya Bg Wrap ── */
+.tungkolSa-kategorya-bg-wrap {
+  position: relative;
+  width: calc(100% + var(--space-sm) * 2);
+  margin-left: calc(-1 * var(--space-sm));
+  margin-right: calc(-1 * var(--space-sm));
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+/* ── Kategorya Section ── */
+.tungkolSa-kategorya-section {
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+  text-align: center;
+}
+
+.tungkolSa-kategorya-heading {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(1.35rem, 3.5vw, 2rem);
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: 0 0 var(--space-xs);
+}
+
+.tungkolSa-kategorya-divider {
+  width: clamp(40px, 8vw, 60px);
+  height: 2px;
+  background: #1a1a1a;
+  margin: 0 auto var(--space-md);
+  border-radius: 2px;
+}
+
+.tungkolSa-kategorya-body {
+  font-size: var(--text-sm);
+  color: #444;
+  line-height: 1.75;
+  margin: 0 0 var(--space-sm);
+  text-align: center;
+  hyphens: auto;
+}
+
+.tungkolSa-kategorya-body--accent {
+  color: #000000;
+  font-weight: 500;
+  margin-top: var(--space-sm);
+}
+
+/* ── Layunin ── */
 .tungkolSa-layunin-section {
   margin-top: var(--space-lg);
   padding-bottom: var(--space-xl);
   text-align: left;
 }
 
-/* Heading: large, bold, fully above the grid */
 .tungkolSa-layunin-heading {
   font-family: Georgia, 'Times New Roman', serif;
   font-size: clamp(1.35rem, 3.5vw, 2rem);
@@ -270,14 +303,12 @@
   max-width: 100%;
 }
 
-/* Three equal columns */
 .tungkolSa-layunin-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(0.6rem, 1.5vw, 1rem);
 }
 
-/* Card base */
 .tungkolSa-layunin-card {
   position: relative;
   border-radius: clamp(10px, 1.5vw, 16px);
@@ -296,7 +327,6 @@
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
 }
 
-/* Image */
 .tungkolSa-layunin-card-img {
   position: absolute;
   inset: 0;
@@ -305,11 +335,9 @@
   object-fit: cover;
   object-position: center top;
   display: block;
-  /* Hide broken-image icon when src resolves to nothing */
   color: transparent;
 }
 
-/* Gradient overlay on image cards */
 .tungkolSa-layunin-card--has-image::after {
   content: '';
   position: absolute;
@@ -318,7 +346,6 @@
   z-index: 1;
 }
 
-/* Label — centered by default (solid-color cards) */
 .tungkolSa-layunin-card-label {
   position: absolute;
   inset: 0;
@@ -337,7 +364,6 @@
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
-/* Label — bottom-left on image cards */
 .tungkolSa-layunin-card--has-image .tungkolSa-layunin-card-label {
   inset: auto 0 0 0;
   align-items: flex-end;
@@ -346,13 +372,12 @@
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* ══════════════════════════════════════════
-   SCROLL-TRIGGERED ANIMATIONS
-   ══════════════════════════════════════════ */
+/* ── Scroll Animations ── */
 .tungkolSa-intro-title,
 .tungkolSa-intro-sub,
 .tungkolSa-body-wrap,
 .tungkolSa-about-wrap,
+.tungkolSa-kategorya-section,
 .tungkolSa-layunin-section {
   opacity: 0;
   will-change: opacity, transform;
@@ -361,14 +386,14 @@
 .tungkolSa-intro-title {
   transform: translateY(28px);
   transition:
-    opacity  0.65s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity   0.65s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .tungkolSa-intro-sub {
   transform: translateY(22px);
   transition:
-    opacity  0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
+    opacity   0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s,
     transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
 }
 
@@ -376,31 +401,32 @@
   transform: scale(0.96) translateY(24px);
   filter: blur(4px) brightness(0.85);
   transition:
-    opacity  0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
+    opacity   0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s,
-    filter   0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
+    filter    0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.24s;
 }
 
 .tungkolSa-about-wrap {
   transform: translateY(32px);
   filter: drop-shadow(0 0 0px rgba(255, 0, 0, 0));
   transition:
-    opacity  0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
+    opacity   0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
     transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) 0.2s,
-    filter   0.9s  cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
+    filter    0.9s  cubic-bezier(0.22, 1, 0.36, 1) 0.4s;
 }
 
+.tungkolSa-kategorya-section,
 .tungkolSa-layunin-section {
   transform: translateY(28px);
   transition:
-    opacity  0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
+    opacity   0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s,
     transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
 }
 
-/* ── Visible states ── */
 .tungkolSa-intro-title.is-visible,
 .tungkolSa-intro-sub.is-visible,
 .tungkolSa-body-wrap.is-visible,
+.tungkolSa-kategorya-section.is-visible,
 .tungkolSa-layunin-section.is-visible {
   opacity: 1;
   transform: none;
@@ -416,9 +442,139 @@
     drop-shadow(0 20px 10px rgba(255, 128, 128, 0.534));
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — CROSS
-   ══════════════════════════════════════════ */
+/* ── Kat Track & Sticky ── */
+.kat-track {
+  position: relative;
+  width: 100%;
+  height: calc((6 + 2) * 100vh);
+}
+
+.kat-sticky {
+  position: sticky;
+  top: 0;
+
+  width: 100vw;
+  height: 100vh;
+  margin-left: calc(50% - 50vw);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+}
+
+/*
+  The bg lives on ::before so we can scale it independently
+  from the cards. JS writes --kat-bg-scale on .kat-sticky.
+  Scale curve:  1 (entry) → 1.15 (mid) → 1 (exit)
+*/
+.kat-sticky::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/kategorya.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(var(--kat-bg-scale, 1));
+  transform-origin: center center;
+  will-change: transform;
+  z-index: 0;
+}
+
+/* dark overlay above the bg pseudo */
+.kat-sticky::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.40);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.kat-scene {
+  position: relative;
+  width: clamp(160px, 28vw, 240px);
+  aspect-ratio: 3 / 4;
+  z-index: 2;
+}
+
+.kat-card {
+  position: absolute;
+  inset: 0;
+  border-radius: clamp(10px, 1.5vw, 16px);
+  overflow: hidden;
+  background: #c9a84c;
+  box-shadow:
+    0 16px 56px rgba(0, 0, 0, 0.45),
+    0 4px  12px rgba(0, 0, 0, 0.22);
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.kat-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  color: transparent;
+}
+
+.kat-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.04)  0%,
+    transparent          28%,
+    rgba(0, 0, 0, 0.50)  70%,
+    rgba(0, 0, 0, 0.82) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(0.7rem, 2vw, 1.1rem);
+  z-index: 2;
+}
+
+.kat-card-counter {
+  align-self: flex-end;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.55rem, 1.1vw, 0.7rem);
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.70);
+  letter-spacing: 0.12em;
+}
+
+.kat-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.kat-card-sub {
+  margin: 0;
+  font-size: clamp(0.55rem, 1vw, 0.68rem);
+  color: rgba(255, 255, 255, 0.75);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+.kat-card-label {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(0.9rem, 2.2vw, 1.25rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+/* ── Responsive: Cross ── */
 @media (max-width: 320px) {
   .tungkolSa-cross { right: -2px;  top: 85%; height: clamp(82px,  22vw, 120px); }
 }
@@ -432,40 +588,30 @@
   .tungkolSa-cross { right: clamp(-20px, -2vw, -8px); top: 65%; height: clamp(200px, 16vw, 220px); }
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — ABOUT LOGO
-   ══════════════════════════════════════════ */
+/* ── Responsive: About Logo ── */
 @media (max-width: 320px) {
   .tungkolSa-about-logo { height: clamp(200px, 35vw, 130px); bottom: clamp(-10px, -23vw, -25px); transform: translateX(-15%); }
 }
 @media (min-width: 321px) and (max-width: 350px) {
-  .tungkolSa-about-logo { height: clamp(200px, 38vw, 150px); bottom: clamp(-20px, -4vw, -8px);  transform: translateX(-12%); }
+  .tungkolSa-about-logo { height: clamp(200px, 38vw, 150px); bottom: clamp(-20px, -4vw, -8px);   transform: translateX(-12%); }
 }
 @media (min-width: 351px) and (max-width: 480px) {
   .tungkolSa-about-logo { height: clamp(220px, 43vw, 180px); bottom: clamp(-30px, -3.5vw, -10px); transform: translateX(-15%); }
 }
 @media (min-width: 481px) and (max-width: 1024px) {
-  .tungkolSa-about-logo { height: clamp(230px, 28vw, 260px); bottom: clamp(-25px, -3vw, -10px); transform: translateX(clamp(-18%, -2vw, -8%)); }
+  .tungkolSa-about-logo { height: clamp(230px, 28vw, 260px); bottom: clamp(-25px, -3vw, -10px);   transform: translateX(clamp(-18%, -2vw, -8%)); }
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE — LAYUNIN
-   ══════════════════════════════════════════ */
+/* ── Responsive: Layunin ── */
 @media (max-width: 480px) {
-  .tungkolSa-layunin-heading {
-    font-size: clamp(1.1rem, 5vw, 1.4rem);
-  }
-  .tungkolSa-layunin-grid {
-    grid-template-columns: 1fr;
-    gap: var(--space-sm);
-  }
-  .tungkolSa-layunin-card {
-    aspect-ratio: 4 / 2.5;
-  }
+  .tungkolSa-layunin-heading { font-size: clamp(1.1rem, 5vw, 1.4rem); }
+  .tungkolSa-layunin-grid    { grid-template-columns: 1fr; gap: var(--space-sm); }
+  .tungkolSa-layunin-card    { aspect-ratio: 4 / 2.5; }
+  .kat-track  { height: calc((6 + 2) * 100vh); }
+  .kat-sticky { height: 100vh; }
+  .kat-scene  { width: clamp(130px, 52vw, 180px); }
 }
 
 @media (min-width: 481px) and (max-width: 680px) {
-  .tungkolSa-layunin-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .tungkolSa-layunin-grid { grid-template-columns: repeat(2, 1fr); }
 }
