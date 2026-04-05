@@ -4,140 +4,217 @@ import books from '../data/books.json';
 import { useBookModal } from '../components/book-modal-context';
 import './mgaKuwento.css';
 
+const AUTOPLAY_INTERVAL  = 3000;
+const RESUME_DELAY       = 8000;
+const HOLD_THRESHOLD     = 180;
+const SCRUB_RESUME_DELAY = 1500;
+const SWIPE_MIN_DELTA    = 40;
+
 function MgaKuwento() {
   const { openModal } = useBookModal();
-  const navigate = useNavigate();
+  const navigate      = useNavigate();
+
   const [active, setActive] = useState(0);
-  const [transitioning, setTransitioning] = useState(false);
-  const [held, setHeld] = useState(false);
+  const [fading, setFading] = useState(false);
+  const [held,   setHeld]   = useState(false);
+
+  // Refs — read inside intervals/timeouts without stale closures
+  const activeRef   = useRef(0);
+  const fadingRef   = useRef(false);
+  const heldRef     = useRef(false);
   const autoPlayRef = useRef(null);
-  const resumeTimerRef = useRef(null);
-  const holdTimerRef = useRef(null);
-  const dotsRef = useRef(null);
-  const heldRef = useRef(false);
+  const resumeRef   = useRef(null);
+  const holdRef     = useRef(null);
+  const swipeX      = useRef(null);
+  const dotsRef     = useRef(null);
+  const heroRef     = useRef(null);
 
-  useEffect(() => {
-    heldRef.current = held;
-  }, [held]);
+  useEffect(() => { activeRef.current = active; }, [active]);
+  useEffect(() => { fadingRef.current = fading;  }, [fading]);
+  useEffect(() => { heldRef.current   = held;    }, [held]);
 
-  const goTo = useCallback((nextIndex) => {
-    setTransitioning(true);
+  // ─────────────────────────────────────────────────────────────────
+  // goTo — opacity-only cross-fade so zero layout shift can occur
+  // ─────────────────────────────────────────────────────────────────
+  const goTo = useCallback((next) => {
+    if (fadingRef.current) return; // drop overlapping calls
+
+    fadingRef.current = true;
+    setFading(true);
+
     setTimeout(() => {
-      setActive(nextIndex);
-      setTransitioning(false);
-    }, 350);
+      activeRef.current = next;
+      setActive(next);
+
+      // Two rAF ticks: first lets React paint the new content,
+      // second lets the browser composite it before fading back in.
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => {
+          fadingRef.current = false;
+          setFading(false);
+        })
+      );
+    }, 300);
   }, []);
 
-  const startAutoPlay = useCallback(() => {
+  // ─────────────────────────────────────────────────────────────────
+  // Autoplay
+  // ─────────────────────────────────────────────────────────────────
+  const stopAutoPlay = () => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
+  };
+  const stopResume = () => {
+    if (resumeRef.current) clearTimeout(resumeRef.current);
+  };
+
+  const startAutoPlay = useCallback(() => {
+    stopAutoPlay();
     autoPlayRef.current = setInterval(() => {
-      setActive(i => {
-        const next = (i + 1) % books.length;
-        goTo(next);
-        return i;
-      });
-    }, 3000);
+      goTo((activeRef.current + 1) % books.length);
+    }, AUTOPLAY_INTERVAL);
   }, [goTo]);
 
   const pauseAndResume = useCallback(() => {
-    if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    resumeTimerRef.current = setTimeout(startAutoPlay, 8000);
+    stopAutoPlay();
+    stopResume();
+    resumeRef.current = setTimeout(startAutoPlay, RESUME_DELAY);
   }, [startAutoPlay]);
 
   useEffect(() => {
     startAutoPlay();
     return () => {
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+      stopAutoPlay();
+      stopResume();
+      if (holdRef.current) clearTimeout(holdRef.current);
     };
   }, [startAutoPlay]);
 
-  const prev = () => {
+  // ─────────────────────────────────────────────────────────────────
+  // Block page scroll inside the hero — must be imperative because
+  // React synthetic touch handlers are passive and can't preventDefault
+  // ─────────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+    const block = (e) => e.preventDefault();
+    hero.addEventListener('touchmove',  block, { passive: false });
+    hero.addEventListener('touchstart', block, { passive: false });
+    return () => {
+      hero.removeEventListener('touchmove',  block);
+      hero.removeEventListener('touchstart', block);
+    };
+  }, []);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Navigation
+  // ─────────────────────────────────────────────────────────────────
+  const prev = useCallback(() => {
     pauseAndResume();
-    goTo((active - 1 + books.length) % books.length);
+    goTo((activeRef.current - 1 + books.length) % books.length);
+  }, [pauseAndResume, goTo]);
+
+  const next = useCallback(() => {
+    pauseAndResume();
+    goTo((activeRef.current + 1) % books.length);
+  }, [pauseAndResume, goTo]);
+
+  // ─────────────────────────────────────────────────────────────────
+  // Card swipe
+  // ─────────────────────────────────────────────────────────────────
+  const onCardDown = (e) => {
+    if (e.target.closest('button, .kuwento-dots')) return;
+    swipeX.current = e.clientX;
+  };
+  const onCardUp = (e) => {
+    if (swipeX.current === null) return;
+    const delta = e.clientX - swipeX.current;
+    swipeX.current = null;
+    if (Math.abs(delta) < SWIPE_MIN_DELTA) return;
+    delta < 0 ? next() : prev();
   };
 
-  const next = () => {
-    pauseAndResume();
-    goTo((active + 1) % books.length);
-  };
-
-  const handleDot = (i) => {
-    pauseAndResume();
-    goTo(i);
-  };
-
-  const getDotIndexFromPoint = (clientX) => {
+  // ─────────────────────────────────────────────────────────────────
+  // Dot scrub
+  // ─────────────────────────────────────────────────────────────────
+  const getDotAt = (clientX) => {
     if (!dotsRef.current) return null;
-    const dotEls = dotsRef.current.querySelectorAll('.kuwento-dot');
-    for (let i = 0; i < dotEls.length; i++) {
-      const rect = dotEls[i].getBoundingClientRect();
-      if (clientX >= rect.left && clientX <= rect.right) return i;
+    const els = [...dotsRef.current.querySelectorAll('.kuwento-dot')];
+    for (let i = 0; i < els.length; i++) {
+      const { left, right } = els[i].getBoundingClientRect();
+      if (clientX >= left && clientX <= right) return i;
     }
     return null;
   };
 
-  const handleDotPointerDown = (e, i) => {
+  const onDotDown = (e, i) => {
+    e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
-    holdTimerRef.current = setTimeout(() => {
+    holdRef.current = setTimeout(() => {
       heldRef.current = true;
       setHeld(true);
-      if (autoPlayRef.current) clearInterval(autoPlayRef.current);
-      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
-    }, 180);
+      stopAutoPlay();
+      stopResume();
+    }, HOLD_THRESHOLD);
   };
 
-  const handleDotPointerMove = (e) => {
+  const onDotMove = (e) => {
+    e.preventDefault();
     if (!heldRef.current) return;
-    const idx = getDotIndexFromPoint(e.clientX);
-    if (idx !== null) {
-      setActive(idx);
+    const idx = getDotAt(e.clientX);
+    if (idx !== null && idx !== activeRef.current) {
+      activeRef.current = idx;
+      setActive(idx); // instant — no fade during scrub
     }
   };
 
-  const handleDotPointerUp = (e, i) => {
-    clearTimeout(holdTimerRef.current);
+  const endScrub = () => {
+    clearTimeout(holdRef.current);
+    if (!heldRef.current) return;
+    heldRef.current = false;
+    setHeld(false);
+    resumeRef.current = setTimeout(startAutoPlay, SCRUB_RESUME_DELAY);
+  };
+
+  const onDotUp = (e, i) => {
+    e.preventDefault();
+    clearTimeout(holdRef.current);
     if (heldRef.current) {
-      heldRef.current = false;
-      setHeld(false);
-      resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
+      endScrub();
     } else {
-      handleDot(i);
+      pauseAndResume();
+      goTo(i);
     }
   };
 
-  const handleDotsPointerLeave = () => {
-    clearTimeout(holdTimerRef.current);
-    if (heldRef.current) {
-      heldRef.current = false;
-      setHeld(false);
-      resumeTimerRef.current = setTimeout(startAutoPlay, 1500);
-    }
+  const onDotsLeave = (e) => {
+    e.preventDefault();
+    endScrub();
   };
 
+  // ─────────────────────────────────────────────────────────────────
+  // Render
+  // ─────────────────────────────────────────────────────────────────
   const book = books[active];
-  const tc = transitioning ? 'is-transitioning' : '';
+  const fade = fading ? ' is-fading' : '';
 
   return (
     <div className="kuwento-page">
 
-      <section className="kuwento-hero">
-        <div className="kuwento-card">
-
-          <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
+      <section className="kuwento-hero" ref={heroRef}>
+        <div
+          className="kuwento-card"
+          onPointerDown={onCardDown}
+          onPointerUp={onCardUp}
+        >
+          <button className="kuwento-btn left"  onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
-          {/* Static panel — title and button never animate */}
+          {/* Left panel — title is static, excerpt fades */}
           <div className="kuwento-card-text">
             <h1 className="kuwento-card-title">Mga Kuwento</h1>
-
-            {/* Only the excerpt fades on slide change */}
-            <p className={`kuwento-card-excerpt ${tc}`}>
+            <p className={`kuwento-card-excerpt${fade}`}>
               "{book.title} — isang kwento ng pananampalataya ni {book.author}."
             </p>
-
             <button
               className="kuwento-read-btn"
               onClick={() => navigate(`/book/${book.id}`)}
@@ -146,38 +223,33 @@ function MgaKuwento() {
             </button>
           </div>
 
+          {/* Dots */}
           <div
-            className={`kuwento-dots ${held ? 'is-held' : ''}`}
+            className={`kuwento-dots${held ? ' is-held' : ''}`}
             ref={dotsRef}
-            onPointerMove={handleDotPointerMove}
-            onPointerLeave={handleDotsPointerLeave}
+            onPointerMove={onDotMove}
+            onPointerLeave={onDotsLeave}
           >
             {books.map((_, i) => (
               <button
                 key={i}
-                className={`kuwento-dot ${i === active ? 'active' : ''}`}
-                aria-label={`Go to slide ${i + 1}`}
-                onPointerDown={(e) => handleDotPointerDown(e, i)}
-                onPointerUp={(e) => handleDotPointerUp(e, i)}
+                className={`kuwento-dot${i === active ? ' active' : ''}`}
+                aria-label={`Slide ${i + 1}`}
+                onPointerDown={(e) => onDotDown(e, i)}
+                onPointerUp={(e)   => onDotUp(e, i)}
               />
             ))}
           </div>
 
-          {/* Cover still animates on slide change */}
-          <div className={`kuwento-card-cover ${tc}`}>
-            {book.cover ? (
-              <img src={book.cover} alt={book.title} />
-            ) : (
-              <div className="kuwento-cover-placeholder">
-                <span>{book.title.charAt(0)}</span>
-              </div>
-            )}
+          {/* Right panel — cover + meta fade together */}
+          <div className={`kuwento-card-cover${fade}`}>
+            {book.cover
+              ? <img src={book.cover} alt={book.title} />
+              : <div className="kuwento-cover-placeholder">{book.title.charAt(0)}</div>
+            }
             <div className="kuwento-card-meta">
               <p className="kuwento-meta-title">{book.title}</p>
               <p className="kuwento-meta-author">{book.author}</p>
-              <p className="kuwento-meta-excerpt">
-                "{book.title} — isang kwento ng pananampalataya ni {book.author}."
-              </p>
             </div>
           </div>
 
@@ -196,13 +268,10 @@ function MgaKuwento() {
                   onClick={() => openModal(b)}
                 >
                   <div className="kuwento-grid-cover">
-                    {b.cover ? (
-                      <img src={b.cover} alt={b.title} />
-                    ) : (
-                      <div className="kuwento-grid-placeholder">
-                        <span>{b.title.charAt(0)}</span>
-                      </div>
-                    )}
+                    {b.cover
+                      ? <img src={b.cover} alt={b.title} />
+                      : <div className="kuwento-grid-placeholder">{b.title.charAt(0)}</div>
+                    }
                   </div>
                   <p className="kuwento-grid-title">{b.title}</p>
                   <p className="kuwento-grid-author">{b.author}</p>

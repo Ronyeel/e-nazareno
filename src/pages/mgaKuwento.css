@@ -1,6 +1,10 @@
 /* ─────────────────────────────────────────
    KUWENTO — Stylesheet
    Property order: position → box model → visual → text → animation
+   ─────────────────────────────────────────
+   KEY PRINCIPLE: transitions only touch `opacity`.
+   Never animate width, height, padding, gap, or transform on
+   containers — those trigger layout reflow which can scroll the page.
    ───────────────────────────────────────── */
 
 /* ── Page Root ── */
@@ -9,16 +13,23 @@
   width: 100%;
 }
 
+/* ── Hero Section ── */
 .kuwento-hero {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Contain all overflow — critical so nothing bleeds out and scrolls the page */
   overflow: hidden;
   box-sizing: border-box;
-  padding: calc(var(--header-height, 70px) + clamp(1rem, 2vh, 2rem))
-           clamp(1rem, 4vw, 3rem)
-           clamp(2rem, 4vh, 4rem);
+  /* Top pad clears the fixed header; sides and bottom breathe with the viewport */
+  padding:
+    calc(var(--header-height, 70px) + clamp(1rem, 2vh, 2rem))
+    clamp(1rem, 4vw, 3rem)
+    clamp(2rem, 4vh, 4rem);
+  /* touch-action on the section so the imperative touchmove listener
+     has something to call preventDefault on without fighting React */
+  touch-action: none;
 }
 
 /* ── Card ── */
@@ -32,11 +43,14 @@
   min-width: 0;
   box-sizing: border-box;
   border-radius: 16px;
-  box-shadow: 0 5px 25px rgba(4, 15, 10, 4);
+  box-shadow: 0 5px 25px rgba(4, 15, 10, 0.4);
+  /* Absorb pointer events — no bubble to page */
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-/* ── Card — Left Text Panel ── */
-/* No transition here — title and button stay static */
+/* ── Left Text Panel ── */
 .kuwento-card-text {
   display: flex;
   flex: 1 1 0;
@@ -56,7 +70,7 @@
   word-break: break-word;
 }
 
-/* ── Excerpt — only this fades on slide change ── */
+/* ── Excerpt — ONLY opacity transitions, never transform ── */
 .kuwento-card-excerpt {
   max-width: 32ch;
   margin: 0;
@@ -66,9 +80,15 @@
   line-height: 1.7;
   word-break: break-word;
   opacity: 0.85;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  /* opacity transition only — transform would shift layout */
+  transition: opacity 0.3s ease;
 }
 
+.kuwento-card-excerpt.is-fading {
+  opacity: 0;
+}
+
+/* ── Read Button ── */
 .kuwento-read-btn {
   align-self: flex-start;
   padding: clamp(0.4rem, 1.5vh, 0.85rem) clamp(0.75rem, 3vw, 2rem);
@@ -80,13 +100,13 @@
   font-size: clamp(0.62rem, 1.5vw, 0.9rem);
   font-weight: 700;
   cursor: pointer;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 
 .kuwento-read-btn:hover  { opacity: 0.85; }
-.kuwento-read-btn:active { transform: scale(0.97); }
+.kuwento-read-btn:active { opacity: 0.7;  }
 
-/* ── Card — Right Cover Panel ── */
+/* ── Right Cover Panel ── */
 .kuwento-card-cover {
   display: flex;
   flex: 0 1 clamp(100px, 28vw, 300px);
@@ -94,45 +114,44 @@
   align-items: center;
   gap: clamp(0.5rem, 2vh, 1.25rem);
   min-width: 0;
-  padding: clamp(1rem, 3vw, 2.5rem) clamp(0.5rem, 2vw, 2rem);
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 3vw, 2.5rem) clamp(0.25rem, 1vw, 0.75rem);
   background: var(--secondary-color);
   border-left: 2px solid #c8a96e;
   border-radius: 0 14px 14px 0;
   perspective: 700px;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  /* opacity only — no transform so the panel never shifts in size */
+  transition: opacity 0.3s ease;
 }
 
-/* ── Fade Transition State — excerpt + cover only ── */
-.kuwento-card-excerpt.is-transitioning,
-.kuwento-card-cover.is-transitioning {
+.kuwento-card-cover.is-fading {
   opacity: 0;
-  transform: translateY(10px);
 }
 
-/* ── Card — Cover Image / Placeholder ── */
+/* ── Hero Book Image ── */
 .kuwento-card-cover img,
 .kuwento-cover-placeholder {
   display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
   border: none;
-  border-radius: 6px 2px 2px 6px;
-  object-fit: cover;
+  border-radius: 6px 3px 3px 6px;
+  border-right: 5px solid #8a622e;
+  object-fit: fill;
   transform-style: preserve-3d;
   will-change: transform;
   box-shadow:
-    -6px  6px  0px  #b89050,
-    -9px  9px  0px  #a07840,
-    -12px 14px 0px  #8a622e,
-    -14px 18px 28px rgba(0, 0, 0, 0.55),
-         0 24px 40px rgba(0, 0, 0, 0.30),
-         0  6px 12px rgba(0, 0, 0, 0.20);
+     6px   6px  0px  0px  #b89050,
+     9px   9px  0px  0px  #a07840,
+    12px  14px  0px  0px  #8a622e,
+    14px  18px 28px  0px  rgba(0, 0, 0, 0.55),
+          0 24px 40px     rgba(0, 0, 0, 0.30),
+          0  6px 12px     rgba(0, 0, 0, 0.20);
   animation: kuwento-float 4s ease-in-out infinite;
 }
 
 .kuwento-card-cover:hover img,
 .kuwento-card-cover:hover .kuwento-cover-placeholder {
-  transform: rotateY(6deg) translateY(-4px);
+  transform: rotateY(-6deg) translateY(-4px);
   animation-play-state: paused;
 }
 
@@ -146,7 +165,7 @@
   font-weight: 700;
 }
 
-/* ── Card — Meta ── */
+/* ── Cover Meta ── */
 .kuwento-card-meta {
   display: flex;
   flex-direction: column;
@@ -171,14 +190,6 @@
   opacity: 0.7;
 }
 
-.kuwento-meta-excerpt {
-  margin: 0;
-  font-size: clamp(0.52rem, 0.9vw, 0.72rem);
-  line-height: 1.5;
-  word-break: break-word;
-  opacity: 0.65;
-}
-
 /* ── Nav Buttons ── */
 .kuwento-btn {
   position: absolute;
@@ -187,75 +198,78 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Fixed size — clamp ensures no layout shift at any viewport */
   width: clamp(2rem, 5vw, 3rem);
   height: clamp(3rem, 8vw, 5rem);
   padding: 0;
   border: none;
   background: transparent;
   color: var(--navigation-text-color);
-  font-size: clamp(4.25rem, 3vw, 2.5rem);
+  font-size: clamp(2.5rem, 4vw, 4.25rem);
   line-height: 1;
   cursor: pointer;
   transform: translateY(-50%);
   transition: opacity 0.2s ease;
 }
 
-.kuwento-btn:hover   { opacity: 0.6; }
-.kuwento-btn:active  { transform: translateY(-50%) scale(0.95); }
-.kuwento-btn.left    { left:  clamp(0.1rem, 1vw, 0.75rem); }
-.kuwento-btn.right   { right: clamp(0.1rem, 1vw, 0.75rem); }
+.kuwento-btn:hover  { opacity: 0.6; }
+.kuwento-btn:active { opacity: 0.4; }
+.kuwento-btn.left   { left:  clamp(0.1rem, 1vw, 0.75rem); }
+.kuwento-btn.right  { right: clamp(0.1rem, 1vw, 0.75rem); }
 
-/* ── Dots ── */
+/* ── Dots Strip ── */
 .kuwento-dots {
   position: absolute;
   bottom: clamp(0.6rem, 2vh, 1.5rem);
   left: 50%;
   z-index: 10;
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap off — dots stay on one row, no reflow */
+  flex-wrap: nowrap;
+  align-items: center;
   justify-content: center;
-  gap: 0.4rem;
+  /* Fixed gap and padding — no transitions on these so the container
+     never reflows and never causes the page to scroll */
+  gap: 0.45rem;
   max-width: calc(100% - 4rem);
-  padding: 0.2rem 1rem;
+  padding: 0.28rem 1rem;
   background: #821411;
   border-radius: 24px;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
+  /* translateX(-50%) centres the strip; we never animate this */
   transform: translateX(-50%);
-  transition: padding 0.25s ease, gap 0.25s ease;
 }
 
-.kuwento-dots.is-held {
-  gap: 0.6rem;
-  padding: 0.35rem 1.25rem;
+/* Scrub-held state: slightly larger dots via scale, not width/height change */
+.kuwento-dots.is-held .kuwento-dot {
+  transform: scale(1.3);
 }
 
+.kuwento-dots.is-held .kuwento-dot.active {
+  transform: scale(1.5);
+}
+
+/* ── Individual Dot ── */
 .kuwento-dot {
   flex-shrink: 0;
-  width: clamp(6px, 1.5vw, 11px);
-  height: clamp(6px, 1.5vw, 11px);
+  /* Fixed physical size — never changes so layout never shifts */
+  width: clamp(7px, 1.4vw, 11px);
+  height: clamp(7px, 1.4vw, 11px);
   padding: 0;
   border: 2px solid var(--navigation-text-color);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   touch-action: none;
-  transition: background 0.3s ease, transform 0.2s ease, width 0.25s ease, height 0.25s ease;
+  /* Only opacity + transform (GPU composited) — never box-model props */
+  transition: background 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
 }
 
 .kuwento-dot.active {
   background: #fff;
-  transform: scale(1.25);
-}
-
-.kuwento-dots.is-held .kuwento-dot {
-  width: clamp(8px, 2vw, 14px);
-  height: clamp(8px, 2vw, 14px);
-}
-
-.kuwento-dots.is-held .kuwento-dot.active {
-  transform: scale(1.35);
+  transform: scale(1.3);
 }
 
 /* ── Grid Section ── */
@@ -275,15 +289,16 @@
   margin: 0 auto;
 }
 
-/* ── Grid Heading — naturally responsive across all devices ── */
 .kuwento-grid-heading {
-  margin: 0;
+  margin: 0 auto;
+  width: fit-content;
   color: #1a1a1a;
   font-family: 'Gideon Roman', serif;
   font-size: clamp(1.1rem, 4vw, 2.5rem);
   line-height: 1.2;
-  text-align: left;
-  padding-left: clamp(0.5rem, 5%, 3rem);
+  text-align: center;
+  padding-bottom: 0.25rem;
+  border-bottom: 4px solid var(--navigation-text-color);
 }
 
 .kuwento-grid-wrapper {
@@ -312,36 +327,42 @@
   perspective: 600px;
 }
 
+/* ── Grid Book Cover ── */
 .kuwento-grid-cover {
   width: 100%;
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border: none;
-  border-radius: 6px 2px 2px 6px;
+  border-radius: 6px 3px 3px 6px;
+  border-right: 4px solid #8a622e;
   transform-style: preserve-3d;
   will-change: transform;
   box-shadow:
-    -5px   5px  0px  #4e4e4d,
-    -8px   8px  0px  #51504e,
-    -10px 12px  0px  #3a3938,
-    -12px 16px  20px rgba(0, 0, 0, 0.50),
-          0 16px 28px rgba(0, 0, 0, 0.25),
-          0  4px  8px rgba(0, 0, 0, 0.15);
+     5px   5px  0px  0px  #b89050,
+     8px   8px  0px  0px  #a07840,
+    10px  12px  0px  0px  #8a622e,
+    12px  16px 20px  0px  rgba(0, 0, 0, 0.50),
+          0 16px 28px     rgba(0, 0, 0, 0.25),
+          0  4px  8px     rgba(0, 0, 0, 0.15);
   animation: kuwento-float-grid 4s ease-in-out infinite;
 }
 
-/* Staggered animation delays */
-.kuwento-grid-item:nth-child(1) .kuwento-grid-cover { animation-delay: 0s; }
-.kuwento-grid-item:nth-child(2) .kuwento-grid-cover { animation-delay: 0.4s; }
-.kuwento-grid-item:nth-child(3) .kuwento-grid-cover { animation-delay: 0.8s; }
-.kuwento-grid-item:nth-child(4) .kuwento-grid-cover { animation-delay: 1.2s; }
-.kuwento-grid-item:nth-child(5) .kuwento-grid-cover { animation-delay: 1.6s; }
-.kuwento-grid-item:nth-child(6) .kuwento-grid-cover { animation-delay: 2.0s; }
-.kuwento-grid-item:nth-child(7) .kuwento-grid-cover { animation-delay: 2.4s; }
-.kuwento-grid-item:nth-child(8) .kuwento-grid-cover { animation-delay: 2.8s; }
+/* Staggered float delays — generated for up to 12 items */
+.kuwento-grid-item:nth-child(1)  .kuwento-grid-cover { animation-delay: 0s;    }
+.kuwento-grid-item:nth-child(2)  .kuwento-grid-cover { animation-delay: 0.36s; }
+.kuwento-grid-item:nth-child(3)  .kuwento-grid-cover { animation-delay: 0.72s; }
+.kuwento-grid-item:nth-child(4)  .kuwento-grid-cover { animation-delay: 1.08s; }
+.kuwento-grid-item:nth-child(5)  .kuwento-grid-cover { animation-delay: 1.44s; }
+.kuwento-grid-item:nth-child(6)  .kuwento-grid-cover { animation-delay: 1.80s; }
+.kuwento-grid-item:nth-child(7)  .kuwento-grid-cover { animation-delay: 2.16s; }
+.kuwento-grid-item:nth-child(8)  .kuwento-grid-cover { animation-delay: 2.52s; }
+.kuwento-grid-item:nth-child(9)  .kuwento-grid-cover { animation-delay: 2.88s; }
+.kuwento-grid-item:nth-child(10) .kuwento-grid-cover { animation-delay: 3.24s; }
+.kuwento-grid-item:nth-child(11) .kuwento-grid-cover { animation-delay: 3.60s; }
+.kuwento-grid-item:nth-child(12) .kuwento-grid-cover { animation-delay: 3.96s; }
 
 .kuwento-grid-item:hover .kuwento-grid-cover {
-  transform: rotateY(5deg) translateY(-4px);
+  transform: rotateY(-5deg) translateY(-4px);
   animation-play-state: paused;
 }
 
@@ -364,7 +385,7 @@
   font-weight: 700;
 }
 
-/* ── Grid Title & Author ── */
+/* ── Grid Labels ── */
 .kuwento-grid-title {
   margin: 0.5rem 0 0;
   overflow-wrap: break-word;
@@ -387,7 +408,7 @@
   opacity: 0.75;
 }
 
-/* ── Scroll Animations ── */
+/* ── Scroll Reveal ── */
 .scroll-hidden {
   opacity: 0;
   transform: translateY(28px);
@@ -401,15 +422,13 @@
 
 /* ── Keyframes ── */
 @keyframes kuwento-float {
-  0%,
-  100% { transform: rotateY(18deg) translateY(0px); }
-  50%  { transform: rotateY(18deg) translateY(-8px); }
+  0%, 100% { transform: rotateY(-18deg) translateY(0px);  }
+  50%       { transform: rotateY(-18deg) translateY(-8px); }
 }
 
 @keyframes kuwento-float-grid {
-  0%,
-  100% { transform: rotateY(15deg) translateY(0px); }
-  50%  { transform: rotateY(15deg) translateY(-6px); }
+  0%, 100% { transform: rotateY(-15deg) translateY(0px);  }
+  50%       { transform: rotateY(-15deg) translateY(-6px); }
 }
 
 /* ── Reduced Motion ── */
@@ -425,11 +444,27 @@
   .kuwento-grid-cover {
     animation: none;
   }
+
+  .kuwento-card-excerpt,
+  .kuwento-card-cover {
+    transition: none;
+  }
 }
 
-/* ── Mobile ── */
+/* ── Mobile: hide arrow buttons, keep swipe ── */
 @media (max-width: 640px) {
   .kuwento-btn {
     display: none;
+  }
+
+  /* Thin spine on mobile — single gold strip, no thick cascade */
+  .kuwento-card-cover img,
+  .kuwento-cover-placeholder {
+    border-right: 4px solid #8a622e;
+    box-shadow:
+      3px 3px 0px 0px #b89050,
+      5px 5px 0px 0px #8a622e,
+      6px 8px 14px 0px rgba(0, 0, 0, 0.40),
+      0 12px 24px rgba(0, 0, 0, 0.20);
   }
 }

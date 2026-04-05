@@ -2,12 +2,10 @@
    KASAYSAYAN PAGE
    ══════════════════════════════════════════ */
 
-/* ── Page ── */
 .kasaysayan-page {
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  background: #faf8f4;
 }
 
 /* ── Banner ── */
@@ -36,14 +34,10 @@
 .kasaysayan-banner-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(0, 0, 0, 0.72) 0%,
-    rgba(0, 0, 0, 0.45) 55%,
-    rgba(0, 0, 0, 0.15) 100%
-  );
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0 clamp(1.5rem, 6vw, 5rem);
 }
 
@@ -129,40 +123,36 @@
   opacity: 1;
 }
 
-/* ── Body — alternating paragraphs ── */
+/* ── Body ── */
 .kasaysayan-body {
   display: flex;
   flex-direction: column;
   gap: clamp(1.5rem, 3vw, 2.5rem);
 }
 
-/* ── Each paragraph block ── */
-.kasaysayan-para {
+/* ── Row ── */
+.kasaysayan-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1rem, 3vw, 2rem);
+  align-items: center;
   opacity: 0;
   will-change: opacity, transform;
   transition:
-    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    opacity  0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
     transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s);
 }
 
-.kasaysayan-para--left {
-  transform: translateX(-28px);
-  text-align: left;
-  padding-right: clamp(0px, 8vw, 80px);
-}
+.kasaysayan-row--left  { transform: translateX(-28px); }
+.kasaysayan-row--right { transform: translateX(28px); }
 
-.kasaysayan-para--right {
-  transform: translateX(28px);
-  text-align: right;
-  padding-left: clamp(0px, 8vw, 80px);
-}
-
-.kasaysayan-para.is-visible {
+.kasaysayan-row.is-visible {
   opacity: 1;
   transform: none;
 }
 
-.kasaysayan-para p {
+/* ── Text column ── */
+.kasaysayan-text-col p {
   font-family: 'Lora', Georgia, 'Times New Roman', serif;
   font-size: clamp(0.85rem, 1.8vw, 1rem);
   color: #2e2e2e;
@@ -173,26 +163,132 @@
 }
 
 /* ══════════════════════════════════════════
+   IMAGE COLUMN — REVEAL ANIMATION
+   ══════════════════════════════════════════ */
+
+.kasaysayan-img-col {
+  width: 100%;
+  clip-path: inset(0 100% 0 0);
+  transform: scale(0.97);
+  transition:
+    clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s),
+    transform  0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s);
+}
+
+.kasaysayan-row--right .kasaysayan-img-col {
+  clip-path: inset(0 0 0 100%);
+}
+
+.kasaysayan-row.is-visible .kasaysayan-img-col {
+  clip-path: inset(0 0% 0 0);
+  transform: scale(1);
+}
+
+/* ── Shimmer skeleton ── */
+@keyframes kasaysayan-shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.kasaysayan-img-placeholder {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: #a08060;
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+  background-color: #ede8e0;
+  background-image: linear-gradient(
+    90deg,
+    #ede8e0 0px,
+    #e4ddd4 40px,
+    #ede8e0 80px
+  );
+  background-size: 800px 100%;
+  animation: kasaysayan-shimmer 2.2s infinite linear;
+  border: none;
+}
+
+.kasaysayan-row.is-visible .kasaysayan-img-placeholder {
+  animation-play-state: paused;
+  background-image: none;
+  background-color: #ede8e0;
+  border: 2px dashed #c4b49a;
+}
+
+.kasaysayan-img-placeholder svg {
+  opacity: 0.45;
+  position: relative;
+  z-index: 1;
+}
+
+.kasaysayan-img-placeholder span {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Real image ── */
+.kasaysayan-img-real {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+  transform: scale(1.06);
+  transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s);
+}
+
+.kasaysayan-row.is-visible .kasaysayan-img-real {
+  transform: scale(1);
+}
+
+/* ── Hover lift ── */
+.kasaysayan-img-col:hover .kasaysayan-img-real,
+.kasaysayan-img-col:hover .kasaysayan-img-placeholder {
+  transform: scale(1.025);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+}
+
+/* ══════════════════════════════════════════
+   ACCESSIBILITY — reduced motion
+   ══════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .kasaysayan-row,
+  .kasaysayan-img-col,
+  .kasaysayan-heading,
+  .kasaysayan-divider,
+  .kasaysayan-img-real {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+    width: auto !important;
+  }
+}
+
+/* ══════════════════════════════════════════
    RESPONSIVE
    ══════════════════════════════════════════ */
 
-/* ── Tablet ── */
 @media (max-width: 768px) {
   .kasaysayan-banner-img-wrap {
     aspect-ratio: 10 / 4;
   }
-
-  .kasaysayan-para--left {
-    padding-right: clamp(0px, 4vw, 30px);
-  }
-
-  .kasaysayan-para--right {
-    padding-left: clamp(0px, 4vw, 30px);
-  }
 }
 
-/* ── Mobile ── */
-@media (max-width: 480px) {
+@media (max-width: 540px) {
   .kasaysayan-banner-img-wrap {
     aspect-ratio: 4 / 3;
   }
@@ -201,26 +297,32 @@
     font-size: clamp(1.4rem, 8vw, 2rem);
   }
 
-  /* On mobile, remove the indent offset so text fills the width */
-  .kasaysayan-para--left,
-  .kasaysayan-para--right {
-    padding-left: 0;
-    padding-right: 0;
+  .kasaysayan-row {
+    grid-template-columns: 1fr;
     transform: translateY(20px);
   }
 
-  .kasaysayan-para p {
-    font-size: clamp(0.88rem, 3.5vw, 1rem);
+  .kasaysayan-img-col,
+  .kasaysayan-row--right .kasaysayan-img-col {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .kasaysayan-row.is-visible .kasaysayan-img-col {
+    clip-path: inset(0 0 0% 0);
+  }
+
+  .kasaysayan-row--right .kasaysayan-img-col,
+  .kasaysayan-row--left  .kasaysayan-img-col {
+    order: -1;
   }
 }
 
-/* ── Mobile small ── */
 @media (max-width: 350px) {
   .kasaysayan-heading {
     font-size: clamp(1rem, 5vw, 1.2rem);
   }
 
-  .kasaysayan-para p {
+  .kasaysayan-text-col p {
     font-size: 0.88rem;
     line-height: 1.75;
   }

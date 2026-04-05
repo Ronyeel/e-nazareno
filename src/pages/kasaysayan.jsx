@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './kasaysayan.css';
 
 const paragraphs = [
@@ -34,90 +34,145 @@ const paragraphs = [
   },
 ];
 
-function KasaysayanParagraph({ para, index }) {
+function ImagePlaceholder() {
+  return (
+    <div className="kasaysayan-img-placeholder">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <circle cx="8.5" cy="8.5" r="1.5" />
+        <path d="M21 15l-5-5L5 21" />
+      </svg>
+      <span>IMAGE</span>
+    </div>
+  );
+}
+
+function KasaysayanRow({ para, index }) {
   const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const hasRevealed = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Already revealed — re-apply immediately without re-observing
+    if (hasRevealed.current) {
+      setVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add('is-visible');
+          setVisible(true);
+          hasRevealed.current = true;
           observer.disconnect();
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -30px 0px' }
+      { threshold: 0.05, rootMargin: '0px 0px -20px 0px' }
     );
+
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const isLeft = para.align === 'left';
+
   return (
     <div
       ref={ref}
-      className={`kasaysayan-para kasaysayan-para--${para.align}`}
+      className={`kasaysayan-row kasaysayan-row--${para.align}${visible ? ' is-visible' : ''}`}
       style={{ '--delay': `${index * 0.08}s` }}
     >
-      <p>{para.text}</p>
+      {isLeft ? (
+        <>
+          <div className="kasaysayan-text-col"><p>{para.text}</p></div>
+          <div className="kasaysayan-img-col"><ImagePlaceholder /></div>
+        </>
+      ) : (
+        <>
+          <div className="kasaysayan-img-col"><ImagePlaceholder /></div>
+          <div className="kasaysayan-text-col"><p>{para.text}</p></div>
+        </>
+      )}
     </div>
   );
 }
 
 function Kasaysayan() {
-  const titleRef    = useRef(null);
-  const subtitleRef = useRef(null);
-  const dividerRef  = useRef(null);
+  const titleRef   = useRef(null);
+  const dividerRef = useRef(null);
+  const [titleVisible,   setTitleVisible]   = useState(false);
+  const [dividerVisible, setDividerVisible] = useState(false);
+  const titleRevealed   = useRef(false);
+  const dividerRevealed = useRef(false);
 
   useEffect(() => {
-    const targets = [titleRef.current, subtitleRef.current, dividerRef.current].filter(Boolean);
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add('is-visible');
-        });
-      },
-      { threshold: 0.1 }
-    );
-    targets.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    const entries = [
+      { ref: titleRef,   set: setTitleVisible,   revealed: titleRevealed },
+      { ref: dividerRef, set: setDividerVisible,  revealed: dividerRevealed },
+    ];
+
+    const observers = entries.map(({ ref, set, revealed }) => {
+      const el = ref.current;
+      if (!el) return null;
+
+      if (revealed.current) {
+        set(true);
+        return null;
+      }
+
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            set(true);
+            revealed.current = true;
+            obs.disconnect();
+          }
+        },
+        { threshold: 0.1 }
+      );
+      obs.observe(el);
+      return obs;
+    });
+
+    return () => observers.forEach(obs => obs?.disconnect());
   }, []);
 
   return (
     <div className="kasaysayan-page">
 
-      {/* ── Banner ── */}
       <section className="kasaysayan-banner" aria-label="Banner">
         <figure className="kasaysayan-banner-img-wrap">
           <img src="/nazareno_kasaysayan.png" alt="Banner ng Kasaysayan" />
           <div className="kasaysayan-banner-overlay">
             <div className="kasaysayan-banner-text">
-              <h1 className="kasaysayan-banner-title">
-                KASAYSAYAN
-              </h1>
+              <h1 className="kasaysayan-banner-title">KASAYSAYAN</h1>
             </div>
           </div>
         </figure>
       </section>
 
-      {/* ── Content ── */}
       <main className="kasaysayan-content">
-
-        {/* ── Section heading ── */}
         <div className="kasaysayan-heading-wrap">
-          <h2 ref={titleRef} className="kasaysayan-heading">
+          <h2
+            ref={titleRef}
+            className={`kasaysayan-heading${titleVisible ? ' is-visible' : ''}`}
+          >
             Ang Historikal na Bakas ng Poong<br />Nazareno sa Labo
           </h2>
-          <div ref={dividerRef} className="kasaysayan-divider" />
+          <div
+            ref={dividerRef}
+            className={`kasaysayan-divider${dividerVisible ? ' is-visible' : ''}`}
+          />
         </div>
 
-        {/* ── Alternating paragraphs ── */}
         <div className="kasaysayan-body">
           {paragraphs.map((para, i) => (
-            <KasaysayanParagraph key={para.id} para={para} index={i} />
+            <KasaysayanRow key={para.id} para={para} index={i} />
           ))}
         </div>
-
       </main>
 
     </div>

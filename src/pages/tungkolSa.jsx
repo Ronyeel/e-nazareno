@@ -1,32 +1,36 @@
 import { useEffect, useRef } from 'react';
 import './tungkolSa.css';
 
-function TungkolSa() {
-  const titleRef = useRef(null);
-  const subRef   = useRef(null);
-  const bodyRef  = useRef(null);
-  const aboutRef = useRef(null);
+const LAYUNIN_CARDS = [
+  { src: '/layunin1.jpg', alt: 'Bawat pagluhod',     label: 'Bawat pagluhod',     hasImage: true  },
+  { src: '',              alt: '',                    label: 'Bawat hiling',        hasImage: false },
+  { src: '',              alt: '',                    label: 'Bawat pasasalamat',   hasImage: false },
+];
+
+// Shared observer options
+const OBSERVER_OPTS = { threshold: 0.1, rootMargin: '0px 0px -20px 0px' };
+
+export default function TungkolSa() {
+  const refs = {
+    title:   useRef(null),
+    sub:     useRef(null),
+    body:    useRef(null),
+    about:   useRef(null),
+    layunin: useRef(null),
+  };
 
   useEffect(() => {
-    const targets = [
-      titleRef.current,
-      subRef.current,
-      bodyRef.current,
-      aboutRef.current,
-    ].filter(Boolean);
+    const targets = Object.values(refs).map(r => r.current).filter(Boolean);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          observer.unobserve(e.target); // stop watching once visible
+        }
+      });
+    }, OBSERVER_OPTS);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-          }
-        });
-      },
-      { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
-    );
-
-    targets.forEach((el) => observer.observe(el));
+    targets.forEach(el => observer.observe(el));
     return () => observer.disconnect();
   }, []);
 
@@ -46,16 +50,16 @@ function TungkolSa() {
       {/* ── Intro ── */}
       <section className="tungkolSa-intro" aria-labelledby="intro-title">
 
-        <h2 ref={titleRef} id="intro-title" className="tungkolSa-intro-title">
+        <h2 ref={refs.title} id="intro-title" className="tungkolSa-intro-title">
           E-NAZARENO
         </h2>
 
-        <p ref={subRef} className="tungkolSa-intro-sub">
+        <p ref={refs.sub} className="tungkolSa-intro-sub">
           "Isang Digital na <mark>Dambana</mark> ng Pananampalataya"
         </p>
 
-        {/* ── Body — img gives height, text floats on top ── */}
-        <div ref={bodyRef} className="tungkolSa-body-wrap">
+        {/* ── Body ── */}
+        <div ref={refs.body} className="tungkolSa-body-wrap">
           <p className="tungkolSa-intro-body">
             Ang E-Nazareno ay isang makabagong digital na espasyo na nagsisilbing dambana
             ng mga kuwento, kasaysayan, at buhay na pananampalataya ng mga deboto ng Poong
@@ -65,27 +69,22 @@ function TungkolSa() {
             src="/simbahan_front.png"
             alt="Harapan ng Simbahan ng Bayan ng Labo"
             className="tungkolSa-body-img"
+            loading="lazy"
           />
-
           <img
             src="/cross.png"
+            alt=""
+            aria-hidden="true"
             className="tungkolSa-cross"
           />
         </div>
 
         {/* ── About ── */}
         <div className="tungkolSa-about-section">
-
-          <div ref={aboutRef} className="tungkolSa-about-wrap">
-
+          <div ref={refs.about} className="tungkolSa-about-wrap">
             <div className="tungkolSa-about-bg-clip">
-              <img
-                src="/about_background.png"
-                alt=""
-                className="tungkolSa-about-bg"
-              />
+              <img src="/about_background.png" alt="" className="tungkolSa-about-bg" loading="lazy" />
             </div>
-
             <p className="tungkolSa-about-overlay-text">
               <span>
                 Higit sa pagiging isang arkibo, ang platapormang ito ay isang pagsisikap na
@@ -93,22 +92,43 @@ function TungkolSa() {
                 sa likod ng mga tanyag na dambana sa bansa.
               </span>
             </p>
-
           </div>
-
           <div className="tungkolSa-about-logo">
-            <img
-              src="/logo-final.png"
-              alt="E-Nazareno Logo"
-            />
+            <img src="/logo-final.png" alt="E-Nazareno Logo" loading="lazy" />
           </div>
-
         </div>
 
-      </section>
+        {/* ── Layunin ── */}
+        <section
+          ref={refs.layunin}
+          className="tungkolSa-layunin-section"
+          aria-labelledby="layunin-title"
+        >
+          <h3 id="layunin-title" className="tungkolSa-layunin-heading">
+            Layunin nitong ipakita na ang
+          </h3>
 
+          <div className="tungkolSa-layunin-grid">
+            {LAYUNIN_CARDS.map(({ src, alt, label, hasImage }) => (
+              <div
+                key={label}
+                className={`tungkolSa-layunin-card${hasImage ? ' tungkolSa-layunin-card--has-image' : ''}`}
+              >
+                {hasImage && (
+                  <img
+                    src={src}
+                    alt={alt}
+                    className="tungkolSa-layunin-card-img"
+                    loading="lazy"
+                  />
+                )}
+                <span className="tungkolSa-layunin-card-label">{label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      </section>
     </div>
   );
 }
-
-export default TungkolSa;
