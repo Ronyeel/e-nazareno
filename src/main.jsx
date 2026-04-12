@@ -5,7 +5,12 @@ import { BookModalProvider } from './components/book-modal-context';
 import App from './App';
 import './index.css';
 
+
+const basename = import.meta.env.DEV ? "/" : "/e-nazareno";
+
 createRoot(document.getElementById('root')).render(
+
+
   <StrictMode>
     <BrowserRouter>
       <BookModalProvider>

@@ -339,7 +339,8 @@ export default function OpenBook() {
           {/* First block: image floats right, text wraps left */}
           <div className="ob-block">
             <img
-              src="https://placehold.co/180x200/5c3220/fff?text=Image+1"
+              // src="https://placehold.co/180x200/5c3220/fff?text=Image+1"
+              src={openBook.image1}
               alt="Illustration 1"
               className="ob-inline-img ob-inline-img--right"
             />
@@ -349,17 +350,18 @@ export default function OpenBook() {
           </div>
 
           {/* Full-width paragraphs — ALL middle paragraphs, not just 2 */}
+          <img
+            src={openBook.image2}
+            alt="Illustration 2"
+            className="ob-inline-img ob-inline-img--left"
+          />
           {openBook.body.slice(2, openBook.body.length - 2).map((paragraph, index) => (
             <p key={index} className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
           ))}
 
           {/* Second block: image floats left, text wraps right */}
           <div className="ob-block">
-            <img
-              src="https://placehold.co/180x200/3a1e0c/fff?text=Image+2"
-              alt="Illustration 2"
-              className="ob-inline-img ob-inline-img--left"
-            />
+
             {openBook.body.slice(-2).map((para, i) => (
               <p key={i} className="ob-paragraph">{highlightText(para, searchQuery)}</p>
             ))}

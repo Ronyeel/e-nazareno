@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
 
 :root {
-  --ob-ink: #1a1410;
+  --ob-ink: #080705;
   --ob-ink-soft: #4a3f35;
   --ob-ink-muted: #8a7a6e;
   --ob-paper: #faf8f4;
@@ -14,12 +14,14 @@
 }
 
 .ob-root {
-  min-height: 100vh;
   padding-top: var(--header-height);
-  /* ← add this */
-  background: var(--ob-paper);
   color: var(--ob-ink);
   font-family: 'Lora', Georgia, serif;
+  background-image: url('/cover_page.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-attachment: scroll;
 }
 
 /* ── Hero ── */
