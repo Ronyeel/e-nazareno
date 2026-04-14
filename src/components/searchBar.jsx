@@ -3,15 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import Data from '../data/books.json';
 import './searchBar.css';
 
-function SearchBar({ className, expandable = false, expanded, onToggle }) {
+function SearchBar({ className, expandable = false, expanded, onToggle, wrapperRef }) {
   const [search, setSearch] = useState('');
-  const searchClose = useRef(null);
+  const localRef = useRef(null);
+  const searchClose = wrapperRef ?? localRef;
   const [isOpen, setOpen] = useState(false);
   const [sortAscending, setSortAscending] = useState(true);
 
-
   const navigate = useNavigate();
-
 
   const filteredSearch = Data.filter((book) =>
     book.title.toLowerCase().includes(search.toLowerCase())
@@ -23,19 +22,22 @@ function SearchBar({ className, expandable = false, expanded, onToggle }) {
     }
   });
 
-
   useEffect(() => {
-    function mouseClickedOutside(event) {
+    function handleOutside(event) {
       if (searchClose.current && !searchClose.current.contains(event.target)) {
         setOpen(false);
         setSearch('');
       }
     }
-    document.addEventListener('mousedown', mouseClickedOutside);
+
+    document.addEventListener('mousedown', handleOutside);
+    document.addEventListener('touchstart', handleOutside);
+
     return () => {
-      document.removeEventListener('mousedown', mouseClickedOutside);
+      document.removeEventListener('mousedown', handleOutside);
+      document.removeEventListener('touchstart', handleOutside);
     };
-  }, []);
+  }, [searchClose]);
 
   function handleSortToggle() {
     setSortAscending((prev) => !prev);
@@ -43,10 +45,11 @@ function SearchBar({ className, expandable = false, expanded, onToggle }) {
 
   return (
     <>
-      <div className="wrapper" ref={searchClose}>
+      <div className="wrapper" ref={wrapperRef ? undefined : localRef}>
         <div
-          className={`search-bar ${className || ''} ${expandable && expanded ? 'expanded' : ''
-            }`}
+          className={`search-bar ${className || ''} ${
+            expandable && expanded ? 'expanded' : ''
+          }`}
         >
           {expandable ? (
             <button
@@ -61,8 +64,6 @@ function SearchBar({ className, expandable = false, expanded, onToggle }) {
               <img src="/search.svg" alt="Search" className="search-img" />
             </span>
           )}
-          {/* FIX: value={search} added to make this a controlled input,
-              so the field clears when search state resets to "" */}
           <input
             type="text"
             placeholder="Maghanap..."

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import SearchBar from './searchBar';
 import './navBar.css';
@@ -8,8 +8,11 @@ function NavBar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 640);
   const location = useLocation();
-
   const isHome = location.pathname === '/';
+
+  // Ref covers the entire .nav-search container so mobile touches
+  // inside the expanded input are never treated as "outside"
+  const searchWrapperRef = useRef(null);
 
   // Close menu and search bar on route change
   useEffect(() => {
@@ -52,19 +55,16 @@ function NavBar() {
     setSearchOpen(false);
   };
 
-  // Nav links are only hidden when search is actively expanded,
-  // on desktop only, and never on the home page
   const navLinksHidden = !isHome && searchOpen && !isMobile;
 
   return (
     <div className="nav-wrapper">
-
       <NavLink to="/" className="nav-logo" aria-label="Home" onClick={handleLogoClick}>
         <img src="/NAZARENO_LOGO.png" alt="Logo" className="nav-logo-img" />
-
       </NavLink>
 
       <div
+        ref={searchWrapperRef}
         className={[
           'nav-search',
           searchOpen ? 'expanded' : '',
@@ -75,6 +75,7 @@ function NavBar() {
           expandable={true}
           expanded={searchOpen}
           onToggle={handleSearchToggle}
+          wrapperRef={searchWrapperRef}
         />
       </div>
 
@@ -98,7 +99,6 @@ function NavBar() {
         <span></span>
         <span></span>
       </button>
-
     </div>
   );
 }
