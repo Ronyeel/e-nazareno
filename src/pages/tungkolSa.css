@@ -916,6 +916,33 @@
 }
 
 
+
+@keyframes slideOutRight {
+  0% {
+    transform: translate(-50%, -50%) translateX(0);
+    opacity: 0.25;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translate(-50%, -50%) translateX(-100%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) translateX(0);
+    opacity: 1;
+  }
+}
+
+
+
 /* ───────── OUR TEAM SECTION ───────── */
 .our-team {
   display: flex;
@@ -945,41 +972,48 @@
   position: relative;
   width: 95%;
   height: 420px;
-  /* bigger height */
   margin-bottom: 2.5rem;
   border-radius: 20px;
   overflow: hidden;
-
   background: #ea8c98;
-  /* light pink */
 }
 
-/* ───────── TOP PINK STRIP ───────── */
+/* ───────── TOP STRIP ───────── */
 .title-container {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 40%;
-
   background: #e6526b;
 
   display: flex;
   align-items: center;
-  /* CENTER AGAIN (like original) */
   justify-content: center;
 }
 
-/* ───────── BIG TEXT ───────── */
-.title-container p {
-  font-size: 100em;
-  /* bigger */
+/* ───────── BIG BACKGROUND TEXT (AWTOR) ───────── */
+.title-container p:first-child {
+  position: absolute;
+
+  font-size: 15rem;
+  /* CONTROL SIZE HERE */
   font-weight: 900;
   color: #ffffff;
-  opacity: 0.80;
-  letter-spacing: 15px;
-  margin: 0;
+  opacity: 0.25;
+  /* lighter like image */
+  letter-spacing: 10px;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  white-space: nowrap;
+  pointer-events: none;
 }
+
+/* ───────── NAME TEXT (CORTEZ / MARCA) ───────── */
+
 
 /* ───────── PROFILE IMAGE ───────── */
 .profile-container {
@@ -989,6 +1023,7 @@
   top: 0;
   display: flex;
   align-items: flex-end;
+  z-index: 2;
 }
 
 .profile-container img {
@@ -997,200 +1032,135 @@
   object-fit: contain;
 }
 
-
 /* ───────── BOOK IMAGE ───────── */
 .awtor-container>img {
   position: absolute;
   bottom: 65px;
-  left: 21%;
-  height: 220px;
-  /* bigger */
+  left: 18%;
+  height: 200px;
   object-fit: contain;
+
+  z-index: 2;
 }
 
-/* ───────── SECOND CARD (REVERSE) ───────── */
+/* ───────── SECOND CARD (REVERSED) ───────── */
 .awtor-container:nth-child(3) .profile-container {
-  left: 1%;
+  left: 0;
   right: auto;
 }
 
 .awtor-container:nth-child(3)>img {
-  right: 10%;
+  right: 18%;
   left: auto;
 }
 
+/* FIRST TEXT = AWTOR */
+.awtor-hover .title-container p:first-child {
+  position: absolute;
+  opacity: 0.25;
+}
 
-/* ───────── RESPONSIVE ───────── */
+.awtor-hover .title-container p:last-child {
+  position: absolute;
 
-/* TABLET */
-@media (max-width: 1024px) {
-  .awtor-container {
-    height: 360px;
+  font-size: clamp(10rem, 18vw, 40vh);
+  /* 🔥 KEY: base sa height ng screen/container */
+  line-height: 1;
+  font-weight: 900;
+  /* same thickness */
+  letter-spacing: 10px;
+  /* same spacing */
+  color: #ffffff;
+
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) translateX(-100%);
+
+  opacity: 0;
+  z-index: 2;
+
+  white-space: nowrap;
+}
+
+/* ───────── HOVER ANIMATION ───────── */
+
+/* AWTOR slides OUT */
+.awtor-hover:hover .title-container p:first-child {
+  animation: slideOutRight 0.6s ease forwards;
+}
+
+/* NAME slides IN */
+.awtor-hover:hover .title-container p:last-child {
+  animation: slideInRight 0.6s ease forwards;
+}
+
+
+
+/* ───────── TABLET (768px and below) ───────── */
+/* ───────── MOBILE FIX (KEEP SAME SIZE AS DESKTOP) ───────── */
+@media screen and (max-width: 768px) {
+
+  /* BIG BACKGROUND TEXT (AWTOR) */
+  .title-container p:first-child {
+    font-size: 15rem;
+    /* same as desktop */
+    letter-spacing: 10px;
   }
 
-  .title-container p {
-    font-size: 9rem;
-  }
-
-  .profile-container img {
-    height: 300px;
-  }
-
-  .awtor-container>img {
-    height: 180px;
-    left: 15%;
-  }
-
+  /* NAME TEXT (CORTEZ / MARCA / AWTOR HOVER TEXT) */
   .awtor-hover .title-container p:last-child {
-    font-size: 9rem;
+    font-size: 15rem;
+    /* force same scale */
+    letter-spacing: 10px;
+  }
+
+  /* optional: ensure container does NOT shrink layout */
+  .awtor-container {
+    height: 420px;
+    /* keep consistent height */
+  }
+
+  /* optional: prevent image scaling issues */
+  .profile-container img {
+    max-height: 90%;
   }
 }
 
-/* SMALL TABLET / LARGE PHONE */
-@media (max-width: 768px) {
-
-  /* SECOND TEXT = NAME */
-  .awtor-hover .title-container p:last-child {
-    position: absolute;
-    font-size: 3.7rem;
-    font-weight: bold;
-    opacity: 0;
-    letter-spacing: clamp(1px, 0.5vw, 3px);
-
-    /* IMPORTANT */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* ───────── MOBILE (480px and below) ───────── */
+@media (max-width: 480px) {
+  .our-team {
+    padding: 1.5rem 0.8rem;
   }
-
 
   .awtor-container {
-    height: 320px;
-  }
-
-  .title-container p {
-    font-size: 7rem;
-    letter-spacing: 3px;
-  }
-
-  .profile-container img {
     height: 260px;
   }
 
-  .awtor-container>img {
-    height: 150px;
-    left: 12%;
+  .awtor h2 {
+    font-size: 1.5rem;
   }
-}
 
-/* MOBILE */
-@media (max-width: 480px) {
+  /* BIG BACK TEXT */
+  .title-container p:first-child {
+    font-size: 6.5rem;
+    letter-spacing: 4px;
+  }
+
+  /* NAME TEXT */
   .awtor-hover .title-container p:last-child {
-    font-size: 5rem;
+    font-size: clamp(3.5rem, 12vw, 16vh);
+    letter-spacing: 4px;
   }
 
-  .awtor-container {
-    height: 280px;
-  }
-
-  .title-container {
-    height: 35%;
-  }
-
-  .title-container p {
-    font-size: 5rem;
-    letter-spacing: 2px;
-  }
-
-  /* STACK FEEL (still same layout, just tighter) */
+  /* PROFILE IMAGE */
   .profile-container img {
-    height: 200px;
+    max-height: 75%;
   }
 
+  /* BOOK IMAGE */
   .awtor-container>img {
     height: 120px;
-    bottom: 40px;
-    left: 10%;
+    bottom: 30px;
+    left: 6%;
   }
-
-  .awtor-container:nth-child(3)>img {
-    right: 10%;
-  }
-
-  .awtor-hover .title-container p:last-child {
-    transform: scale(0.5);
-  }
-
-}
-
-/* VERY SMALL DEVICES */
-@media (max-width: 360px) {
-
-  .awtor-hover .title-container p:last-child {
-    font-size: 4rem;
-  }
-
-  .awtor-container {
-    height: 250px;
-  }
-
-  .title-container p {
-    font-size: 4rem;
-  }
-
-  .profile-container img {
-    height: 180px;
-  }
-
-  .awtor-container>img {
-    height: 100px;
-  }
-
-}
-
-
-/* ───────── HOVER EFFECT ───────── */
-
-/* make container hoverable */
-.awtor-hover {
-  cursor: pointer;
-}
-
-/* target BOTH texts inside title-container */
-.awtor-hover .title-container p {
-  transition: all 0.4s ease;
-}
-
-/* FIRST TEXT = "AWTOR" */
-.awtor-hover .title-container p:first-child {
-  position: absolute;
-  opacity: 1;
-}
-
-/* SECOND TEXT = NAME */
-.awtor-hover .title-container p:last-child {
-  position: absolute;
-  font-size: 14.5rem;
-  font-weight: bold;
-  opacity: 0;
-  letter-spacing: clamp(1px, 0.5vw, 3px);
-
-  /* IMPORTANT */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* ───────── ON HOVER ───────── */
-
-/* hide AWTOR */
-.awtor-hover:hover .title-container p:first-child {
-  opacity: 0;
-  transform: scale(0.8);
-}
-
-/* show NAME */
-.awtor-hover:hover .title-container p:last-child {
-  opacity: 1;
-  transform: scale(1);
 }
