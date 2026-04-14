@@ -90,27 +90,6 @@ export default function OpenBook() {
     }
   }
 
-  // function handleTimeUpdate() {
-  //   if (audioRef.current) setCurrentTime(audioRef.current.currentTime);
-  // }
-
-  // function handleLoadedMetadata() {
-  //   if (audioRef.current) setDuration(audioRef.current.duration);
-  // }
-
-  // function handleSeek(e) {
-  //   const newTime = parseFloat(e.target.value);
-  //   if (audioRef.current) audioRef.current.currentTime = newTime;
-  //   setCurrentTime(newTime);
-  // }
-
-  // function handleAudioError(e) {
-  //   const err = audioRef.current?.error;
-  //   const msg = err ? `Audio error (code ${err.code}): ${err.message}` : 'Unknown audio error';
-  //   console.error(msg, '\nSrc:', audioSrc);
-  //   setAudioError(`Cannot load audio. Check that the backend is running at ${API_BASE}`);
-  //   setIsPlaying(false);
-  // }
 
 
   function highlightText(text, query) {

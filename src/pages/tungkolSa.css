@@ -507,10 +507,10 @@
 }
 
 /*
-  The bg lives on ::before so we can scale it independently
-  from the cards. JS writes --kat-bg-scale on .kat-sticky.
-  Scale curve:  1 (entry) → 1.15 (mid) → 1 (exit)
-*/
+      The bg lives on ::before so we can scale it independently
+      from the cards. JS writes --kat-bg-scale on .kat-sticky.
+      Scale curve:  1 (entry) → 1.15 (mid) → 1 (exit)
+    */
 .kat-sticky::before {
   content: '';
   position: absolute;
@@ -714,434 +714,6 @@
   }
 }
 
-
-.music-container-sample {
-  position: relative;
-  z-index: 3;
-  width: clamp(260px, 72%, 480px);
-  margin: var(--space-lg) auto var(--space-md);
-  padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 3vw, 1.75rem);
-  box-sizing: border-box;
-
-  /* Glassmorphism */
-  background: rgb(233, 232, 232);
-  backdrop-filter: blur(18px) saturate(160%);
-  /* -webkit-backdrop-filter: blur(18px) saturate(160%); */
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: clamp(16px, 3vw, 24px);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(0.85rem, 2.5vw, 1.25rem);
-  text-align: center;
-}
-
-/* ── Lyrics Block ── */
-.music-lyrics-block {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(0.45rem, 1.2vw, 0.7rem);
-}
-
-.lyr-main {
-  margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.88rem, 2.4vw, 1.15rem);
-  font-weight: 700;
-  color: #0f0f0f;
-  line-height: 1.45;
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
-}
-
-.lyr-main--past {
-  opacity: 0.35;
-  font-weight: 600;
-}
-
-.lyr-main--active {
-  opacity: 1;
-}
-
-.lyr-sub {
-  margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.78rem, 1.9vw, 0.98rem);
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.72);
-  line-height: 1.6;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
-}
-
-.lyr-fade {
-  margin: 0;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.72rem, 1.7vw, 0.88rem);
-  font-style: italic;
-  color: rgba(255, 255, 255, 0.38);
-  line-height: 1.6;
-}
-
-/* ── Progress Bar ── */
-.music-progress-wrap {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.music-progress-wrap span {
-  font-family: sans-serif;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.65);
-  min-width: 30px;
-  line-height: 1;
-}
-
-.music-progress-wrap span:last-child {
-  text-align: right;
-}
-
-.prog-bar {
-  flex: 1;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.25);
-  outline: none;
-  cursor: pointer;
-}
-
-.prog-bar::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-.prog-bar::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: none;
-  cursor: pointer;
-}
-
-/* ── Controls Row ── */
-.music-controls {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(12px, 3.5vw, 26px);
-}
-
-.ctrl-btn {
-  background: none;
-  border: none;
-  padding: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  color: #ffffff;
-  cursor: pointer;
-  opacity: 0.9;
-}
-
-.ctrl-btn svg {
-  display: block;
-  fill: currentColor;
-}
-
-.ctrl-btn--dim {
-  opacity: 0.42;
-}
-
-.ctrl-btn--play {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.85);
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.ctrl-btn--play svg {
-  margin-left: 3px;
-}
-
-/* ── Volume Row ── */
-.vol-wrap {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.vol-wrap svg {
-  flex-shrink: 0;
-  fill: rgba(255, 255, 255, 0.55);
-}
-
-.vol-bar {
-  flex: 1;
-  -webkit-appearance: none;
-  appearance: none;
-  height: 3px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.25);
-  outline: none;
-  cursor: pointer;
-}
-
-.vol-bar::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #ffffff;
-  cursor: pointer;
-}
-
-.vol-bar::-moz-range-thumb {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: none;
-  cursor: pointer;
-}
-
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .music-container-sample {
-    width: 90%;
-    padding: 1.1rem 1rem;
-  }
-
-  .music-controls {
-    gap: clamp(10px, 5vw, 18px);
-  }
-
-  .ctrl-btn--play {
-    width: 38px;
-    height: 38px;
-  }
-}
-
-
-
-.music-container-sample {
-  position: relative;
-  z-index: 3;
-  width: clamp(260px, 68%, 460px);
-  margin: var(--space-lg) auto var(--space-md);
-  padding: clamp(1.4rem, 4vw, 2.2rem) clamp(1.1rem, 3.5vw, 2rem);
-  box-sizing: border-box;
-
-  /* Glassmorphism */
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(22px) saturate(180%) brightness(1.08);
-  -webkit-backdrop-filter: blur(22px) saturate(180%) brightness(1.08);
-
-  /* Border + glow */
-  border: 1px solid rgba(255, 255, 255, 0.28);
-  border-radius: clamp(18px, 3vw, 28px);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 2px 8px rgba(0, 0, 0, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.12);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(1rem, 3vw, 1.5rem);
-  text-align: center;
-}
-
-/* subtle top-edge shimmer line */
-.music-container-sample::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 12%;
-  right: 12%;
-  height: 1px;
-  background: linear-gradient(to right,
-      transparent,
-      rgba(255, 255, 255, 0.55) 40%,
-      rgba(255, 255, 255, 0.55) 60%,
-      transparent);
-  border-radius: 1px;
-  pointer-events: none;
-}
-
-/* ── Lyrics ── */
-.music-lyrics-sample {
-  width: 100%;
-  height: clamp(9rem, 22vw, 13rem);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(0.82rem, 2.2vw, 1.05rem);
-  font-weight: 600;
-  line-height: 1.75;
-  letter-spacing: 0.01em;
-  color: #2c2a2a;
-  overflow: hidden;
-  text-shadow:
-    0 1px 10px rgba(0, 0, 0, 0.55),
-    0 0 30px rgba(255, 255, 255, 0.08);
-
-  /* fade bottom like Apple Music */
-  mask-image: linear-gradient(to bottom,
-      black 0%,
-      black 55%,
-      rgba(0, 0, 0, 0.45) 80%,
-      transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom,
-      black 0%,
-      black 55%,
-      rgba(0, 0, 0, 0.45) 80%,
-      transparent 100%);
-}
-
-/* ── Buttons Row ── */
-.audio-player-buttons {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(10px, 3.5vw, 22px);
-  padding-top: clamp(0.4rem, 1.2vw, 0.75rem);
-
-  /* thin separator line above */
-  border-top: 1px solid rgba(20, 20, 20, 0.747);
-}
-
-/* all button images */
-.audio-player-buttons img {
-  display: block;
-  object-fit: contain;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-drag: none;
-
-  width: clamp(18px, 4vw, 24px);
-  height: clamp(18px, 4vw, 24px);
-
-  opacity: 0.82;
-  filter: brightness(0) invert(0.15);
-  transition:
-    opacity 0.18s ease,
-    transform 0.15s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.18s ease;
-}
-
-/* hover state */
-.audio-player-buttons img:hover {
-  opacity: 1;
-  transform: scale(1.18);
-  filter: brightness(0) invert(1) drop-shadow(0 0 5px rgba(26, 25, 25, 0.6));
-}
-
-/* active / press state */
-.audio-player-buttons img:active {
-  transform: scale(0.92);
-  opacity: 0.7;
-}
-
-/* play button — larger + circle glass */
-.audio-player-buttons img[alt="play"] {
-  width: clamp(36px, 8vw, 46px);
-  height: clamp(36px, 8vw, 46px);
-  padding: clamp(6px, 1.5vw, 10px);
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.10);
-  border: 1.5px solid rgba(0, 0, 0, 0.35);
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  box-sizing: content-box;
-}
-
-.audio-player-buttons img[alt="play"]:hover {
-  background: rgba(255, 255, 255, 0.24);
-  transform: scale(1.1);
-}
-
-/* pause button — same glass pill */
-.audio-player-buttons img[alt="pause"] {
-  width: clamp(36px, 8vw, 46px);
-  height: clamp(36px, 8vw, 46px);
-  padding: clamp(6px, 1.5vw, 10px);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1.5px solid rgba(255, 255, 255, 0.5);
-  box-shadow:
-    0 2px 12px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  box-sizing: content-box;
-}
-
-.audio-player-buttons img[alt="pause"]:hover {
-  background: rgba(255, 255, 255, 0.24);
-  transform: scale(1.1);
-}
-
-/* dimmer icons: list + shuffle (empty alt) */
-.audio-player-buttons img[alt="list-audio"],
-.audio-player-buttons img[alt=""] {
-  opacity: 0.42;
-}
-
-.audio-player-buttons img[alt="list-audio"]:hover,
-.audio-player-buttons img[alt=""]:hover {
-  opacity: 0.88;
-}
-
-/* ── Responsive ── */
-@media (max-width: 480px) {
-  .music-container-sample {
-    width: 88%;
-    padding: 1.1rem 1rem;
-    gap: 0.9rem;
-  }
-
-  .audio-player-buttons {
-    gap: clamp(8px, 4vw, 16px);
-  }
-
-  .audio-player-buttons img[alt="play"],
-  .audio-player-buttons img[alt="pause"] {
-    width: 32px;
-    height: 32px;
-    padding: 7px;
-  }
-}
-
-@media (min-width: 481px) and (max-width: 768px) {
-  .music-container-sample {
-    width: 78%;
-  }
-}
-
-/* ________+++++_________ */
-
-/* ═══════════════════════════════════════════
-   MUSIC CONTAINER SAMPLE
-   Append to the bottom of tungkolSa.css
-   ═══════════════════════════════════════════ */
 
 .music-container-sample {
   position: relative;
@@ -1413,16 +985,19 @@
 .profile-container {
   position: absolute;
   bottom: 0;
-  right: 0%;
+  right: 0;
+  top: 0;
+  /* stretch vertically */
+  display: flex;
+  align-items: flex-end;
+  /* keep image grounded */
 }
 
 .profile-container img {
-  height: 350px;
-  /* bigger */
+  height: 100%;
+  max-height: 90%;
   object-fit: contain;
 }
-
-
 
 
 /* ───────── BOOK IMAGE ───────── */
@@ -1467,10 +1042,30 @@
     height: 180px;
     left: 15%;
   }
+
+  .awtor-hover .title-container p:last-child {
+    font-size: 9rem;
+  }
 }
 
 /* SMALL TABLET / LARGE PHONE */
 @media (max-width: 768px) {
+
+  /* SECOND TEXT = NAME */
+  .awtor-hover .title-container p:last-child {
+    position: absolute;
+    font-size: 3.7rem;
+    font-weight: bold;
+    opacity: 0;
+    letter-spacing: clamp(1px, 0.5vw, 3px);
+
+    /* IMPORTANT */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+
   .awtor-container {
     height: 320px;
   }
@@ -1492,6 +1087,10 @@
 
 /* MOBILE */
 @media (max-width: 480px) {
+  .awtor-hover .title-container p:last-child {
+    font-size: 5rem;
+  }
+
   .awtor-container {
     height: 280px;
   }
@@ -1519,10 +1118,20 @@
   .awtor-container:nth-child(3)>img {
     right: 10%;
   }
+
+  .awtor-hover .title-container p:last-child {
+    transform: scale(0.5);
+  }
+
 }
 
 /* VERY SMALL DEVICES */
 @media (max-width: 360px) {
+
+  .awtor-hover .title-container p:last-child {
+    font-size: 4rem;
+  }
+
   .awtor-container {
     height: 250px;
   }
@@ -1538,6 +1147,7 @@
   .awtor-container>img {
     height: 100px;
   }
+
 }
 
 
@@ -1562,39 +1172,15 @@
 /* SECOND TEXT = NAME */
 .awtor-hover .title-container p:last-child {
   position: absolute;
-  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-size: 14.5rem;
   font-weight: bold;
   opacity: 0;
-  letter-spacing: 2px;
-}
+  letter-spacing: clamp(1px, 0.5vw, 3px);
 
-/* ───────── HOVER EFFECT ───────── */
-
-/* make container hoverable */
-.awtor-hover {
-  cursor: pointer;
-}
-
-/* target BOTH texts inside title-container */
-.awtor-hover .title-container p {
-  transition: all 0.4s ease;
-}
-
-/* FIRST TEXT = "AWTOR" */
-.awtor-hover .title-container p:first-child {
-  position: absolute;
-  opacity: 1;
-}
-
-/* SECOND TEXT = NAME */
-.awtor-hover .title-container p:last-child {
-  position: absolute;
-  font-size: 1.5rem;
-  /*3rem*/
-  font-weight: bold;
-  opacity: 0;
-  letter-spacing: 1px;
+  /* IMPORTANT */
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ───────── ON HOVER ───────── */
@@ -1608,5 +1194,5 @@
 /* show NAME */
 .awtor-hover:hover .title-container p:last-child {
   opacity: 1;
-  transform: scale(3);
+  transform: scale(1);
 }
