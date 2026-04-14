@@ -4,7 +4,7 @@
     "preface": "Historikal",
     "title": "Ang Manlalakbay Sa Pilapil",
     "author": "Stephanie Marca",
-    "cover": "/AMP_book_cover.png",
+    "cover": "/book-cover-for-historikal.png",
     "featured": true
   },
   {
@@ -12,7 +12,7 @@
     "preface": "Espiritwal",
     "title": "Sa Pagitan Ng Bakod At Balikat",
     "author": "Stephanie Marca",
-    "cover": "/BC3-APNBAB.png",
+    "cover": "/sa-pagitan-ng-batot-balikat.jpg",
     "featured": true
   },
   {
@@ -21,15 +21,15 @@
     "title": "Ang Mahinahong Lagaslas ng Agos",
     "author": "Stephanie Marca",
     "cover": "/BOOK_COVER_3_FINAL_v2.png",
-    "featured": false
+    "featured": true
   },
   {
     "id": 4,
     "preface": "Hiling",
     "title": "Sa Liwanag ng Panata",
     "author": "Joey Kate Cortez",
-    "cover": null,
-    "featured": false
+    "cover": "/book-cover-for-hiling.png",
+    "featured": true
   },
   {
     "id": 5,
@@ -37,14 +37,14 @@
     "title": "Ang Bulyaw Ng Pasasalamat",
     "author": "Joey Kate Cortez",
     "cover": "/BC_angbulyawngpasasalamat.jpeg",
-    "featured": false
+    "featured": true
   },
   {
     "id": 6,
     "preface": "Paniniwala",
     "title": "Higit Sa Bato't Semento",
     "author": "Joey Kate Cortez",
-    "cover": null,
-    "featured": false
+    "cover": "/book-cover-higit-sa-bato-t-semento.png",
+    "featured": true
   }
 ]

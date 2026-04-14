@@ -186,8 +186,6 @@
   display: flex;
   flex: 0.5;
   align-items: center;
-  background: #fff;
-  border: 1.5px solid var(--ob-paper-deep);
   border-radius: 6px;
   padding: 5px 10px;
   gap: 6px;
@@ -300,10 +298,10 @@
 
 /* Seek bar track and thumb color */
 
-.ob-seek-container {
+/* .ob-seek-container {
   background-color: #4a3f35;
 
-}
+} */
 
 .ob-seek-bar {
   accent-color: #540317;
@@ -396,5 +394,148 @@ mark.ob-highlight {
   .title-container p:first-child,
   .title-container p:last-child {
     font-size: clamp(1.5rem, 9vw, 4rem) !important;
+  }
+}
+
+
+/* ── Page Navigation ─────────────────────────────────────── */
+
+/* Click zones (invisible, cover left/right 30% of screen) */
+.ob-page-zone {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.ob-page-zone--left {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 12px;
+}
+
+.ob-page-zone--right {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 12px;
+}
+
+.ob-page-zone--disabled {
+  cursor: default;
+}
+
+/* Arrow chevrons that appear on hover */
+.ob-page-arrow {
+  font-size: 2.5rem;
+  color: var(--ob-gold);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.ob-page-zone:not(.ob-page-zone--disabled):hover .ob-page-arrow {
+  opacity: 0.85;
+}
+
+/* Page flip fade animation */
+.ob-story--page {
+  transition: opacity 0.2s ease;
+}
+
+.ob-story--flip-left,
+.ob-story--flip-right {
+  opacity: 0;
+}
+
+/* Dot indicator */
+.ob-page-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ob-page-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ob-paper-deep);
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  display: inline-block;
+}
+
+.ob-page-dot--active {
+  background: var(--ob-accent);
+  transform: scale(1.3);
+}
+
+/* Bottom page nav bar */
+.ob-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 36px;
+  padding-top: 20px;
+  border-top: 1px solid var(--ob-paper-deep);
+}
+
+.ob-page-btn {
+  background: transparent;
+  border: 1.5px solid var(--ob-paper-deep);
+  color: var(--ob-ink-soft);
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.82rem;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.ob-page-btn:hover:not(:disabled) {
+  background: var(--ob-accent);
+  color: #fff;
+  border-color: var(--ob-accent);
+}
+
+.ob-page-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.ob-page-count {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 0.82rem;
+  color: var(--ob-ink-muted);
+  white-space: nowrap;
+}
+
+/* Mobile adjustments */
+@media (max-width: 540px) {
+  .ob-page-arrow {
+    font-size: 1.8rem;
+  }
+
+  .ob-page-btn {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .ob-page-zone--left {
+    padding-left: 6px;
+  }
+
+  .ob-page-zone--right {
+    padding-right: 6px;
   }
 }

@@ -1,30 +1,27 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './tungkolSa.css';
+import openBooks from '../data/openBook.json';
 
 const KATEGORYA_CARDS = [
-  { id: 1, src: '/kategorya1.jpg', label: 'Kasaysayan', side: 'left', },
-  { id: 2, src: '/kategorya2.jpg', label: 'Prusisyon', side: 'right' },
-  { id: 3, src: '/kategorya.png', label: 'Mga Deboto', side: 'left' },
-  { id: 4, src: '/kategorya4.jpg', label: 'Tradisyon', side: 'right' },
-  { id: 5, src: '/kategorya5.jpg', label: 'Panalangin', side: 'left' },
-  { id: 6, src: '/kategorya6.jpg', label: 'Pagmamahal', side: 'right' },
+  { id: 1, src: '/ILLUSTRATION_HISTORIKAL.png', label: 'Historikal', side: 'left', },
+  { id: 2, src: '/ILLUSTRATION_FOR_ESPIRITUWAL_v3.png', label: 'Espirituwal', side: 'right' },
+  { id: 3, src: '/illustration-for-kultural-3.png', label: 'Kultural', side: 'left' },
+  { id: 4, src: '/ILLUSTRATION-FOR-PANINIWALA-2.png', label: 'Paniniwala', side: 'right' },
+  { id: 5, src: '/ILLUSTRATION_FOR_HILING_2_FINAL.png', label: 'Hiling', side: 'left' },
+  { id: 6, src: '/ILLUSTRATION-FOR-PASASALAMAT-3.png', label: 'Pasasalamat', side: 'right' },
 ];
 
 const LAYUNIN_CARDS = [
-  { src: '/layunin1.jpg', alt: 'Bawat pagluhod', label: 'Bawat pagluhod', hasImage: true },
+  { src: '/luhod.jpg', alt: 'Bawat pagluhod', label: 'Bawat pagluhod', hasImage: true },
   { src: '/bawat-hiling.png', alt: '', label: 'Bawat hiling', hasImage: true },
   { src: '/bawat-pasasalamat.jpg', alt: '', label: 'Bawat pasasalamat', hasImage: true },
 ];
 
 const OBSERVER_OPTS = { threshold: 0.1, rootMargin: '0px 0px -20px 0px' };
 
-// Total bands: 6 cards + 2 buffer = 8 viewports
 const TOTAL_BANDS = 6;
 const CARD_COUNT = KATEGORYA_CARDS.length;
 
-// ── Lyric lines with timing (seconds) ──────────────────────────────
-// Edit the text here to match your actual lyrics.
-// Adjust start/end to match your audio file timing.
 const LYRIC_LINES = [
   { text: 'Gamit ang makabagong Audio Feature,', start: 0, end: 5 },
   { text: 'binigyang-buhay ng platapormang ito', start: 5, end: 10 },
@@ -36,6 +33,47 @@ const LYRIC_LINES = [
 
 const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
+// ── BookCarousel component ───────────────────────────────────────────
+function BookCarousel({ authorName }) {
+  const authorBooks = openBooks.filter((b) =>
+    b.author.toUpperCase().includes(authorName.toUpperCase())
+  );
+
+  // Collect all cover images per book (image1, image2, image3)
+  const covers = authorBooks.flatMap((b) =>
+    [b.image1, b.image2, b.image3].filter(Boolean)
+  );
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const intervalRef = useRef(null);
+
+  const startCarousel = useCallback(() => {
+    if (covers.length <= 1) return;
+    intervalRef.current = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % covers.length);
+    }, 5000);
+  }, [covers.length]);
+
+  useEffect(() => {
+    startCarousel();
+    return () => clearInterval(intervalRef.current);
+  }, [startCarousel]);
+
+  if (covers.length === 0) return null;
+
+  const currentCover = covers[activeIndex];
+  const currentBook = authorBooks[activeIndex] || authorBooks[0];
+
+  return (
+    <div className="awtor-book-carousel">
+      <div className="awtor-book-cover">
+        <img src={currentCover} alt={currentBook.title} />
+      </div>
+      <p className="awtor-book-title">{currentBook.title}</p>
+    </div>
+  );
+}
+
 // ── MusicPlayer component ───────────────────────────────────────────
 function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -43,7 +81,6 @@ function MusicPlayer() {
   const rafRef = useRef(null);
   const lastTSRef = useRef(null);
 
-  // RAF tick — advances currentTime while playing
   const tick = useCallback((ts) => {
     if (lastTSRef.current !== null) {
       const delta = (ts - lastTSRef.current) / 1000;
@@ -79,7 +116,6 @@ function MusicPlayer() {
   const handlePrev = () => setCurrentTime(t => Math.max(0, t - 8));
   const handleNext = () => setCurrentTime(t => Math.min(TOTAL_DURATION - 0.1, t + 8));
 
-  // Determine lyric state for each line
   const getLyricClass = (line) => {
     if (currentTime >= line.start && currentTime < line.end) return 'lyric-line lyr--active';
     if (currentTime >= line.end) return 'lyric-line lyr--past';
@@ -145,23 +181,17 @@ function KategoryaStack() {
       const rect = track.getBoundingClientRect();
       const vh = window.innerHeight;
       const scrolled = Math.max(0, -rect.top);
-      const bandH = vh; // one full viewport per card
+      const bandH = vh;
 
-      // ── Card progress ──
       setCards(KATEGORYA_CARDS.map((_, i) => {
         const raw = (scrolled - i * bandH) / bandH;
         return { progress: Math.max(0, Math.min(1, raw)) };
       }));
 
-      // ── BG zoom ──
-      // overall progress through the entire track: 0 → 1
       const totalScroll = TOTAL_BANDS * vh;
       const overallP = Math.max(0, Math.min(1, scrolled / totalScroll));
-
-      // Zoom curve: 1 at entry, peaks at 1.15 at mid-scroll, back to 1 at exit
-      const zoomAmount = 0.15; // max extra scale
+      const zoomAmount = 0.15;
       const bgScale = 1 + zoomAmount * Math.sin(Math.PI * overallP);
-
       sticky.style.setProperty('--kat-bg-scale', bgScale.toFixed(4));
     };
 
@@ -326,20 +356,22 @@ export default function TungkolSa() {
               binubuksan ng kagamitang ito ang pinto upang masilip ang masalimuot ngunit matatag na
               ugnayan ng mga tao sa Poong Nazareno.<br>
               </br>
-
-              Ang bawat salaysay ay maingat na hinabi bilang mga interaktibong kuwento upang mas maging
-              malapit at madaling maunawaan ng mga mambabasa ang tibay ng pananalig na nagmumula sa
-              barangay Dalas patungo sa buong bayan.
             </p>
           </section>
         </div>
+
+        <br />
+
         <div>
           <p>
             Ang bawat salaysay ay maingat na hinabi bilang mga interaktibong kuwento upang mas maging malapit at madaling maunawaan ng mga mambabasa ang tibay ng pananalig na nagmumula sa barangay Dalas patungo sa buong bayan.
           </p>
+
+          <br />
           <p>
             Ito rin ay nagsisilbing isang paanyaya sa mga susunod na henerasyon na balikan ang kanilang pinag-ugatan at kilalanin ang Poong Nazareno hindi lamang bilang isang imahen, kundi bilang katuwang sa bawat danas ng buhay-Laboeño.
           </p>
+          <br />
           <p>
             Sa huli, ang E-Nazareno ay naninindigan na ang tunay na lakas ng isang debosyon ay wala sa laki ng simbahan, kundi sa lalim ng mga kuwentong ipinapasa at sa ningning ng pananampalatayang patuloy na nagbubuklod sa isang pamayanan.
 
@@ -367,7 +399,7 @@ export default function TungkolSa() {
           <div className='profile-container'>
             <img src='/cortez.png' alt='Kate Cortez' />
           </div>
-          <img src="BOOK1.png" alt="" />
+          <BookCarousel authorName="CORTEZ" />
         </div>
         {/*  separation */}
         <div className='awtor-hover awtor-container'>
@@ -383,10 +415,15 @@ export default function TungkolSa() {
           <div className='profile-container'>
             <img src='/MARCA.png' alt='Stephanie Marca' />
           </div>
-          <img src="/BOOK1.png" alt="" />
+          <BookCarousel authorName="MARCA" />
         </div>
 
       </section>
     </div>
   );
 }
+
+
+{/*
+ 
+  */}

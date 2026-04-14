@@ -1,10 +1,19 @@
 import './openBook.css';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 import { useParams } from 'react-router-dom';
 import bookDataToRead from '../data/openBook.json';
 
 const API_BASE = 'https://enazareno-audio.onrender.com';
+
+// How many paragraphs fit per "page" based on viewport height
+function calcParagraphsPerPage() {
+  // Approximate: each paragraph ~120px tall (1rem font, 1.9 line-height, ~4 lines avg)
+  // Reserve ~220px for hero + audio player
+  const available = window.innerHeight - 220;
+  const paraHeight = 120;
+  return Math.max(1, Math.floor(available / paraHeight));
+}
 
 export default function OpenBook() {
 
@@ -38,6 +47,74 @@ export default function OpenBook() {
   const [storyCurrentTime, setStoryCurrentTime] = useState(0);
   const [storyAudioError, setStoryAudioError] = useState(null);
 
+  // ── Page navigation state ────────────────────────────────
+  const [currentPage, setCurrentPage] = useState(0);
+  const [parasPerPage, setParasPerPage] = useState(calcParagraphsPerPage);
+  const [pageFlip, setPageFlip] = useState(null); // 'left' | 'right' | null
+
+  // Recalculate paragraphs per page on resize
+  useEffect(() => {
+    function onResize() {
+      setParasPerPage(calcParagraphsPerPage());
+    }
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  // Split body into pages
+  const body = openBook.body;
+  const totalPages = Math.ceil(body.length / parasPerPage);
+  const pageParas = body.slice(
+    currentPage * parasPerPage,
+    (currentPage + 1) * parasPerPage
+  );
+
+  function goNextPage() {
+    if (currentPage < totalPages - 1) {
+      setPageFlip('right');
+      setTimeout(() => {
+        setCurrentPage(p => p + 1);
+        setPageFlip(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 200);
+    }
+  }
+
+  function goPrevPage() {
+    if (currentPage > 0) {
+      setPageFlip('left');
+      setTimeout(() => {
+        setCurrentPage(p => p - 1);
+        setPageFlip(null);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 200);
+    }
+  }
+
+  // Click zone handler: left 30% = prev, right 30% = next
+  function handlePageClick(e) {
+    // Ignore clicks on interactive elements
+    const tag = e.target.tagName.toLowerCase();
+    if (['button', 'input', 'a', 'mark'].includes(tag)) return;
+    const x = e.clientX;
+    const w = window.innerWidth;
+    if (x < w * 0.30) {
+      goPrevPage();
+    } else if (x > w * 0.70) {
+      goNextPage();
+    }
+  }
+
+  // Keyboard navigation
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNextPage();
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') goPrevPage();
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [currentPage, totalPages]);
+
   // Build the stream URLs from the current book id
   const audioSrc = `${API_BASE}/api/audio/${id}`;
   const prefaceAudioSrc = `${API_BASE}/api/audio/${id}`;
@@ -50,6 +127,8 @@ export default function OpenBook() {
     setDuration(0);
     setAudioError(null);
     setShowPreface(true);
+    setCurrentPage(0);
+    setPageFlip(null);
 
     // Reset preface player
     setPrefaceIsPlaying(false);
@@ -189,19 +268,25 @@ export default function OpenBook() {
     setStoryIsPlaying(false);
   }
 
-  // Per-book image paragraph indices (from JSON, fallback to defaults)
+  // Determine which images fall on the current page
   const img1Para = openBook.image1Para ?? 0;
   const img2Para = openBook.image2Para ?? Math.floor(openBook.body.length / 2);
   const img3Para = openBook.image3Para ?? openBook.body.length - 2;
 
-  // Split body into segments around the 3 image insertion points
-  const seg1 = openBook.body.slice(0, img1Para + 1);
-  const seg2 = openBook.body.slice(img1Para + 1, img2Para + 1);
-  const seg3 = openBook.body.slice(img2Para + 1, img3Para + 1);
-  const seg4 = openBook.body.slice(img3Para + 1);
+  const pageStart = currentPage * parasPerPage;
+  const pageEnd = pageStart + parasPerPage - 1;
+
+  const showImg1 = img1Para >= pageStart && img1Para <= pageEnd;
+  const showImg2 = img2Para >= pageStart && img2Para <= pageEnd;
+  const showImg3 = img3Para >= pageStart && img3Para <= pageEnd;
+
+  // Relative index within the page where each image should appear
+  const img1Rel = img1Para - pageStart;
+  const img2Rel = img2Para - pageStart;
+  const img3Rel = img3Para - pageStart;
 
   return (
-    <div className="ob-root">
+    <div className="ob-root" onClick={handlePageClick}>
 
       {/* Preface Modal */}
       {showPreface && (
@@ -322,62 +407,132 @@ export default function OpenBook() {
         </div>
       </div>
 
-      <main className="ob-main">
-        <article className="ob-story">
+      {/* ── Page navigation click zones ── */}
+      {!showPreface && (
+        <>
+          {/* Left zone — previous page */}
+          <div
+            className={`ob-page-zone ob-page-zone--left${currentPage === 0 ? ' ob-page-zone--disabled' : ''}`}
+            aria-label="Previous page"
+          >
+            {currentPage > 0 && (
+              <div className="ob-page-arrow ob-page-arrow--left">&#8249;</div>
+            )}
+          </div>
 
-          {/* Block 1: image1 floats right, seg1 paragraphs wrap around it */}
+          {/* Right zone — next page */}
+          <div
+            className={`ob-page-zone ob-page-zone--right${currentPage === totalPages - 1 ? ' ob-page-zone--disabled' : ''}`}
+            aria-label="Next page"
+          >
+            {currentPage < totalPages - 1 && (
+              <div className="ob-page-arrow ob-page-arrow--right">&#8250;</div>
+            )}
+          </div>
+        </>
+      )}
+
+      <main className="ob-main">
+        {/* Page indicator */}
+        {!showPreface && (
+          <div className="ob-page-indicator">
+            {Array.from({ length: totalPages }).map((_, i) => (
+              <span
+                key={i}
+                className={`ob-page-dot${i === currentPage ? ' ob-page-dot--active' : ''}`}
+                onClick={e => { e.stopPropagation(); setCurrentPage(i); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                aria-label={`Page ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
+
+        <article
+          className={`ob-story ob-story--page${pageFlip ? ` ob-story--flip-${pageFlip}` : ''}`}
+        >
+          {/* Render current page paragraphs, inserting images at their relative positions */}
           <div className="ob-block">
-            {openBook.image1 && (
+            {showImg1 && openBook.image1 && img1Rel === 0 && (
               <img
                 src={openBook.image1}
                 alt="Illustration 1"
                 className="ob-inline-img ob-inline-img--right"
               />
             )}
-            {seg1.map((paragraph, index) => (
-              <p key={index} className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
-            ))}
-          </div>
-
-          {/* Block 2: seg2 paragraphs (no image) */}
-          <div className="ob-block">
-            {seg2.map((paragraph, index) => (
-              <p key={index} className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
-            ))}
-          </div>
-
-          {/* Block 3: image2 floats left, seg3 paragraphs wrap around it */}
-          <div className="ob-block">
-            {openBook.image2 && (
+            {showImg2 && openBook.image2 && img2Rel === 0 && (
               <img
                 src={openBook.image2}
                 alt="Illustration 2"
                 className="ob-inline-img ob-inline-img--left"
               />
             )}
-            {seg3.map((paragraph, index) => (
-              <p key={index} className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
-            ))}
-          </div>
-
-          {/* Block 4: image3 floats right, seg4 paragraphs wrap around it */}
-          <div className="ob-block">
-            {openBook.image3 && (
+            {showImg3 && openBook.image3 && img3Rel === 0 && (
               <img
                 src={openBook.image3}
                 alt="Illustration 3"
                 className="ob-inline-img ob-inline-img--right"
               />
             )}
-            {seg4.map((paragraph, index) => (
-              <p key={index} className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
+
+            {pageParas.map((paragraph, index) => (
+              <div key={pageStart + index}>
+                {/* Insert images after the paragraph at their relative index */}
+                {showImg1 && openBook.image1 && img1Rel === index + 1 && (
+                  <img
+                    src={openBook.image1}
+                    alt="Illustration 1"
+                    className="ob-inline-img ob-inline-img--right"
+                  />
+                )}
+                {showImg2 && openBook.image2 && img2Rel === index + 1 && (
+                  <img
+                    src={openBook.image2}
+                    alt="Illustration 2"
+                    className="ob-inline-img ob-inline-img--left"
+                  />
+                )}
+                {showImg3 && openBook.image3 && img3Rel === index + 1 && (
+                  <img
+                    src={openBook.image3}
+                    alt="Illustration 3"
+                    className="ob-inline-img ob-inline-img--right"
+                  />
+                )}
+                <p className="ob-paragraph">{highlightText(paragraph, searchQuery)}</p>
+              </div>
             ))}
           </div>
 
+          {/* End mark only on last page */}
+          {currentPage === totalPages - 1 && (
+            <div className="ob-end-mark" aria-hidden="true">
+              <span>— Katapusan —</span>
+            </div>
+          )}
         </article>
-        <div className="ob-end-mark" aria-hidden="true">
-          <span>— Katapusan —</span>
-        </div>
+
+        {/* Bottom page navigation buttons */}
+        {!showPreface && (
+          <div className="ob-page-nav">
+            <button
+              className="ob-page-btn"
+              onClick={e => { e.stopPropagation(); goPrevPage(); }}
+              disabled={currentPage === 0}
+              aria-label="Previous page"
+            >
+              &#8249; Nakaraang Pahina
+            </button>
+            <span className="ob-page-count">{currentPage + 1} / {totalPages}</span>
+            <button
+              className="ob-page-btn"
+              onClick={e => { e.stopPropagation(); goNextPage(); }}
+              disabled={currentPage === totalPages - 1}
+              aria-label="Next page"
+            >
+              Susunod na Pahina &#8250;
+            </button>
+          </div>
+        )}
       </main>
 
     </div>

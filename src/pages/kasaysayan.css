@@ -100,7 +100,7 @@
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .kasaysayan-heading.is-visible {
@@ -115,7 +115,7 @@
   margin: 0 auto;
   opacity: 0;
   transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
-              opacity 0.5s ease 0.3s;
+    opacity 0.5s ease 0.3s;
 }
 
 .kasaysayan-divider.is-visible {
@@ -139,12 +139,17 @@
   opacity: 0;
   will-change: opacity, transform;
   transition:
-    opacity  0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
+    opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s),
     transform 0.75s cubic-bezier(0.22, 1, 0.36, 1) var(--delay, 0s);
 }
 
-.kasaysayan-row--left  { transform: translateX(-28px); }
-.kasaysayan-row--right { transform: translateX(28px); }
+.kasaysayan-row--left {
+  transform: translateX(-28px);
+}
+
+.kasaysayan-row--right {
+  transform: translateX(28px);
+}
 
 .kasaysayan-row.is-visible {
   opacity: 1;
@@ -172,7 +177,7 @@
   transform: scale(0.97);
   transition:
     clip-path 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s),
-    transform  0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s);
+    transform 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(var(--delay, 0s) + 0.18s);
 }
 
 .kasaysayan-row--right .kasaysayan-img-col {
@@ -186,8 +191,13 @@
 
 /* ── Shimmer skeleton ── */
 @keyframes kasaysayan-shimmer {
-  0%   { background-position: -400px 0; }
-  100% { background-position: 400px 0; }
+  0% {
+    background-position: -400px 0;
+  }
+
+  100% {
+    background-position: 400px 0;
+  }
 }
 
 .kasaysayan-img-placeholder {
@@ -207,15 +217,23 @@
   position: relative;
   overflow: hidden;
   background-color: #ede8e0;
-  background-image: linear-gradient(
-    90deg,
-    #ede8e0 0px,
-    #e4ddd4 40px,
-    #ede8e0 80px
-  );
+  background-image: linear-gradient(90deg,
+      #ede8e0 0px,
+      #e4ddd4 40px,
+      #ede8e0 80px);
   background-size: 800px 100%;
   animation: kasaysayan-shimmer 2.2s infinite linear;
   border: none;
+}
+
+
+.kasaysayan-img-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  border-radius: 4px;
 }
 
 .kasaysayan-row.is-visible .kasaysayan-img-placeholder {
@@ -264,6 +282,7 @@
    ══════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
+
   .kasaysayan-row,
   .kasaysayan-img-col,
   .kasaysayan-heading,
@@ -312,7 +331,7 @@
   }
 
   .kasaysayan-row--right .kasaysayan-img-col,
-  .kasaysayan-row--left  .kasaysayan-img-col {
+  .kasaysayan-row--left .kasaysayan-img-col {
     order: -1;
   }
 }

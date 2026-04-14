@@ -60,8 +60,8 @@ function NavBar() {
     <div className="nav-wrapper">
 
       <NavLink to="/" className="nav-logo" aria-label="Home" onClick={handleLogoClick}>
-        <img src="/logo-final.png" alt="Logo" className="nav-logo-img" />
-        <h1>E-Nazareno</h1>
+        <img src="/NAZARENO_LOGO.png" alt="Logo" className="nav-logo-img" />
+
       </NavLink>
 
       <div
@@ -80,7 +80,7 @@ function NavBar() {
 
       <ul className={[
         'nav-links',
-        isOpen         ? 'open'   : '',
+        isOpen ? 'open' : '',
         navLinksHidden ? 'hidden' : '',
       ].filter(Boolean).join(' ')}>
         <li><NavLink to="/" onClick={handleNavLinkClick}>Home</NavLink></li>

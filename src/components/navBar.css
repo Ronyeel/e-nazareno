@@ -11,19 +11,19 @@
 /* ── Logo ── */
 .nav-logo {
   position: absolute;
-  left: 0;
+  left: 8%;
   display: flex;
   align-items: center;
   flex-shrink: 0;
   text-decoration: none;
-  background-color: var(--navigation-text-color);
-  padding: 0 clamp(0.5rem, 2vw, 2.5rem) 0 0.5rem;
-  border-radius: 15px;
+  /* background-color: var(--navigation-text-color); */
+  padding: -1.5 clamp(0.5rem, 2vw, 2.5rem) 0 0.5rem;
+  /* border-radius: 15px; */
   z-index: 10;
 }
 
 .nav-logo-img {
-  height: clamp(1.5rem, 3.5vh, 2.5rem);
+  height: clamp(3.5rem, 5.5vh, 4.5rem);
   width: auto;
   object-fit: contain;
   flex-shrink: 0;
