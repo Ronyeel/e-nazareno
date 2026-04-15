@@ -405,9 +405,12 @@ mark.ob-highlight {
 /* Click zones (invisible, cover left/right 30% of screen) */
 .ob-page-zone {
   position: fixed;
-  top: 0;
-  bottom: 0;
-  width: 15%;
+  top: 120px;
+  /* push below header + audio player */
+  bottom: 60px;
+  /* stop above bottom nav bar */
+  width: 5%;
+  /* was 15% */
   z-index: 10;
   display: flex;
   align-items: center;
@@ -534,10 +537,10 @@ mark.ob-highlight {
   }
 
   .ob-page-zone--left {
-    padding-left: 6px;
+    padding-left: 2px;
   }
 
   .ob-page-zone--right {
-    padding-right: 6px;
+    padding-right: 2px;
   }
 }
