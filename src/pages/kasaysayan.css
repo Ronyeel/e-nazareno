@@ -297,44 +297,30 @@
   }
 }
 
-/* ══════════════════════════════════════════
-   RESPONSIVE
-   ══════════════════════════════════════════ */
 
-@media (max-width: 768px) {
-  .kasaysayan-banner-img-wrap {
-    aspect-ratio: 10 / 4;
-  }
+.kasaysayan-banner-title {
+  font-size: clamp(1.4rem, 8vw, 2rem);
 }
 
-@media (max-width: 540px) {
-  .kasaysayan-banner-img-wrap {
-    aspect-ratio: 4 / 3;
-  }
-
-  .kasaysayan-banner-title {
-    font-size: clamp(1.4rem, 8vw, 2rem);
-  }
-
-  .kasaysayan-row {
-    grid-template-columns: 1fr;
-    transform: translateY(20px);
-  }
-
-  .kasaysayan-img-col,
-  .kasaysayan-row--right .kasaysayan-img-col {
-    clip-path: inset(0 0 100% 0);
-  }
-
-  .kasaysayan-row.is-visible .kasaysayan-img-col {
-    clip-path: inset(0 0 0% 0);
-  }
-
-  .kasaysayan-row--right .kasaysayan-img-col,
-  .kasaysayan-row--left .kasaysayan-img-col {
-    order: -1;
-  }
+.kasaysayan-row {
+  grid-template-columns: 1fr;
+  transform: translateY(20px);
 }
+
+.kasaysayan-img-col,
+.kasaysayan-row--right .kasaysayan-img-col {
+  clip-path: inset(0 0 100% 0);
+}
+
+.kasaysayan-row.is-visible .kasaysayan-img-col {
+  clip-path: inset(0 0 0% 0);
+}
+
+.kasaysayan-row--right .kasaysayan-img-col,
+.kasaysayan-row--left .kasaysayan-img-col {
+  order: -1;
+}
+
 
 @media (max-width: 350px) {
   .kasaysayan-heading {
