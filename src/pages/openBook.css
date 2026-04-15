@@ -472,9 +472,9 @@ mark.ob-highlight {
 }
 
 .ob-page-btn {
-  background: transparent;
-  border: 1.5px solid var(--ob-paper-deep);
-  color: var(--ob-ink-soft);
+  background: #540317;
+  border: 1.5px solid var(--ob-accent);
+  color: var(--ob-paper-warm);
   font-family: 'Lora', Georgia, serif;
   font-size: 0.82rem;
   padding: 8px 16px;
@@ -485,7 +485,7 @@ mark.ob-highlight {
 }
 
 .ob-page-btn:hover:not(:disabled) {
-  background: var(--ob-accent);
+  background: #540317;
   color: #fff;
   border-color: var(--ob-accent);
 }

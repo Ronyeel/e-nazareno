@@ -1108,7 +1108,7 @@
 }
 
 .awtor-book-cover {
-  width: clamp(70px, 11vw, 140px);
+  width: clamp(90px, 14vw, 175px);
   aspect-ratio: 3 / 4;
   overflow: hidden;
   border: none;
@@ -1159,6 +1159,50 @@
     transform: rotateY(-15deg) translateY(-6px);
   }
 }
+
+@media (min-width: 481px) and (max-width: 580px) {
+  .our-team {
+    padding: 1.8rem 0.9rem;
+  }
+
+  .awtor-container {
+    height: 340px;
+  }
+
+  .awtor h2 {
+    font-size: 1.75rem;
+  }
+
+  .title-container p:first-child {
+    font-size: 9rem;
+    letter-spacing: 6px;
+  }
+
+  .awtor-hover .title-container p:last-child {
+    font-size: clamp(5rem, 15vw, 20vh);
+    letter-spacing: 6px;
+  }
+
+  .profile-container img {
+    max-height: 82%;
+  }
+
+  .awtor-book-carousel {
+    bottom: 45px;
+    left: 10%;
+  }
+
+  .awtor-container:nth-child(3) .awtor-book-carousel {
+    right: 10%;
+    left: auto;
+  }
+
+  .awtor-book-cover {
+    width: clamp(80px, 16vw, 120px);
+  }
+}
+
+
 
 @media (max-width: 480px) {
   .awtor-book-carousel {
