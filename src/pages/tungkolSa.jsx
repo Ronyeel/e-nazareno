@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import './tungkolSa.css';
 import openBooks from '../data/openBook.json';
+import books from '../data/books.json';
 
 const KATEGORYA_CARDS = [
   { id: 1, src: '/ILLUSTRATION_HISTORIKAL.png', label: 'Historikal', side: 'left', },
@@ -35,39 +36,33 @@ const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
 // ── BookCarousel component ───────────────────────────────────────────
 function BookCarousel({ authorName }) {
-  const authorBooks = openBooks.filter((b) =>
+  const authorBooks = books.filter((b) =>
     b.author.toUpperCase().includes(authorName.toUpperCase())
-  );
-
-  // Collect all cover images per book (image1, image2, image3)
-  const covers = authorBooks.flatMap((b) =>
-    [b.image1, b.image2, b.image3].filter(Boolean)
   );
 
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef(null);
 
   const startCarousel = useCallback(() => {
-    if (covers.length <= 1) return;
+    if (authorBooks.length <= 1) return;
     intervalRef.current = setInterval(() => {
-      setActiveIndex((prev) => (prev + 1) % covers.length);
+      setActiveIndex((prev) => (prev + 1) % authorBooks.length);
     }, 5000);
-  }, [covers.length]);
+  }, [authorBooks.length]);
 
   useEffect(() => {
     startCarousel();
     return () => clearInterval(intervalRef.current);
   }, [startCarousel]);
 
-  if (covers.length === 0) return null;
+  if (authorBooks.length === 0) return null;
 
-  const currentCover = covers[activeIndex];
-  const currentBook = authorBooks[activeIndex] || authorBooks[0];
+  const currentBook = authorBooks[activeIndex];
 
   return (
     <div className="awtor-book-carousel">
       <div className="awtor-book-cover">
-        <img src={currentCover} alt={currentBook.title} />
+        <img src={currentBook.cover} alt={currentBook.title} />
       </div>
       <p className="awtor-book-title">{currentBook.title}</p>
     </div>
@@ -267,9 +262,9 @@ export default function TungkolSa() {
 
       <section className="tungkolSa-banner" aria-label="Banner">
         <figure className="tungkolSa-banner-img-wrap">
-          <img src="/banner_tungkolsa.png" alt="Banner ng E-Nazareno" />
+          <img src="/banner2.jpg" alt="Banner ng E-Nazareno" />
           <figcaption className="tungkolSa-banner-overlay">
-            <h1>TUNGKOL SA AMIN</h1>
+            <h1>Tungkol sa amin</h1>
           </figcaption>
         </figure>
       </section>
@@ -425,5 +420,5 @@ export default function TungkolSa() {
 
 
 {/*
- 
+ dsfsdfsdfsd
   */}
