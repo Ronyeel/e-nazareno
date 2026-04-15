@@ -64,7 +64,7 @@
 .tungkolSa-banner-overlay h1 {
   font-size: clamp(1.25rem, 4vw + 0.5rem, 5rem);
   font-weight: 700;
-  color:#ffffff;
+  color: #ffffff;
   font-family: 'Playfair Display', 'Georgia', serif;
   margin: 0;
   line-height: clamp(1.2, 1.2 + 0.5vw, 1.5);
@@ -137,7 +137,6 @@
   object-position: center top;
 }
 
-/* ── About ── */
 .tungkolSa-about-section {
   position: relative;
   width: 100%;
@@ -223,7 +222,7 @@
   word-break: break-word;
 }
 
-/* ── Kategorya Bg Wrap ── */
+
 .tungkolSa-kategorya-bg-wrap {
   position: relative;
   width: calc(100% + var(--space-sm) * 2);
@@ -233,7 +232,7 @@
   overflow: visible;
 }
 
-/* ── Kategorya Section ── */
+
 .tungkolSa-kategorya-section {
   position: relative;
   z-index: 1;
@@ -274,7 +273,7 @@
   margin-top: var(--space-sm);
 }
 
-/* ── Layunin ── */
+
 .tungkolSa-layunin-section {
   margin-top: var(--space-lg);
   padding-bottom: var(--space-xl);
@@ -361,7 +360,7 @@
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
 }
 
-/* ── Scroll Animations ── */
+
 .tungkolSa-intro-title,
 .tungkolSa-intro-sub,
 .tungkolSa-body-wrap,
@@ -429,7 +428,7 @@
     drop-shadow(0 25px 20px rgba(255, 61, 61, 0.251)) drop-shadow(0 25px 14px rgba(172, 27, 27, 0.484)) drop-shadow(0 20px 10px rgba(255, 128, 128, 0.534));
 }
 
-/* ── Kat Track & Sticky ── */
+
 .kat-track {
   position: relative;
   width: 100%;
@@ -451,11 +450,7 @@
   overflow: hidden;
 }
 
-/*
-      The bg lives on ::before so we can scale it independently
-      from the cards. JS writes --kat-bg-scale on .kat-sticky.
-      Scale curve:  1 (entry) → 1.15 (mid) → 1 (exit)
-    */
+
 .kat-sticky::before {
   content: '';
   position: absolute;
@@ -470,7 +465,7 @@
   z-index: 0;
 }
 
-/* dark overlay above the bg pseudo */
+
 .kat-sticky::after {
   content: '';
   position: absolute;
@@ -559,7 +554,7 @@
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
 }
 
-/* ── Responsive: Cross ── */
+
 @media (max-width: 320px) {
   .tungkolSa-cross {
     right: -2px;
@@ -592,7 +587,7 @@
   }
 }
 
-/* ── Responsive: About Logo ── */
+
 @media (max-width: 320px) {
   .tungkolSa-about-logo {
     height: clamp(200px, 35vw, 130px);
@@ -625,7 +620,6 @@
   }
 }
 
-/* ── Responsive: Layunin ── */
 @media (max-width: 480px) {
   .tungkolSa-layunin-heading {
     font-size: clamp(1.1rem, 5vw, 1.4rem);
@@ -701,7 +695,7 @@
   pointer-events: none;
 }
 
-/* ── Lyrics wrapper ── */
+
 .music-lyrics-sample {
   width: 100%;
   font-family: Georgia, 'Times New Roman', serif;
@@ -724,7 +718,7 @@
       transparent 100%);
 }
 
-/* each lyric line — JS adds this class */
+
 .lyric-line {
   display: block;
   color: rgba(0, 0, 0, 0.55);
@@ -736,7 +730,7 @@
   text-shadow: none;
 }
 
-/* active line */
+
 .lyric-line.lyr--active {
   color: #818181;
   font-size: clamp(0.9rem, 2.5vw, 1.15rem);
@@ -745,12 +739,10 @@
     0 1px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* past lines */
 .lyric-line.lyr--past {
   color: rgba(0, 0, 0, 0.45);
 }
 
-/* ── Buttons Row ── */
 .audio-player-buttons {
   width: 100%;
   display: flex;
@@ -788,7 +780,6 @@
   opacity: 0.7;
 }
 
-/* play & pause shared pill style */
 .audio-player-buttons img[alt="play"],
 .audio-player-buttons img[alt="pause"] {
   width: clamp(36px, 8vw, 46px);
@@ -809,12 +800,11 @@
   transform: scale(1.1);
 }
 
-/* pause hidden by default */
+
 .audio-player-buttons img[alt="pause"] {
   display: none;
 }
 
-/* when .is-playing on container — swap buttons */
 .music-container-sample.is-playing img[alt="play"] {
   display: none;
 }
@@ -823,7 +813,7 @@
   display: block;
 }
 
-/* dimmer secondary icons */
+
 .audio-player-buttons img[alt="list-audio"],
 .audio-player-buttons img[alt=""] {
   opacity: 0.42;
@@ -834,7 +824,6 @@
   opacity: 0.88;
 }
 
-/* ── Responsive ── */
 @media (max-width: 480px) {
   .music-container-sample {
     width: 88%;
@@ -888,7 +877,7 @@
 
 
 
-/* ───────── OUR TEAM SECTION ───────── */
+
 .our-team {
   display: flex;
   flex-direction: column;
@@ -896,12 +885,12 @@
   justify-content: center;
   width: 100%;
   max-width: 1300px;
-  /* wider */
+
   margin: 0 auto;
   padding: 2.5rem 1rem;
 }
 
-/* ───────── TITLE ───────── */
+
 .awtor {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -912,7 +901,7 @@
   font-weight: bold;
 }
 
-/* ───────── CARD ───────── */
+
 .awtor-container {
   position: relative;
   width: 95%;
@@ -923,7 +912,7 @@
   background: #ea8c98;
 }
 
-/* ───────── TOP STRIP ───────── */
+
 .title-container {
   position: absolute;
   top: 0;
@@ -937,16 +926,16 @@
   justify-content: center;
 }
 
-/* ───────── BIG BACKGROUND TEXT (AWTOR) ───────── */
+
 .title-container p:first-child {
   position: absolute;
 
   font-size: 15rem;
-  /* CONTROL SIZE HERE */
+
   font-weight: 900;
   color: #ffffff;
   opacity: 0.25;
-  /* lighter like image */
+
   letter-spacing: 10px;
 
   top: 50%;
@@ -957,10 +946,7 @@
   pointer-events: none;
 }
 
-/* ───────── NAME TEXT (CORTEZ / MARCA) ───────── */
 
-
-/* ───────── PROFILE IMAGE ───────── */
 .profile-container {
   position: absolute;
   bottom: 0;
@@ -977,7 +963,7 @@
   object-fit: contain;
 }
 
-/* ───────── BOOK IMAGE ───────── */
+
 .awtor-container>img {
   position: absolute;
   bottom: 65px;
@@ -988,7 +974,7 @@
   z-index: 2;
 }
 
-/* ───────── SECOND CARD (REVERSED) ───────── */
+
 .awtor-container:nth-child(3) .profile-container {
   left: 0;
   right: auto;
@@ -999,7 +985,7 @@
   left: auto;
 }
 
-/* FIRST TEXT = AWTOR */
+
 .awtor-hover .title-container p:first-child {
   position: absolute;
   opacity: 0.25;
@@ -1009,12 +995,12 @@
   position: absolute;
 
   font-size: clamp(10rem, 18vw, 40vh);
-  /* 🔥 KEY: base sa height ng screen/container */
+
   line-height: 1;
   font-weight: 900;
-  /* same thickness */
+
   letter-spacing: 10px;
-  /* same spacing */
+
   color: #ffffff;
 
   top: 50%;
@@ -1027,51 +1013,46 @@
   white-space: nowrap;
 }
 
-/* ───────── HOVER ANIMATION ───────── */
 
-/* AWTOR slides OUT */
 .awtor-hover:hover .title-container p:first-child {
   animation: slideOutRight 0.6s ease forwards;
 }
 
-/* NAME slides IN */
+
 .awtor-hover:hover .title-container p:last-child {
   animation: slideInRight 0.6s ease forwards;
 }
 
 
 
-/* ───────── TABLET (768px and below) ───────── */
-/* ───────── MOBILE FIX (KEEP SAME SIZE AS DESKTOP) ───────── */
 @media screen and (max-width: 768px) {
 
-  /* BIG BACKGROUND TEXT (AWTOR) */
   .title-container p:first-child {
     font-size: 15rem;
-    /* same as desktop */
+
     letter-spacing: 10px;
   }
 
-  /* NAME TEXT (CORTEZ / MARCA / AWTOR HOVER TEXT) */
+
   .awtor-hover .title-container p:last-child {
     font-size: 15rem;
-    /* force same scale */
+
     letter-spacing: 10px;
   }
 
-  /* optional: ensure container does NOT shrink layout */
+
   .awtor-container {
     height: 420px;
-    /* keep consistent height */
+
   }
 
-  /* optional: prevent image scaling issues */
+
   .profile-container img {
     max-height: 90%;
   }
 }
 
-/* ───────── MOBILE (480px and below) ───────── */
+
 @media (max-width: 480px) {
   .our-team {
     padding: 1.5rem 0.8rem;
@@ -1085,24 +1066,22 @@
     font-size: 1.5rem;
   }
 
-  /* BIG BACK TEXT */
   .title-container p:first-child {
     font-size: 6.5rem;
     letter-spacing: 4px;
   }
 
-  /* NAME TEXT */
+
   .awtor-hover .title-container p:last-child {
     font-size: clamp(3.5rem, 12vw, 16vh);
     letter-spacing: 4px;
   }
 
-  /* PROFILE IMAGE */
+
   .profile-container img {
     max-height: 75%;
   }
 
-  /* BOOK IMAGE */
   .awtor-container>img {
     height: 120px;
     bottom: 30px;
@@ -1111,9 +1090,7 @@
 }
 
 
-/* carousel */
 
-/* ── Awtor Book Carousel ── */
 .awtor-book-carousel {
   position: absolute;
   bottom: 65px;
@@ -1183,7 +1160,6 @@
   }
 }
 
-/* ── Mobile adjustments ── */
 @media (max-width: 480px) {
   .awtor-book-carousel {
     bottom: 30px;

@@ -25,7 +25,7 @@ function Carousel() {
   const autoPlayRef = useRef(null);
   const resumeTimerRef = useRef(null);
 
-  // Touch tracking
+
   const touchStartX = useRef(null);
   const touchStartY = useRef(null);
   const isSwiping = useRef(false);
@@ -58,7 +58,7 @@ function Carousel() {
     }
   };
 
-  // ── Swipe handlers ──
+
   const handleTouchStart = (e) => {
     touchStartX.current = e.touches[0].clientX;
     touchStartY.current = e.touches[0].clientY;
@@ -69,10 +69,10 @@ function Carousel() {
     if (touchStartX.current === null) return;
     const dx = e.touches[0].clientX - touchStartX.current;
     const dy = e.touches[0].clientY - touchStartY.current;
-    // Only lock as horizontal swipe if mostly horizontal
+
     if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 8) {
       isSwiping.current = true;
-      e.preventDefault(); // prevent page scroll while swiping
+      e.preventDefault();
     }
   };
 
@@ -85,11 +85,11 @@ function Carousel() {
     const threshold = 40;
 
     if (dx < -threshold) {
-      // Swipe left → next card
+
       pauseAndResume();
       setActive(i => Math.min(i + 1, pool.length - 1));
     } else if (dx > threshold) {
-      // Swipe right → prev card
+
       pauseAndResume();
       setActive(i => Math.max(i - 1, 0));
     }

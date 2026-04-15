@@ -198,12 +198,6 @@ function MgaKuwento() {
             <p className={`kuwento-card-excerpt${fade}`}>
               "{book.title} — isang kwento ng pananampalataya ni {book.author}."
             </p>
-            {/* <button
-              className="kuwento-read-btn"
-              onClick={() => navigate(`/book/${book.id}`)}
-            >
-              Simulan ang pagbasa
-            </button> */} {/*commented for changes*/}
             <p className='kuwento-card-preface'>{book.preface}</p>
           </div>
 

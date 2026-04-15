@@ -1,36 +1,23 @@
-/* ─────────────────────────────────────────
-   KUWENTO — Stylesheet
-   Property order: position → box model → visual → text → animation
-   ─────────────────────────────────────────
-   KEY PRINCIPLE: transitions only touch `opacity`.
-   Never animate width, height, padding, gap, or transform on
-   containers — those trigger layout reflow which can scroll the page.
-   ───────────────────────────────────────── */
-
-/* ── Page Root ── */
 .kuwento-page {
   overflow-x: hidden;
   width: 100%;
 }
 
-/* ── Hero Section ── */
+
 .kuwento-hero {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Contain all overflow — critical so nothing bleeds out and scrolls the page */
   overflow: hidden;
   box-sizing: border-box;
-  /* Top pad clears the fixed header; sides and bottom breathe with the viewport */
+
   padding:
     calc(var(--header-height, 70px) + clamp(1rem, 2vh, 2rem)) clamp(1rem, 4vw, 3rem) clamp(2rem, 4vh, 4rem);
-  /* touch-action on the section so the imperative touchmove listener
-     has something to call preventDefault on without fighting React */
   touch-action: none;
 }
 
-/* ── Card ── */
+
 .kuwento-card {
   position: relative;
   z-index: 2;
@@ -42,13 +29,12 @@
   box-sizing: border-box;
   border-radius: 16px;
   box-shadow: 0 5px 25px rgba(4, 15, 10, 0.4);
-  /* Absorb pointer events — no bubble to page */
+
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* ── Left Text Panel ── */
 .kuwento-card-text {
   display: flex;
   flex: 1 1 0;
@@ -81,7 +67,7 @@
   min-width: 10px;
 }
 
-/* ── Excerpt — ONLY opacity transitions, never transform ── */
+
 .kuwento-card-excerpt {
   max-width: 32ch;
   margin: 0;
@@ -91,7 +77,7 @@
   line-height: 1.7;
   word-break: break-word;
   opacity: 0.85;
-  /* opacity transition only — transform would shift layout */
+
   transition: opacity 0.3s ease;
 }
 
@@ -99,7 +85,7 @@
   opacity: 0;
 }
 
-/* ── Read Button ── */
+
 .kuwento-read-btn {
   align-self: flex-start;
   padding: clamp(0.4rem, 1.5vh, 0.85rem) clamp(0.75rem, 3vw, 2rem);
@@ -122,7 +108,6 @@
   opacity: 0.7;
 }
 
-/* ── Right Cover Panel ── */
 .kuwento-card-cover {
   display: flex;
   flex: 0 1 clamp(100px, 28vw, 300px);
@@ -135,7 +120,7 @@
   border-left: 2px solid #c8a96e;
   border-radius: 0 14px 14px 0;
   perspective: 700px;
-  /* opacity only — no transform so the panel never shifts in size */
+
   transition: opacity 0.3s ease;
 }
 
@@ -143,7 +128,7 @@
   opacity: 0;
 }
 
-/* ── Hero Book Image ── */
+
 .kuwento-card-cover img,
 .kuwento-cover-placeholder {
   display: block;
@@ -181,7 +166,7 @@
   font-weight: 700;
 }
 
-/* ── Cover Meta ── */
+
 .kuwento-card-meta {
   display: flex;
   flex-direction: column;
@@ -206,7 +191,7 @@
   opacity: 0.7;
 }
 
-/* ── Nav Buttons ── */
+
 .kuwento-btn {
   position: absolute;
   top: 50%;
@@ -214,7 +199,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Fixed size — clamp ensures no layout shift at any viewport */
+
   width: clamp(2rem, 5vw, 3rem);
   height: clamp(3rem, 8vw, 5rem);
   padding: 0;
@@ -244,19 +229,16 @@
   right: clamp(0.1rem, 1vw, 0.75rem);
 }
 
-/* ── Dots Strip ── */
+
 .kuwento-dots {
   position: absolute;
   bottom: clamp(0.6rem, 2vh, 1.5rem);
   left: 50%;
   z-index: 10;
   display: flex;
-  /* flex-wrap off — dots stay on one row, no reflow */
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  /* Fixed gap and padding — no transitions on these so the container
-     never reflows and never causes the page to scroll */
   gap: 0.45rem;
   max-width: calc(100% - 4rem);
   padding: 0.28rem 1rem;
@@ -265,11 +247,11 @@
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  /* translateX(-50%) centres the strip; we never animate this */
+
   transform: translateX(-50%);
 }
 
-/* Scrub-held state: slightly larger dots via scale, not width/height change */
+
 .kuwento-dots.is-held .kuwento-dot {
   transform: scale(1.3);
 }
@@ -278,10 +260,10 @@
   transform: scale(1.5);
 }
 
-/* ── Individual Dot ── */
+
 .kuwento-dot {
   flex-shrink: 0;
-  /* Fixed physical size — never changes so layout never shifts */
+
   width: clamp(7px, 1.4vw, 11px);
   height: clamp(7px, 1.4vw, 11px);
   padding: 0;
@@ -290,7 +272,7 @@
   background: rgba(255, 255, 255, 0.4);
   cursor: pointer;
   touch-action: none;
-  /* Only opacity + transform (GPU composited) — never box-model props */
+
   transition: background 0.25s ease, transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -299,7 +281,7 @@
   transform: scale(1.3);
 }
 
-/* ── Grid Section ── */
+
 .kuwento-grid-section {
   position: relative;
   overflow: hidden;
@@ -341,7 +323,7 @@
   min-width: 0;
 }
 
-/* ── Grid Item ── */
+
 .kuwento-grid-item {
   position: relative;
   z-index: 2;
@@ -354,7 +336,6 @@
   perspective: 600px;
 }
 
-/* ── Grid Book Cover ── */
 .kuwento-grid-cover {
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -374,7 +355,7 @@
   animation: kuwento-float-grid 4s ease-in-out infinite;
 }
 
-/* Staggered float delays — generated for up to 12 items */
+
 .kuwento-grid-item:nth-child(1) .kuwento-grid-cover {
   animation-delay: 0s;
 }
@@ -447,7 +428,6 @@
   font-weight: 700;
 }
 
-/* ── Grid Labels ── */
 .kuwento-grid-title {
   margin: 0.5rem 0 0;
   overflow-wrap: break-word;
@@ -470,7 +450,7 @@
   opacity: 0.75;
 }
 
-/* ── Scroll Reveal ── */
+
 .scroll-hidden {
   opacity: 0;
   transform: translateY(28px);
@@ -482,7 +462,6 @@
   transform: translateY(0);
 }
 
-/* ── Keyframes ── */
 @keyframes kuwento-float {
 
   0%,
@@ -507,7 +486,7 @@
   }
 }
 
-/* ── Reduced Motion ── */
+
 @media (prefers-reduced-motion: reduce) {
   .scroll-hidden {
     opacity: 1;
@@ -527,13 +506,13 @@
   }
 }
 
-/* ── Mobile: hide arrow buttons, keep swipe ── */
+
 @media (max-width: 640px) {
   .kuwento-btn {
     display: none;
   }
 
-  /* Thin spine on mobile — single gold strip, no thick cascade */
+
   .kuwento-card-cover img,
   .kuwento-cover-placeholder {
     border-right: 4px solid #8a622e;

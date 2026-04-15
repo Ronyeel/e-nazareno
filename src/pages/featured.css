@@ -40,7 +40,6 @@
     width: 100%;
 }
 
-/* ── Carousel container ── */
 .exp-carousel {
     display: flex;
     align-items: center;
@@ -51,7 +50,7 @@
     box-sizing: border-box;
 }
 
-/* ── Base card ── */
+
 .exp-card {
     position: relative;
     border-radius: 18px;
@@ -65,7 +64,7 @@
         opacity 0.5s ease;
 }
 
-/* ── Active — expanded ── */
+
 .exp-card--active {
     flex: 5;
     filter: none;
@@ -73,7 +72,7 @@
     cursor: default;
 }
 
-/* ── Side — collapsed ── */
+
 .exp-card--side {
     flex: 1;
     filter: brightness(0.55);
@@ -85,7 +84,6 @@
     opacity: 0.92;
 }
 
-/* ── Cover ── */
 .exp-card__cover {
     position: absolute;
     inset: 0;
@@ -111,16 +109,14 @@
     color: #555;
 }
 
-/* ── Overlay — always rendered, fades in when active ── */
+
 .exp-card__overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.78) 0%,
-        rgba(0, 0, 0, 0.2) 50%,
-        transparent 100%
-    );
+    background: linear-gradient(to top,
+            rgba(0, 0, 0, 0.78) 0%,
+            rgba(0, 0, 0, 0.2) 50%,
+            transparent 100%);
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -178,7 +174,7 @@
     transform: scale(0.97);
 }
 
-/* ── Scroll animations ── */
+
 .scroll-hidden {
     opacity: 0;
     transform: translateY(28px);
@@ -190,7 +186,7 @@
     transform: translateY(0);
 }
 
-/* ── Reduced motion ── */
+
 @media (prefers-reduced-motion: reduce) {
     .scroll-hidden {
         opacity: 1;
@@ -203,12 +199,17 @@
     }
 }
 
-/* ── Mobile ── */
+
 @media (max-width: 480px) {
     .exp-carousel {
         height: clamp(200px, 65vw, 300px);
     }
 
-    .exp-card--active { flex: 4; }
-    .exp-card--side   { flex: 1; }
+    .exp-card--active {
+        flex: 4;
+    }
+
+    .exp-card--side {
+        flex: 1;
+    }
 }

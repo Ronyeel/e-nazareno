@@ -38,7 +38,7 @@ header {
 
 main {
   min-height: 100vh;
-  /* ← was height: 100vh, which clips content */
+
   padding-top: 0;
 }
 
