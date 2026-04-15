@@ -34,7 +34,7 @@ const LYRIC_LINES = [
 
 const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
-// ── BookCarousel component ───────────────────────────────────────────
+
 function BookCarousel({ authorName }) {
   const authorBooks = books.filter((b) =>
     b.author.toUpperCase().includes(authorName.toUpperCase())
@@ -69,7 +69,7 @@ function BookCarousel({ authorName }) {
   );
 }
 
-// ── MusicPlayer component ───────────────────────────────────────────
+
 function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -161,7 +161,7 @@ function MusicPlayer() {
   );
 }
 
-// ── KategoryaStack ──────────────────────────────────────────────────
+
 function KategoryaStack() {
   const trackRef = useRef(null);
   const stickyRef = useRef(null);
@@ -396,7 +396,7 @@ export default function TungkolSa() {
           </div>
           <BookCarousel authorName="CORTEZ" />
         </div>
-        {/*  separation */}
+
         <div className='awtor-hover awtor-container'>
           <div className='title-container'>
             <p className=''>

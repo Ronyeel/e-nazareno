@@ -6,10 +6,9 @@ import bookDataToRead from '../data/openBook.json';
 
 const API_BASE = 'https://enazareno-audio.onrender.com';
 
-// How many paragraphs fit per "page" based on viewport height
+
 function calcParagraphsPerPage() {
-  // Approximate: each paragraph ~120px tall (1rem font, 1.9 line-height, ~4 lines avg)
-  // Reserve ~220px for hero + audio player
+
   const available = window.innerHeight - 220;
   const paraHeight = 120;
   return Math.max(1, Math.floor(available / paraHeight));
@@ -22,7 +21,7 @@ export default function OpenBook() {
 
   const prefaceBody = openBook.preface.body;
 
-  // this is for all stats realatead to the audio player
+
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
@@ -30,29 +29,27 @@ export default function OpenBook() {
   const [audioError, setAudioError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Modal state
+
   const [showPreface, setShowPreface] = useState(true);
 
-  // Preface audio player refs and state (inside modal)
   const prefaceAudioRef = useRef(null);
   const [prefaceIsPlaying, setPrefaceIsPlaying] = useState(false);
   const [prefaceDuration, setPrefaceDuration] = useState(0);
   const [prefaceCurrentTime, setPrefaceCurrentTime] = useState(0);
   const [prefaceAudioError, setPrefaceAudioError] = useState(null);
 
-  // Story audio player refs and state (under story title)
+
   const storyAudioRef = useRef(null);
   const [storyIsPlaying, setStoryIsPlaying] = useState(false);
   const [storyDuration, setStoryDuration] = useState(0);
   const [storyCurrentTime, setStoryCurrentTime] = useState(0);
   const [storyAudioError, setStoryAudioError] = useState(null);
 
-  // ── Page navigation state ────────────────────────────────
+
   const [currentPage, setCurrentPage] = useState(0);
   const [parasPerPage, setParasPerPage] = useState(calcParagraphsPerPage);
-  const [pageFlip, setPageFlip] = useState(null); // 'left' | 'right' | null
+  const [pageFlip, setPageFlip] = useState(null);
 
-  // Recalculate paragraphs per page on resize
   useEffect(() => {
     function onResize() {
       setParasPerPage(calcParagraphsPerPage());
@@ -61,7 +58,7 @@ export default function OpenBook() {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  // Split body into pages
+
   const body = openBook.body;
   const totalPages = Math.ceil(body.length / parasPerPage);
   const pageParas = body.slice(
@@ -91,9 +88,9 @@ export default function OpenBook() {
     }
   }
 
-  // Click zone handler: left 30% = prev, right 30% = next
+
   function handlePageClick(e) {
-    // Ignore clicks on interactive elements
+
     const tag = e.target.tagName.toLowerCase();
     if (['button', 'input', 'a', 'mark'].includes(tag)) return;
     const x = e.clientX;
@@ -105,7 +102,7 @@ export default function OpenBook() {
     }
   }
 
-  // Keyboard navigation
+
   useEffect(() => {
     function onKey(e) {
       if (e.key === 'ArrowRight' || e.key === 'ArrowDown') goNextPage();
@@ -115,12 +112,12 @@ export default function OpenBook() {
     return () => window.removeEventListener('keydown', onKey);
   }, [currentPage, totalPages]);
 
-  // Build the stream URLs from the current book id
+
   const audioSrc = `${API_BASE}/api/audio/${id}`;
   const prefaceAudioSrc = `${API_BASE}/api/audio/${id}`;
   const storyAudioSrc = `${API_BASE}/api/audio/${id}/story`;
 
-  // Reset player whenever the book id changes
+
   useEffect(() => {
     setIsPlaying(false);
     setCurrentTime(0);
@@ -130,20 +127,20 @@ export default function OpenBook() {
     setCurrentPage(0);
     setPageFlip(null);
 
-    // Reset preface player
+
     setPrefaceIsPlaying(false);
     setPrefaceCurrentTime(0);
     setPrefaceDuration(0);
     setPrefaceAudioError(null);
 
-    // Reset story player
+
     setStoryIsPlaying(false);
     setStoryCurrentTime(0);
     setStoryDuration(0);
     setStoryAudioError(null);
 
     if (audioRef.current) {
-      audioRef.current.load(); // forces the browser to re-fetch for the new id
+      audioRef.current.load();
     }
     if (prefaceAudioRef.current) {
       prefaceAudioRef.current.load();
@@ -159,7 +156,7 @@ export default function OpenBook() {
       audioRef.current.pause();
       setIsPlaying(false);
     } else {
-      // .play() returns a Promise — catch errors so the UI doesn't break
+
       audioRef.current.play().catch(err => {
         console.error('Play failed:', err);
         setAudioError('Could not play audio. Is the backend running?');
@@ -192,7 +189,7 @@ export default function OpenBook() {
     return `${m}:${s}`;
   }
 
-  // ── Preface audio handlers ───────────────────────────────
+
   function handlePrefacePlayPause() {
     if (!prefaceAudioRef.current) return;
     if (prefaceIsPlaying) {
@@ -230,7 +227,7 @@ export default function OpenBook() {
     setPrefaceIsPlaying(false);
   }
 
-  // ── Story audio handlers ─────────────────────────────────
+
   function handleStoryPlayPause() {
     if (!storyAudioRef.current) return;
     if (storyIsPlaying) {
@@ -268,7 +265,7 @@ export default function OpenBook() {
     setStoryIsPlaying(false);
   }
 
-  // Determine which images fall on the current page
+
   const img1Para = openBook.image1Para ?? 0;
   const img2Para = openBook.image2Para ?? Math.floor(openBook.body.length / 2);
   const img3Para = openBook.image3Para ?? openBook.body.length - 2;
@@ -280,7 +277,7 @@ export default function OpenBook() {
   const showImg2 = img2Para >= pageStart && img2Para <= pageEnd;
   const showImg3 = img3Para >= pageStart && img3Para <= pageEnd;
 
-  // Relative index within the page where each image should appear
+
   const img1Rel = img1Para - pageStart;
   const img2Rel = img2Para - pageStart;
   const img3Rel = img3Para - pageStart;
@@ -288,7 +285,7 @@ export default function OpenBook() {
   return (
     <div className="ob-root" onClick={handlePageClick}>
 
-      {/* Preface Modal */}
+
       {showPreface && (
         <div className="ob-modal-overlay">
           <div className="ob-modal">
@@ -296,7 +293,7 @@ export default function OpenBook() {
               <h1 className="ob-title">{openBook.preface.title}</h1>
               <p className="ob-subtitle">Paunang Sulat</p>
 
-              {/* Preface audio player inside modal */}
+
               <div className="ob-audio-player ob-modal-audio" aria-label="Preface audio player">
                 <audio
                   ref={prefaceAudioRef}
@@ -354,7 +351,6 @@ export default function OpenBook() {
       )}
 
 
-      {/* Main content — story lives here */}
       <div className="ob-hero">
         <div className="ob-hero-inner">
           <div className="ob-search-container">
@@ -367,7 +363,7 @@ export default function OpenBook() {
           </div>
           <h1 className="ob-title">{openBook.title}</h1>
 
-          {/* Story audio player under story title */}
+
           <div className="ob-audio-player" aria-label="Story audio player">
             <audio
               ref={storyAudioRef}
@@ -407,10 +403,9 @@ export default function OpenBook() {
         </div>
       </div>
 
-      {/* ── Page navigation click zones ── */}
+
       {!showPreface && (
         <>
-          {/* Left zone — previous page */}
           <div
             className={`ob-page-zone ob-page-zone--left${currentPage === 0 ? ' ob-page-zone--disabled' : ''}`}
             aria-label="Previous page"
@@ -420,7 +415,7 @@ export default function OpenBook() {
             )}
           </div>
 
-          {/* Right zone — next page */}
+
           <div
             className={`ob-page-zone ob-page-zone--right${currentPage === totalPages - 1 ? ' ob-page-zone--disabled' : ''}`}
             aria-label="Next page"
@@ -433,7 +428,7 @@ export default function OpenBook() {
       )}
 
       <main className="ob-main">
-        {/* Page indicator */}
+
         {!showPreface && (
           <div className="ob-page-indicator">
             {Array.from({ length: totalPages }).map((_, i) => (
@@ -450,7 +445,7 @@ export default function OpenBook() {
         <article
           className={`ob-story ob-story--page${pageFlip ? ` ob-story--flip-${pageFlip}` : ''}`}
         >
-          {/* Render current page paragraphs, inserting images at their relative positions */}
+
           <div className="ob-block">
             {showImg1 && openBook.image1 && img1Rel === 0 && (
               <img
@@ -476,7 +471,7 @@ export default function OpenBook() {
 
             {pageParas.map((paragraph, index) => (
               <div key={pageStart + index}>
-                {/* Insert images after the paragraph at their relative index */}
+
                 {showImg1 && openBook.image1 && img1Rel === index + 1 && (
                   <img
                     src={openBook.image1}
@@ -503,7 +498,7 @@ export default function OpenBook() {
             ))}
           </div>
 
-          {/* End mark only on last page */}
+
           {currentPage === totalPages - 1 && (
             <div className="ob-end-mark" aria-hidden="true">
               <span>— Katapusan —</span>
@@ -511,7 +506,7 @@ export default function OpenBook() {
           )}
         </article>
 
-        {/* Bottom page navigation buttons */}
+
         {!showPreface && (
           <div className="ob-page-nav">
             <button
