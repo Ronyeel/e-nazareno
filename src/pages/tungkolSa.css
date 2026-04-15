@@ -27,7 +27,7 @@
 .tungkolSa-banner-img-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 10 / 2;
+  aspect-ratio: 10 / 3;
   overflow: hidden;
 }
 
@@ -61,66 +61,11 @@
   padding: var(--space-sm);
 }
 
-@keyframes fontLoop {
-
-  0%,
-  11% {
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.04em;
-  }
-
-  12%,
-  23% {
-    font-family: 'Gideon Roman', serif;
-    letter-spacing: 0.08em;
-  }
-
-  24%,
-  35% {
-    font-family: 'Inknut Antiqua', serif;
-    letter-spacing: 0.04em;
-  }
-
-  36%,
-  47% {
-    font-family: 'Lora', serif;
-    letter-spacing: 0.06em;
-  }
-
-  48%,
-  59% {
-    font-family: 'Playfair Display', serif;
-    letter-spacing: 0.05em;
-  }
-
-  60%,
-  71% {
-    font-family: 'Cinzel', serif;
-    letter-spacing: 0.10em;
-  }
-
-  72%,
-  83% {
-    font-family: 'IM Fell English', serif;
-    letter-spacing: 0.03em;
-  }
-
-  84%,
-  99% {
-    font-family: 'Cormorant Garamond', serif;
-    letter-spacing: 0.07em;
-  }
-
-  100% {
-    font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.04em;
-  }
-}
-
 .tungkolSa-banner-overlay h1 {
   font-size: clamp(1.25rem, 4vw + 0.5rem, 5rem);
   font-weight: 700;
-  color: #f5e6c8;
+  color:#ffffff;
+  font-family: 'Playfair Display', 'Georgia', serif;
   margin: 0;
   line-height: clamp(1.2, 1.2 + 0.5vw, 1.5);
   letter-spacing: clamp(0.02em, 0.5vw, 0.12em);

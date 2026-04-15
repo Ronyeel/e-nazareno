@@ -216,6 +216,7 @@
   font-size: 0.8rem;
   opacity: 0.5;
   flex-shrink: 0;
+  z-index: 100;
 }
 
 .ob-search-input {
@@ -230,6 +231,7 @@
   font-size: 0.88rem;
   color: var(--ob-ink);
   width: 160px;
+  z-index: 100;
 }
 
 .ob-search-input::placeholder {

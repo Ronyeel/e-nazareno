@@ -63,10 +63,6 @@ export default function BookModal() {
               <span className="bm-meta-label">Author</span>
               <span className="bm-meta-value">{book.author}</span>
             </div>
-            <div className="bm-meta-item">
-              <span className="bm-meta-label">Pages</span>
-              <span className="bm-meta-value">{book.pages ?? book.chapter ?? '—'}</span>
-            </div>
           </div>
         </div>
 
