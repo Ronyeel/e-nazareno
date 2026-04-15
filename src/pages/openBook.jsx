@@ -26,7 +26,7 @@ export default function OpenBook() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
-  const [audioError, setAudioError] = useState(null);
+  // const [audioError, setAudioError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
 
@@ -122,7 +122,7 @@ export default function OpenBook() {
     setIsPlaying(false);
     setCurrentTime(0);
     setDuration(0);
-    setAudioError(null);
+    // setAudioError(null);
     setShowPreface(true);
     setCurrentPage(0);
     setPageFlip(null);
@@ -158,8 +158,8 @@ export default function OpenBook() {
     } else {
 
       audioRef.current.play().catch(err => {
-        console.error('Play failed:', err);
-        setAudioError('Could not play audio. Is the backend running?');
+
+        // setAudioError('Could not play audio. Is the backend running?');  
         setIsPlaying(false);
       });
       setIsPlaying(true);

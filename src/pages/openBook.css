@@ -32,7 +32,7 @@
   inset: 0;
   background-image: url('/cover_page.png');
   background-size: 100% 100%;
-  /* ← width at height stretched to fill */
+
   min-height: 100%;
   background-repeat: no-repeat;
   background-position: top center;
@@ -42,7 +42,7 @@
 }
 
 
-/* ── Hero ── */
+
 .ob-hero-inner {
   display: flex;
   flex-direction: column;
@@ -62,14 +62,14 @@
   text-align: center;
 }
 
-/* ── Main ── */
+
 .ob-main {
   max-width: var(--ob-max);
   margin: 0 auto;
   padding: 32px 28px 80px;
 }
 
-/* ── Float blocks ── */
+
 .ob-block {
   overflow: hidden;
 }
@@ -93,7 +93,7 @@
   margin: 4px 20px 16px 0;
 }
 
-/* ── Paragraphs ── */
+
 .ob-paragraph {
   text-indent: 2em;
   font-size: 1rem;
@@ -105,7 +105,7 @@
   -webkit-hyphens: auto;
 }
 
-/* ── End mark ── */
+
 .ob-end-mark {
   display: flex;
   align-items: center;
@@ -125,7 +125,7 @@
   background: var(--ob-paper-deep);
 }
 
-/*  Audio Player  */
+
 .ob-audio-player {
 
   position: relative;
@@ -139,7 +139,7 @@
   border-bottom: none;
 }
 
-/* Play button styled as speaker icon */
+
 .ob-audio-player button {
   display: flex;
   align-items: center;
@@ -168,7 +168,7 @@
   background-position: center;
 }
 
-/* Hide the original "play" text */
+
 .ob-audio-player button {
   font-size: 0;
 }
@@ -181,7 +181,7 @@
   opacity: 0.7;
 }
 
-/* Search input with icon */
+
 .ob-audio-player div {
   display: flex;
   flex: 0.5;
@@ -191,18 +191,12 @@
   gap: 6px;
 }
 
-/* .ob-audio-player div::before {
-  content: '🔍';
-  font-size: 0.85rem;
-  opacity: 0.6;
-  flex-shrink: 0;
-} */
 
 .ob-search-container {
   display: flex;
   align-items: center;
   align-self: flex-end;
-  /* pushes it to the right within the flex column */
+
   gap: 6px;
   background: var(--ob-paper-warm);
   border: 1.5px solid var(--ob-paper-deep);
@@ -223,10 +217,8 @@
   margin-left: 0;
   padding: 0;
   border: none;
-  /* remove the gray border box */
   outline: none;
   background: transparent;
-  /* inherits the warm paper tone */
   font-family: 'Lora', Georgia, serif;
   font-size: 0.88rem;
   color: var(--ob-ink);
@@ -298,12 +290,7 @@
 
 }
 
-/* Seek bar track and thumb color */
 
-/* .ob-seek-container {
-  background-color: #4a3f35;
-
-} */
 
 .ob-seek-bar {
   accent-color: #540317;
@@ -313,7 +300,6 @@
 }
 
 
-/* ── Search highlight ── */
 mark.ob-highlight {
   background: #f5c842;
   color: var(--ob-ink);
@@ -323,16 +309,13 @@ mark.ob-highlight {
   font-weight: inherit;
 }
 
-
-/* ── Mobile ── */
 @media (max-width: 540px) {
 
   .ob-audio-player div {
     display: flex;
     flex: 1;
     align-items: center;
-    /* background: #fff;
-    border: 1.5px solid var(--ob-paper-deep); */
+
     border-radius: 6px;
     padding: 5px 10px;
     gap: 6px;
@@ -357,10 +340,7 @@ mark.ob-highlight {
   }
 }
 
-/*additional*/
 
-
-/* ── Profile name label ── */
 .title-container p:first-child {
   font-size: clamp(3rem, 10vw, 14.5rem);
 }
@@ -400,17 +380,15 @@ mark.ob-highlight {
 }
 
 
-/* ── Page Navigation ─────────────────────────────────────── */
 
-/* Click zones (invisible, cover left/right 30% of screen) */
 .ob-page-zone {
   position: fixed;
   top: 120px;
-  /* push below header + audio player */
+
   bottom: 60px;
-  /* stop above bottom nav bar */
+
   width: 5%;
-  /* was 15% */
+
   z-index: 10;
   display: flex;
   align-items: center;
@@ -435,7 +413,7 @@ mark.ob-highlight {
   cursor: default;
 }
 
-/* Arrow chevrons that appear on hover */
+
 .ob-page-arrow {
   font-size: 2.5rem;
   color: var(--ob-gold);
@@ -450,7 +428,7 @@ mark.ob-highlight {
   opacity: 0.85;
 }
 
-/* Page flip fade animation */
+
 .ob-story--page {
   transition: opacity 0.2s ease;
 }
@@ -460,7 +438,6 @@ mark.ob-highlight {
   opacity: 0;
 }
 
-/* Dot indicator */
 .ob-page-indicator {
   display: flex;
   justify-content: center;
@@ -483,7 +460,7 @@ mark.ob-highlight {
   transform: scale(1.3);
 }
 
-/* Bottom page nav bar */
+
 .ob-page-nav {
   display: flex;
   align-items: center;
@@ -525,7 +502,6 @@ mark.ob-highlight {
   white-space: nowrap;
 }
 
-/* Mobile adjustments */
 @media (max-width: 540px) {
   .ob-page-arrow {
     font-size: 1.8rem;
