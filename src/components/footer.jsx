@@ -13,9 +13,9 @@ function Footer() {
         </div>
 
         <div className="footer-links">
-          <NavLink to={'/'} href="#featured">Featured</NavLink>
-          <NavLink to={'/mga-kuwento'} href="#featured">All Books</NavLink>
-          <NavLink to={"/tungkol-sa"} href="#featured">About</NavLink>
+          <NavLink to={'/'} href="#featured">Tampok</NavLink>
+          <NavLink to={'/mga-kuwento'} href="#featured">Lahat Ng Libro</NavLink>
+          <NavLink to={"/tungkol-sa"} href="#featured">Tungkol Sa Amin</NavLink>
         </div>
 
         <div className="footer-bottom">

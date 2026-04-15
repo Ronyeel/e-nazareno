@@ -103,7 +103,7 @@ function NavBar() {
         <li><NavLink to="/" onClick={handleNavLinkClick}>Home</NavLink></li>
         <li><NavLink to="/mga-kuwento" onClick={handleNavLinkClick}>Mga Kuwento</NavLink></li>
         <li><NavLink to="/kasaysayan" onClick={handleNavLinkClick}>Kasaysayan</NavLink></li>
-        <li><NavLink to="/tungkol-sa" onClick={handleNavLinkClick}>Tungkol Sa</NavLink></li>
+        <li><NavLink to="/tungkol-sa" onClick={handleNavLinkClick}>Tungkol Sa Amin</NavLink></li>
       </ul>
 
       <button
