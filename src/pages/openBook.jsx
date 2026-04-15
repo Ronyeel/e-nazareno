@@ -198,7 +198,7 @@ export default function OpenBook() {
     } else {
       prefaceAudioRef.current.play().catch(err => {
         console.error('Preface play failed:', err);
-        setPrefaceAudioError('Could not play preface audio. Is the backend running?');
+
         setPrefaceIsPlaying(false);
       });
       setPrefaceIsPlaying(true);
