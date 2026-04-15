@@ -397,7 +397,7 @@ export default function OpenBook() {
 
           {storyAudioError && (
             <p style={{ color: 'red', fontSize: '0.8rem', marginTop: '4px' }}>
-              ⚠️ {storyAudioError}
+              {/* ⚠️ {storyAudioError} */}
             </p>
           )}
         </div>
