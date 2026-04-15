@@ -159,7 +159,7 @@ export default function OpenBook() {
 
       audioRef.current.play().catch(err => {
 
-        // setAudioError('Could not play audio. Is the backend running?');  
+
         setIsPlaying(false);
       });
       setIsPlaying(true);
