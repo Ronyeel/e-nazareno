@@ -232,7 +232,7 @@
    animation-play-state: paused;
    background-image: none;
    background-color: #ede8e0;
-   border: 2px dashed #c4b49a;
+   /* border: 2px dashed #c4b49a; */
  }
 
  .kasaysayan-img-placeholder svg {
