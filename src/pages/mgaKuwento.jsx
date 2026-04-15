@@ -18,7 +18,7 @@ function MgaKuwento() {
   const [fading, setFading] = useState(false);
   const [held, setHeld] = useState(false);
 
-  // Refs — read inside intervals/timeouts without stale closures
+
   const activeRef = useRef(0);
   const fadingRef = useRef(false);
   const heldRef = useRef(false);
@@ -33,11 +33,9 @@ function MgaKuwento() {
   useEffect(() => { fadingRef.current = fading; }, [fading]);
   useEffect(() => { heldRef.current = held; }, [held]);
 
-  // ─────────────────────────────────────────────────────────────────
-  // goTo — opacity-only cross-fade so zero layout shift can occur
-  // ─────────────────────────────────────────────────────────────────
+
   const goTo = useCallback((next) => {
-    if (fadingRef.current) return; // drop overlapping calls
+    if (fadingRef.current) return;
 
     fadingRef.current = true;
     setFading(true);
@@ -46,8 +44,7 @@ function MgaKuwento() {
       activeRef.current = next;
       setActive(next);
 
-      // Two rAF ticks: first lets React paint the new content,
-      // second lets the browser composite it before fading back in.
+
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
           fadingRef.current = false;
@@ -57,9 +54,7 @@ function MgaKuwento() {
     }, 300);
   }, []);
 
-  // ─────────────────────────────────────────────────────────────────
-  // Autoplay
-  // ─────────────────────────────────────────────────────────────────
+
   const stopAutoPlay = () => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
   };
@@ -89,10 +84,7 @@ function MgaKuwento() {
     };
   }, [startAutoPlay]);
 
-  // ─────────────────────────────────────────────────────────────────
-  // Block page scroll inside the hero — must be imperative because
-  // React synthetic touch handlers are passive and can't preventDefault
-  // ─────────────────────────────────────────────────────────────────
+
   useEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
@@ -105,9 +97,7 @@ function MgaKuwento() {
     };
   }, []);
 
-  // ─────────────────────────────────────────────────────────────────
-  // Navigation
-  // ─────────────────────────────────────────────────────────────────
+
   const prev = useCallback(() => {
     pauseAndResume();
     goTo((activeRef.current - 1 + books.length) % books.length);
@@ -118,9 +108,7 @@ function MgaKuwento() {
     goTo((activeRef.current + 1) % books.length);
   }, [pauseAndResume, goTo]);
 
-  // ─────────────────────────────────────────────────────────────────
-  // Card swipe
-  // ─────────────────────────────────────────────────────────────────
+
   const onCardDown = (e) => {
     if (e.target.closest('button, .kuwento-dots')) return;
     swipeX.current = e.clientX;
@@ -133,9 +121,7 @@ function MgaKuwento() {
     delta < 0 ? next() : prev();
   };
 
-  // ─────────────────────────────────────────────────────────────────
-  // Dot scrub
-  // ─────────────────────────────────────────────────────────────────
+
   const getDotAt = (clientX) => {
     if (!dotsRef.current) return null;
     const els = [...dotsRef.current.querySelectorAll('.kuwento-dot')];
@@ -163,7 +149,7 @@ function MgaKuwento() {
     const idx = getDotAt(e.clientX);
     if (idx !== null && idx !== activeRef.current) {
       activeRef.current = idx;
-      setActive(idx); // instant — no fade during scrub
+      setActive(idx);
     }
   };
 
@@ -191,9 +177,7 @@ function MgaKuwento() {
     endScrub();
   };
 
-  // ─────────────────────────────────────────────────────────────────
-  // Render
-  // ─────────────────────────────────────────────────────────────────
+
   const book = books[active];
   const fade = fading ? ' is-fading' : '';
 
@@ -209,7 +193,6 @@ function MgaKuwento() {
           <button className="kuwento-btn left" onClick={prev} aria-label="Previous">‹</button>
           <button className="kuwento-btn right" onClick={next} aria-label="Next">›</button>
 
-          {/* Left panel — title is static, excerpt fades */}
           <div className="kuwento-card-text">
             <h1 className="kuwento-card-title">Mga Kuwento</h1>
             <p className={`kuwento-card-excerpt${fade}`}>
@@ -224,7 +207,7 @@ function MgaKuwento() {
             <p className='kuwento-card-preface'>{book.preface}</p>
           </div>
 
-          {/* Dots */}
+
           <div
             className={`kuwento-dots${held ? ' is-held' : ''}`}
             ref={dotsRef}
@@ -242,7 +225,6 @@ function MgaKuwento() {
             ))}
           </div>
 
-          {/* Right panel — cover + meta fade together */}
           <div className={`kuwento-card-cover${fade}`}>
             {book.cover
               ? <img src={book.cover} alt={book.title} />
