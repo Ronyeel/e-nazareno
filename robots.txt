@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://e-nazareno-trial.vercel.app/sitemap.xml
+Sitemap: https://e-nazareno.vercel.app/sitemap.xml
