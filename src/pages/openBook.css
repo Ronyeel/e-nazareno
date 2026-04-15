@@ -520,3 +520,13 @@ mark.ob-highlight {
     padding-right: 2px;
   }
 }
+
+
+.ob-page-zone {
+  -webkit-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+}
+
+.ob-root {
+  -webkit-tap-highlight-color: transparent;
+}
