@@ -127,6 +127,7 @@
   padding: var(--space-sm);
   text-align: justify;
   hyphens: auto;
+  text-indent: 2em;
 }
 
 .tungkolSa-body-img {
