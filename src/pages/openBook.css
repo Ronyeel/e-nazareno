@@ -331,8 +331,8 @@ mark.ob-highlight {
     display: flex;
     flex: 1;
     align-items: center;
-    background: #fff;
-    border: 1.5px solid var(--ob-paper-deep);
+    /* background: #fff;
+    border: 1.5px solid var(--ob-paper-deep); */
     border-radius: 6px;
     padding: 5px 10px;
     gap: 6px;
