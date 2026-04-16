@@ -50,6 +50,7 @@ export default function OpenBook() {
   const [parasPerPage, setParasPerPage] = useState(calcParagraphsPerPage);
   const [pageFlip, setPageFlip] = useState(null);
 
+
   useEffect(() => {
     function onResize() {
       setParasPerPage(calcParagraphsPerPage());

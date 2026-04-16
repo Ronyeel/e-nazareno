@@ -264,7 +264,7 @@ export default function TungkolSa() {
         <figure className="tungkolSa-banner-img-wrap">
           <img src="/banner_tungkolsa.png" alt="Banner ng E-Nazareno" />
           <figcaption className="tungkolSa-banner-overlay">
-            <h1>Tungkol sa amin</h1>
+            <h1>TUNGKOL SA AMIN</h1>
           </figcaption>
         </figure>
       </section>
