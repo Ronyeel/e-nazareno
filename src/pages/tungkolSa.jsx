@@ -388,28 +388,73 @@ export default function TungkolSa() {
               AWTOR
             </p>
             <p>
-              CORTEZ
+              CASTRO
             </p>
           </div>
           <div className='profile-container'>
             <img src='/cortez.png' alt='Kate Cortez' />
           </div>
+
+          <div className='profile-info'>
+            <p>
+              Joey Kate T. Castro
+            </p>
+            <div className='profile-info-two'>
+              <p>
+                Batsilyer ng Pansekondaryang Edukasyon Medyor sa Filipino
+              </p>
+
+              <p>
+                cortezjoeykate@gmail.com
+              </p>
+            </div>
+
+          </div>
           <BookCarousel authorName="CORTEZ" />
         </div>
 
+
+        <div className='profile-info-two'>
+          <p>
+            Batsilyer ng Pansekondaryang Edukasyon Medyor sa Filipino
+          </p>
+
+          <p>
+            stephaniemmarca@gmail.com
+          </p>
+        </div>
         <div className='awtor-hover awtor-container'>
           <div className='title-container'>
             <p className=''>
               AWTOR
             </p>
-            <p>
-              MARCA
+            <p className=''>
+              <p>
+                MARCA
+              </p>
             </p>
-
           </div>
           <div className='profile-container'>
+
             <img src='/MARCA.png' alt='Stephanie Marca' />
           </div>
+
+          <div className='profile-info'>
+            <p>
+              Stephanie M. Marca
+            </p>
+
+            <div className='profile-info-two'>
+              <p>
+                Batsilyer ng Pansekondaryang Edukasyon Medyor sa Filipino
+              </p>
+
+              <p>
+                stephaniemmarca@gmail.com
+              </p>
+            </div>
+          </div>
+
           <BookCarousel authorName="MARCA" />
         </div>
 

@@ -17,7 +17,7 @@
   box-sizing: border-box;
 }
 
-/* ── Banner ── */
+
 .tungkolSa-banner {
   padding-top: var(--header-height, 70px);
   width: 100%;
@@ -73,10 +73,9 @@
   text-align: center;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
   cursor: default;
-  /* animation: fontLoop 5s steps(1) infinite; */
+  animation: fontLoop 5s steps(1) infinite;
 }
 
-/* ── Intro ── */
 .tungkolSa-intro {
   max-width: min(680px, 90%);
   margin: 0 auto;
@@ -109,7 +108,7 @@
   font-weight: 600;
 }
 
-/* ── Body Wrap ── */
+
 .tungkolSa-body-wrap {
   position: relative;
   width: 100%;
@@ -646,6 +645,7 @@
   .kat-scene {
     width: clamp(130px, 52vw, 180px);
   }
+
 }
 
 @media (min-width: 481px) and (max-width: 680px) {
@@ -910,7 +910,7 @@
   margin-bottom: 2.5rem;
   border-radius: 20px;
   overflow: hidden;
-  background: #ea8c98;
+  background: #8b1a1a;
 }
 
 
@@ -920,7 +920,7 @@
   left: 0;
   width: 100%;
   height: 40%;
-  background: #e6526b;
+  background: #b13434;
 
   display: flex;
   align-items: center;
@@ -1101,6 +1101,15 @@
   flex-direction: column;
   align-items: center;
   gap: 0.3rem;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.awtor-hover:hover .awtor-book-carousel {
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
 }
 
 .awtor-container:nth-child(3) .awtor-book-carousel {
@@ -1235,4 +1244,106 @@
       0 8px 14px rgba(0, 0, 0, 0.25),
       0 2px 4px rgba(0, 0, 0, 0.15);
   }
+}
+
+
+.profile-info {
+  position: absolute;
+  top: 40%;
+  left: 5%;
+  width: 48%;
+  background: #b13434;
+  color: white;
+  padding: 1.1rem 1.4rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  z-index: 3;
+  line-height: 1.35;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+  pointer-events: none;
+}
+
+.profile-info p {
+  margin: 0;
+  font-weight: 600;
+  font-size: clamp(0.75rem, 1.8vw + 0.3rem, 1.15rem);
+  color: #ffffff;
+}
+
+.profile-info p:first-child {
+  font-size: clamp(0.82rem, 2vw + 0.3rem, 1.25rem);
+  margin-bottom: 0.65rem;
+  font-weight: 700;
+}
+
+.profile-info .profile-info-two {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.4rem;
+}
+
+.profile-info .profile-info-two p {
+  margin: 0;
+  font-size: clamp(0.62rem, 1.4vw + 0.2rem, 0.92rem);
+  font-weight: 500;
+  line-height: 1.4;
+  opacity: 0.95;
+  text-wrap: wrap;
+}
+
+
+.awtor-hover:hover .profile-info {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+
+.awtor-container:nth-child(3) .profile-info {
+  left: auto;
+  right: 5%;
+  text-align: right;
+}
+
+
+.awtor-container+.profile-info-two {
+  display: none !important;
+}
+
+
+.awtor-book-carousel {
+  position: absolute;
+  bottom: 65px;
+  left: 18%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.45s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.awtor-hover:hover .awtor-book-carousel {
+  opacity: 0;
+  transform: translateY(25px);
+  pointer-events: none;
+}
+
+
+.awtor-container:nth-child(3) .awtor-book-carousel {
+  right: 18%;
+  left: auto;
+}
+
+.awtor-hover:hover .awtor-container {
+  transform: translateY(-8px);
+  transition: transform 0.4s ease;
 }
