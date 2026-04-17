@@ -388,7 +388,7 @@ export default function TungkolSa() {
               AWTOR
             </p>
             <p>
-              CASTRO
+              CORTEZ
             </p>
           </div>
           <div className='profile-container'>
@@ -397,7 +397,7 @@ export default function TungkolSa() {
 
           <div className='profile-info'>
             <p>
-              Joey Kate T. Castro
+              Joey Kate T. Cortez
             </p>
             <div className='profile-info-two'>
               <p>
