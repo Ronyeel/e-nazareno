@@ -40,10 +40,52 @@ const paragraphs = [
   },
 ];
 
+
+const imageCache = new Map();
+
+function preloadImage(src) {
+  if (imageCache.has(src)) return;
+  imageCache.set(src, 'loading');
+  const img = new Image();
+  img.onload = () => imageCache.set(src, 'loaded');
+  img.onerror = () => imageCache.set(src, 'error');
+  img.src = src;
+}
+
+
+
+paragraphs.forEach(p => preloadImage(p.img));
+
+
 function ImagePlaceholder({ src }) {
+
+  const [status, setStatus] = useState(() => imageCache.get(src) ?? 'loading');
+
+  useEffect(() => {
+    if (status === 'loaded' || status === 'error') return;
+
+
+    const cached = imageCache.get(src);
+    if (cached && cached !== 'loading') {
+      setStatus(cached);
+      return;
+    }
+
+
+    const img = new Image();
+    img.onload = () => { imageCache.set(src, 'loaded'); setStatus('loaded'); };
+    img.onerror = () => { imageCache.set(src, 'error'); setStatus('error'); };
+    img.src = src;
+  }, [src, status]);
+
   return (
-    <div className="kasaysayan-img-placeholder">
-      <img src={src} alt="Kasaysayan" />
+    <div className={`kasaysayan-img-placeholder${status === 'loaded' ? ' is-loaded' : ''}`}>
+      <img
+        src={src}
+        alt="Kasaysayan"
+        loading="lazy"
+        decoding="async"
+      />
     </div>
   );
 }

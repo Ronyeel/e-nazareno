@@ -34,6 +34,57 @@ const LYRIC_LINES = [
 
 const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
+// ─── Image Cache ───────────────────────────────────────────────────────────────
+// Module-level Map: persists across re-renders, survives StrictMode double-invoke.
+// Values: 'loading' | 'loaded' | 'error'
+const imageCache = new Map();
+
+function preloadImage(src) {
+  if (!src || imageCache.has(src)) return;
+  imageCache.set(src, 'loading');
+  const img = new Image();
+  img.onload = () => imageCache.set(src, 'loaded');
+  img.onerror = () => imageCache.set(src, 'error');
+  img.src = src;
+}
+
+// Eagerly preload all known static image assets when the module first loads.
+[
+  '/banner_tungkolsa.png',
+  '/simbahan_front.png',
+  '/cross.png',
+  '/about_background.png',
+  '/logo-final.png',
+  '/simbahan_nazareno.jpg',
+  '/cortez.png',
+  '/MARCA.png',
+  ...KATEGORYA_CARDS.map(c => c.src),
+  ...LAYUNIN_CARDS.filter(c => c.hasImage).map(c => c.src),
+].forEach(preloadImage);
+// ──────────────────────────────────────────────────────────────────────────────
+
+// Thin wrapper: kicks off a preload for a book cover the first time it is seen.
+function useCachedSrc(src) {
+  const [status, setStatus] = useState(() => imageCache.get(src) ?? 'loading');
+
+  useEffect(() => {
+    if (!src) return;
+    if (status === 'loaded' || status === 'error') return;
+
+    const cached = imageCache.get(src);
+    if (cached && cached !== 'loading') { setStatus(cached); return; }
+
+    // Not yet in cache — start a preload and subscribe to its result.
+    preloadImage(src);
+    const img = new Image();
+    img.onload = () => { imageCache.set(src, 'loaded'); setStatus('loaded'); };
+    img.onerror = () => { imageCache.set(src, 'error'); setStatus('error'); };
+    img.src = src;
+  }, [src, status]);
+
+  return status;
+}
+
 
 function BookCarousel({ authorName }) {
   const authorBooks = books.filter((b) =>
@@ -51,6 +102,8 @@ function BookCarousel({ authorName }) {
   }, [authorBooks.length]);
 
   useEffect(() => {
+    // Preload all covers for this author up-front.
+    authorBooks.forEach(b => preloadImage(b.cover));
     startCarousel();
     return () => clearInterval(intervalRef.current);
   }, [startCarousel]);
@@ -62,7 +115,7 @@ function BookCarousel({ authorName }) {
   return (
     <div className="awtor-book-carousel">
       <div className="awtor-book-cover">
-        <img src={currentBook.cover} alt={currentBook.title} />
+        <img src={currentBook.cover} alt={currentBook.title} loading="lazy" decoding="async" />
       </div>
       <p className="awtor-book-title">{currentBook.title}</p>
     </div>
@@ -213,7 +266,7 @@ function KategoryaStack() {
                   zIndex: Math.round(p * 10) + i,
                 }}
               >
-                <img src={card.src} alt={card.label} className="kat-card-img" loading="lazy" />
+                <img src={card.src} alt={card.label} className="kat-card-img" loading="lazy" decoding="async" />
                 <div className="kat-card-overlay">
                   <span className="kat-card-counter">
                     {String(i + 1).padStart(2, '0')} / {String(CARD_COUNT).padStart(2, '0')}
@@ -290,19 +343,21 @@ export default function TungkolSa() {
             alt="Harapan ng Simbahan ng Bayan ng Labo"
             className="tungkolSa-body-img"
             loading="lazy"
+            decoding="async"
           />
           <img
             src="/cross.png"
             alt=""
             aria-hidden="true"
             className="tungkolSa-cross"
+            decoding="async"
           />
         </div>
 
         <div className="tungkolSa-about-section">
           <div ref={refs.about} className="tungkolSa-about-wrap">
             <div className="tungkolSa-about-bg-clip">
-              <img src="/about_background.png" alt="" className="tungkolSa-about-bg" loading="lazy" />
+              <img src="/about_background.png" alt="" className="tungkolSa-about-bg" loading="lazy" decoding="async" />
             </div>
             <p className="tungkolSa-about-overlay-text">
               <span>
@@ -313,7 +368,7 @@ export default function TungkolSa() {
             </p>
           </div>
           <div className="tungkolSa-about-logo">
-            <img src="/logo-final.png" alt="E-Nazareno Logo" loading="lazy" />
+            <img src="/logo-final.png" alt="E-Nazareno Logo" loading="lazy" decoding="async" />
           </div>
         </div>
 
@@ -328,7 +383,7 @@ export default function TungkolSa() {
                 className={`tungkolSa-layunin-card${hasImage ? ' tungkolSa-layunin-card--has-image' : ''}`}
               >
                 {hasImage && (
-                  <img src={src} alt={alt} className="tungkolSa-layunin-card-img" loading="lazy" />
+                  <img src={src} alt={alt} className="tungkolSa-layunin-card-img" loading="lazy" decoding="async" />
                 )}
                 <span className="tungkolSa-layunin-card-label">{label}</span>
               </div>
@@ -392,7 +447,7 @@ export default function TungkolSa() {
             </p>
           </div>
           <div className='profile-container'>
-            <img src='/cortez.png' alt='Kate Cortez' />
+            <img src='/cortez.png' alt='Kate Cortez' loading="lazy" decoding="async" />
           </div>
 
           <div className='profile-info'>
@@ -436,7 +491,7 @@ export default function TungkolSa() {
           </div>
           <div className='profile-container'>
 
-            <img src='/MARCA.png' alt='Stephanie Marca' />
+            <img src='/MARCA.png' alt='Stephanie Marca' loading="lazy" decoding="async" />
           </div>
 
           <div className='profile-info'>
@@ -462,5 +517,3 @@ export default function TungkolSa() {
     </div>
   );
 }
-
-

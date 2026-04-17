@@ -6,7 +6,6 @@ import bookDataToRead from '../data/openBook.json';
 
 const API_BASE = 'https://enazareno-audio.onrender.com';
 
-
 function calcParagraphsPerPage() {
 
   const available = window.innerHeight - 220;
