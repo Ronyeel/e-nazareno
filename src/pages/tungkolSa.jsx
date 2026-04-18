@@ -34,7 +34,7 @@ const LYRIC_LINES = [
 
 const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
-// ─── Image Cache ───────────────────────────────────────────────────────────────
+
 const imageCache = new Map();
 
 function preloadImage(src) {
@@ -58,7 +58,7 @@ function preloadImage(src) {
   ...KATEGORYA_CARDS.map(c => c.src),
   ...LAYUNIN_CARDS.filter(c => c.hasImage).map(c => c.src),
 ].forEach(preloadImage);
-// ──────────────────────────────────────────────────────────────────────────────
+
 
 function useCachedSrc(src) {
   const [status, setStatus] = useState(() => imageCache.get(src) ?? 'loading');

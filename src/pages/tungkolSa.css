@@ -1304,26 +1304,19 @@
 }
 
 
-/* ─── MARCA layout overrides ─────────────────────────────────────────────────
-   True mirror of CORTEZ:
-   CORTEZ → photo RIGHT, book/info LEFT
-   MARCA  → photo LEFT,  book/info RIGHT
-────────────────────────────────────────────────────────────────────────────── */
-
-/* Photo flipped to LEFT */
 .awtor-marca .profile-container {
   left: 0;
   right: auto;
 }
 
-/* profile-info flipped to RIGHT */
+
 .awtor-marca .profile-info {
   left: auto;
   right: 5%;
   text-align: left;
 }
 
-/* Book carousel flipped to RIGHT */
+
 .awtor-marca .awtor-book-carousel {
   left: auto;
   right: 18%;
