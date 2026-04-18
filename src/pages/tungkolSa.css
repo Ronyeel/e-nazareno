@@ -976,17 +976,6 @@
 }
 
 
-.awtor-container:nth-child(3) .profile-container {
-  left: 0;
-  right: auto;
-}
-
-.awtor-container:nth-child(3)>img {
-  right: 18%;
-  left: auto;
-}
-
-
 .awtor-hover .title-container p:first-child {
   position: absolute;
   opacity: 0.25;
@@ -1112,11 +1101,6 @@
   pointer-events: none;
 }
 
-.awtor-container:nth-child(3) .awtor-book-carousel {
-  right: 18%;
-  left: auto;
-}
-
 .awtor-book-cover {
   width: clamp(90px, 14vw, 175px);
   aspect-ratio: 3 / 4;
@@ -1202,11 +1186,6 @@
     left: 10%;
   }
 
-  .awtor-container:nth-child(3) .awtor-book-carousel {
-    right: 10%;
-    left: auto;
-  }
-
   .awtor-book-cover {
     width: clamp(75px, 15vw, 105px);
     border-right: 3px solid #8a622e;
@@ -1226,11 +1205,6 @@
   .awtor-book-carousel {
     bottom: 30px;
     left: 6%;
-  }
-
-  .awtor-container:nth-child(3) .awtor-book-carousel {
-    right: 6%;
-    left: auto;
   }
 
   .awtor-book-cover {
@@ -1304,18 +1278,6 @@
 }
 
 
-.awtor-container:nth-child(3) .profile-info {
-  left: auto;
-  right: 5%;
-  text-align: right;
-}
-
-
-.awtor-container+.profile-info-two {
-  display: none !important;
-}
-
-
 .awtor-book-carousel {
   position: absolute;
   bottom: 65px;
@@ -1336,13 +1298,47 @@
   pointer-events: none;
 }
 
-
-.awtor-container:nth-child(3) .awtor-book-carousel {
-  right: 18%;
-  left: auto;
-}
-
 .awtor-hover:hover .awtor-container {
   transform: translateY(-8px);
   transition: transform 0.4s ease;
+}
+
+
+/* ─── MARCA layout overrides ─────────────────────────────────────────────────
+   True mirror of CORTEZ:
+   CORTEZ → photo RIGHT, book/info LEFT
+   MARCA  → photo LEFT,  book/info RIGHT
+────────────────────────────────────────────────────────────────────────────── */
+
+/* Photo flipped to LEFT */
+.awtor-marca .profile-container {
+  left: 0;
+  right: auto;
+}
+
+/* profile-info flipped to RIGHT */
+.awtor-marca .profile-info {
+  left: auto;
+  right: 5%;
+  text-align: left;
+}
+
+/* Book carousel flipped to RIGHT */
+.awtor-marca .awtor-book-carousel {
+  left: auto;
+  right: 18%;
+}
+
+@media (min-width: 481px) and (max-width: 580px) {
+  .awtor-marca .awtor-book-carousel {
+    left: auto;
+    right: 10%;
+  }
+}
+
+@media (max-width: 480px) {
+  .awtor-marca .awtor-book-carousel {
+    left: auto;
+    right: 6%;
+  }
 }

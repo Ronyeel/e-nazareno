@@ -126,6 +126,7 @@
 }
 
 
+/* ── Standard two-column row (text + image) ── */
 .kasaysayan-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -151,16 +152,36 @@
   transform: none;
 }
 
+/* ── Full-width text-only row (p5, p9) ── */
+.kasaysayan-row--full {
+  grid-template-columns: 1fr;
+  transform: translateY(20px);
+}
+
+.kasaysayan-text-col--full {
+  max-width: 100%;
+}
+
+/* ── Triple image row (p6, p7, p8) ── */
+.kasaysayan-row--triple {
+  grid-template-columns: 1fr 1fr 1fr;
+  transform: translateY(20px);
+}
+
 
 .kasaysayan-text-col p {
   font-family: 'Lora', Georgia, 'Times New Roman', serif;
   font-size: clamp(0.85rem, 1.8vw, 1rem);
   color: #2e2e2e;
   line-height: 1.85;
-  margin: 0;
+  margin: 0 0 0.75em;
   text-align: justify;
   hyphens: auto;
   text-indent: 2em;
+}
+
+.kasaysayan-text-col p:last-child {
+  margin-bottom: 0;
 }
 
 .kasaysayan-img-col {
@@ -176,9 +197,18 @@
   clip-path: inset(0 0 0 100%);
 }
 
+/* Triple images reveal from bottom */
+.kasaysayan-row--triple .kasaysayan-img-col {
+  clip-path: inset(0 0 100% 0);
+}
+
 .kasaysayan-row.is-visible .kasaysayan-img-col {
   clip-path: inset(0 0% 0 0);
   transform: scale(1);
+}
+
+.kasaysayan-row--triple.is-visible .kasaysayan-img-col {
+  clip-path: inset(0 0 0% 0);
 }
 
 
@@ -232,7 +262,6 @@
   animation-play-state: paused;
   background-image: none;
   background-color: #ede8e0;
-  /* border: 2px dashed #c4b49a; */
 }
 
 .kasaysayan-img-placeholder svg {
@@ -295,6 +324,10 @@
   .kasaysayan-row {
     grid-template-columns: 1fr;
     transform: translateY(20px);
+  }
+
+  .kasaysayan-row--triple {
+    grid-template-columns: 1fr;
   }
 
   .kasaysayan-img-col,

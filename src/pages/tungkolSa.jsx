@@ -35,8 +35,6 @@ const LYRIC_LINES = [
 const TOTAL_DURATION = LYRIC_LINES[LYRIC_LINES.length - 1].end;
 
 // ─── Image Cache ───────────────────────────────────────────────────────────────
-// Module-level Map: persists across re-renders, survives StrictMode double-invoke.
-// Values: 'loading' | 'loaded' | 'error'
 const imageCache = new Map();
 
 function preloadImage(src) {
@@ -48,7 +46,6 @@ function preloadImage(src) {
   img.src = src;
 }
 
-// Eagerly preload all known static image assets when the module first loads.
 [
   '/banner_tungkolsa.png',
   '/simbahan_front.png',
@@ -63,7 +60,6 @@ function preloadImage(src) {
 ].forEach(preloadImage);
 // ──────────────────────────────────────────────────────────────────────────────
 
-// Thin wrapper: kicks off a preload for a book cover the first time it is seen.
 function useCachedSrc(src) {
   const [status, setStatus] = useState(() => imageCache.get(src) ?? 'loading');
 
@@ -74,7 +70,6 @@ function useCachedSrc(src) {
     const cached = imageCache.get(src);
     if (cached && cached !== 'loading') { setStatus(cached); return; }
 
-    // Not yet in cache — start a preload and subscribe to its result.
     preloadImage(src);
     const img = new Image();
     img.onload = () => { imageCache.set(src, 'loaded'); setStatus('loaded'); };
@@ -102,7 +97,6 @@ function BookCarousel({ authorName }) {
   }, [authorBooks.length]);
 
   useEffect(() => {
-    // Preload all covers for this author up-front.
     authorBooks.forEach(b => preloadImage(b.cover));
     startCarousel();
     return () => clearInterval(intervalRef.current);
@@ -469,16 +463,7 @@ export default function TungkolSa() {
         </div>
 
 
-        <div className='profile-info-two'>
-          <p>
-            Batsilyer ng Pansekondaryang Edukasyon Medyor sa Filipino
-          </p>
-
-          <p>
-            stephaniemmarca@gmail.com
-          </p>
-        </div>
-        <div className='awtor-hover awtor-container'>
+        <div className='awtor-hover awtor-container awtor-marca'>
           <div className='title-container'>
             <p className=''>
               AWTOR
