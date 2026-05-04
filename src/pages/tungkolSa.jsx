@@ -498,6 +498,82 @@ export default function TungkolSa() {
           <BookCarousel authorName="MARCA" />
         </div>
 
+        {/* Genova Profile */}
+
+        <div className='awtor-hover awtor-container awtor-genova'>
+          <div className='title-container'>
+            <p className='tagapayo'>
+              TAGAPAYO
+            </p>
+            <p className=''>
+              <p>
+                Genova
+              </p>
+            </p>
+          </div>
+          <div className='profile-container'>
+
+            <img src='/genova.png' alt='Stephanie Marca' loading="lazy" decoding="async" />
+          </div>
+
+          <div className='profile-info'>
+            <p>
+              Rozel A. Genova, PhD
+            </p>
+
+            <div className='profile-info-two'>
+              <p>
+                Doktor ng Pilosopiya sa Filipino
+              </p>
+
+              <p>
+                rozelgenova28@gmail.com
+              </p>
+            </div>
+          </div>
+
+
+        </div>
+
+
+        {/* Rodriguez Profile */}
+
+        <div className='awtor-hover awtor-container awtor-marca awtor-rodriguez'>
+          <div className='title-container'>
+            <p className='tagapayo-research'>
+              PROPESOR SA <br /> PANANALIKSIK
+            </p>
+            <p className=''>
+              <p>
+                Rodriguez
+              </p>
+            </p>
+          </div>
+          <div className='profile-container'>
+
+            <img src='/RODRIGUEZ.png' alt='Stephanie Marca' loading="lazy" decoding="async" />
+          </div>
+
+          <div className='profile-info'>
+            <p>
+              Ryan S. Rodriguez, PhD
+            </p>
+
+            <div className='profile-info-two'>
+              <p>
+                Doktor ng Pilosopiya sa Filipino
+              </p>
+
+              <p>
+
+              </p>
+            </div>
+          </div>
+
+
+        </div>
+
+
       </section>
     </div>
   );
